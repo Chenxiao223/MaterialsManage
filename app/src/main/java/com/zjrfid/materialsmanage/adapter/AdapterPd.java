@@ -5,6 +5,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,8 +80,7 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
             viewHold.text7 = (TextView) convertView.findViewById(R.id.text7);
             viewHold.et_inventory = (EditText) convertView.findViewById(R.id.et_inventory);
             //切换数字键盘
-            viewHold.et_inventory.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-            viewHold.et_inventory.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//            viewHold.et_inventory.setInputType(EditorInfo.TYPE_CLASS_PHONE);
             viewHold.text9 = (TextView) convertView.findViewById(R.id.text9);
             viewHold.text10 = (TextView) convertView.findViewById(R.id.text10);
             viewHold.text11 = (TextView) convertView.findViewById(R.id.text11);
@@ -151,7 +151,7 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
         }
         if (EditTextIsEditable_Flag == true) {
             Toast.makeText(context, "可以输入", Toast.LENGTH_SHORT).show();
-            viewHold.et_inventory.setInputType(InputType.TYPE_CLASS_TEXT);
+//            viewHold.et_inventory.setInputType(InputType.TYPE_CLASS_TEXT);
             viewHold.et_remar.setInputType(InputType.TYPE_CLASS_TEXT);
             viewHold.et_inventory.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -226,6 +226,8 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
             Toast.makeText(context, "无法输入", Toast.LENGTH_SHORT).show();
             viewHold.et_inventory.setInputType(InputType.TYPE_NULL);
             viewHold.et_remar.setInputType(InputType.TYPE_NULL);
+        }else{
+            viewHold.et_inventory.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
         }
 
         return convertView;

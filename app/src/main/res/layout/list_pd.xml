@@ -222,9 +222,8 @@
                 android:id="@+id/et_inventory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:digits="1234567890."
-                android:text="" />
+                 />
         </LinearLayout>
 
         <LinearLayout

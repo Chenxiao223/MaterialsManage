@@ -307,8 +307,7 @@ public class ActivityHomePage extends Activity {
                 wareReadhouseBeanList = whay.getWareReadhouse();
                 wareReadhouseBeanString = "";
                 for (int j = 0; j < wareReadhouseBeanList.size(); j++) {
-//                    list_code.add(wareReadhouseBeanList.get(j).getCwhcode());
-                    list_code.add("01");
+                    list_code.add(wareReadhouseBeanList.get(j).getCwhcode());
                     if (j < (wareReadhouseBeanList.size() - 1)) {
                         wareReadhouseBeanString = wareReadhouseBeanString + "'" + wareReadhouseBeanList.get(j).getCwhcode() + "',";
                     }
