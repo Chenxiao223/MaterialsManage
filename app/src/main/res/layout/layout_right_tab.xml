@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" 
+    android:background="#98f4e3">
+    
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="物资名称"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="规格型号"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="计量单位"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="分类名称"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="车辆信息"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView 
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="默认仓库"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="默认货位"
+        android:gravity="center"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="旧编码"
+        android:gravity="center"
+        android:textSize="18dp"/>
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="RFID"
+        android:gravity="center"
+        android:textSize="18dp"/>
+
+</LinearLayout>

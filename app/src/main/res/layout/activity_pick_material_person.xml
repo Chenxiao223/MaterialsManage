@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id ="@+id/layout_Allpick"
+    android:orientation="vertical">
+
+    //界面抬头
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_color">
+
+        <ImageView
+            android:id="@+id/head"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:onClick="back"
+            android:src="@drawable/back2"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="领料 人员-部门"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:textSize="25sp"
+            android:id="@+id/textView12" />
+
+    </RelativeLayout>
+
+    //数据显示listview
+    <com.zjrfid.materialsmanage.xListView.XListView
+        android:id="@+id/lv_JobNameOrg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        />
+
+    //上下拉布局
+    <RelativeLayout
+        android:id ="@+id/layout_drop_up"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:onClick="DropAndUp"
+        android:background="#f9df6d"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iv_DropOrPlug"
+            android:src="@drawable/up"
+            android:gravity="center|center_vertical|clip_horizontal"
+            android:layout_centerInParent="true"
+            />
+        <!--android:background="@drawable/up"-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="30sp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/tv_TotalCount"
+            android:text=""
+            android:gravity="center|center_vertical|"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+    //查询菜单布局
+    <LinearLayout
+        android:id="@+id/layout_query_menu"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:visibility="gone"
+        android:background="#faef9c"
+        >
+
+        // 查询项
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:text="清 空"
+                android:textColor="#0a99ec"
+                android:onClick="clearQuery"
+                android:textSize="25sp"
+                android:layout_weight="2"
+                android:id="@+id/btn_clear"
+                android:background="@drawable/shape_btn4"/>
+
+            <Spinner
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/spinner_Departement"
+                android:layout_gravity="center_vertical"
+                android:textSize="25sp"
+                android:layout_weight="4" />
+
+                <Button
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:onClick="query"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:text="查 询"
+                    android:textSize="25sp"
+                    android:textColor="#ffffff"
+                    android:layout_weight="2"
+                    android:id="@+id/btn_query"
+                    android:background="@drawable/shape_btn8" />
+
+        </LinearLayout>
+
+        // 查询项
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_JobNumber"
+                android:inputType="number"
+                android:hint="工号"
+                android:textSize="25sp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="4" />
+
+            <EditText
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_PersonName"
+                android:hint="人员名称"
+                android:textSize="25sp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="4" />
+
+
+        </LinearLayout>
+
+
+
+        <!--// 查询项-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_marginTop="10dp">-->
+
+            <!--<TextView-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:text="部门"-->
+                <!--android:textSize="20sp"-->
+                <!--android:id="@+id/tv_Departement"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--/>-->
+            <!--<Spinner-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:id="@+id/spinner_Departement"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:layout_weight="4" />-->
+
+        <!--</LinearLayout>-->
+
+    <!--// 查询项-->
+    <!--<LinearLayout-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:orientation="horizontal"-->
+        <!-->-->
+
+
+        <!--<TextView-->
+
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="工号"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:textSize="20sp"-->
+            <!--android:id="@+id/tv_JobNumber"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+           <!--/>-->
+
+
+        <!--<EditText-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/et_JobNumber"-->
+            <!--android:inputType="number"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="4" />-->
+
+
+    <!--</LinearLayout>-->
+
+    <!--// 查询项-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<TextView-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="名称"-->
+            <!--android:textSize="20sp"-->
+            <!--android:id="@+id/tv_PersonName"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_gravity="center_vertical"-->
+             <!--/>-->
+        <!--<EditText-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/et_PersonName"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_weight="4" />-->
+
+    <!--</LinearLayout>-->
+
+
+
+    <!--//清空 查询-->
+    <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp">-->
+
+            <!--<Button-->
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:text="清 空"-->
+                <!--android:textColor="#0a99ec"-->
+                <!--android:onClick="clearQuery"-->
+                <!--android:textSize="25sp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:id="@+id/btn_clear"-->
+                <!--android:background="@drawable/shape_btn4"/>-->
+
+            <!--<Button-->
+
+                <!--android:layout_marginLeft="10dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:onClick="query"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:text="查 询"-->
+                <!--android:textSize="25sp"-->
+                <!--android:textColor="#ffffff"-->
+                <!--android:layout_weight="4"-->
+                <!--android:id="@+id/btn_query"-->
+                <!--android:background="@drawable/shape_btn8" />-->
+
+
+        <!--</LinearLayout>-->
+
+    </LinearLayout>
+
+</LinearLayout>

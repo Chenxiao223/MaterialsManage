@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dedddd">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_one"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/shape_color">
+
+        <ImageButton
+            android:id="@+id/pkckd_back"
+            android:layout_width="@dimen/img_back2_size"
+            android:layout_height="@dimen/img_back2_size"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:background="#0000"
+            android:onClick="back"
+            android:padding="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/back2" />
+
+        <TextView
+            android:id="@+id/tv_pkckd_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/pkckd_back"
+            android:text="盘亏出库单"
+            android:textColor="#ffffff"
+            android:textSize="25sp" />
+
+
+        <RelativeLayout
+            android:id="@+id/relative_query"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/tv_pkckd_title"
+            android:background="#fdd631">
+
+            <LinearLayout
+                android:id="@+id/ll_chukudanhao"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="出库单号:"
+                    android:textColor="#4e4d4d"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_oddnumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/ll_chukudanhao"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="仓库名称:"
+                    android:textColor="#4e4d4d"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_storehouse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:text="" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_direction"
+                android:layout_width="25dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/down" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_btn2"
+            android:onClick="delete"
+            android:text="删除"
+            android:textColor="#ffff"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="0.2dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_btn2"
+            android:onClick="cancel"
+            android:text="取消"
+            android:textColor="#ffff"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_btn2"
+            android:onClick="select"
+            android:text="选择"
+            android:textColor="#ffff" />
+
+
+    </LinearLayout>
+
+
+
+
+        <com.zjrfid.materialsmanage.xListView.XListView
+            android:id="@+id/lv_wzck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/linearLayout1"
+            android:layout_below="@+id/rl_one" />
+
+    <LinearLayout
+        android:id="@+id/linear_queryUI"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/lv_wzck"
+        android:background="#77000000"
+        android:orientation="vertical"
+        android:onClick="back_from_query_ui"
+        android:visibility="gone">
+
+    <ScrollView
+        android:id="@+id/sv_rypdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="出库单号:"
+                android:textColor="#4e4d4d"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/et_chukudocument"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="盘点仓库:"
+                android:layout_marginLeft="20dp"
+                android:textColor="#4e4d4d"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_warehouse"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="#fdd631"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:hint="请选择仓库"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_chaxunclear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:background="#fdd631"
+                android:onClick="chaxunclear"
+                android:text="清空" />
+
+            <Button
+                android:id="@+id/btn_chaxun"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/shape_color"
+                android:onClick="query"
+                android:text="查询" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>
