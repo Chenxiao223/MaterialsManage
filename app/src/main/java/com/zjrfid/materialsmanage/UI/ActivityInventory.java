@@ -86,7 +86,7 @@ public class ActivityInventory extends AppCompatActivity {
     public int flag = 0;
     public Button btn_save;
     TakePhotoPopWin3 takePhotoPopWin;
-    private TextView tv_text9,tv_text12,tv_text13,tv_text18,tv_documentNO, tv_date_time, tv_supplier, tv_section, tv_outbound_category, tv_inbound_category;
+    private TextView tv_text9, tv_text12, tv_text13, tv_text18, tv_documentNO, tv_date_time, tv_supplier, tv_section, tv_outbound_category, tv_inbound_category;
     private EditText et_remark;
     Intent it;
     InBoundType inBoundType;//入库和出库通用
@@ -255,8 +255,7 @@ public class ActivityInventory extends AppCompatActivity {
                     double text18 = 0;//盈亏含税金额-盈亏无税金额//盈亏税额
                     DecimalFormat df = new DecimalFormat("0.000000");//小数点后保留6位小数
 
-                    if(s.equals(""))
-                    {
+                    if (s.equals("")) {
 
                         listscq.get(p).put("content8", "");
                         listscq.get(p).put("content9", "");
@@ -264,7 +263,7 @@ public class ActivityInventory extends AppCompatActivity {
                         listscq.get(p).put("content13", "");
                         listscq.get(p).put("content18", "");
 
-                    }else{
+                    } else {
 
                         text9 = Double.parseDouble(s.toString()) - Double.parseDouble(listscq.get(p).get("content7"));//盈亏数量
                         text12 = text9 * Double.parseDouble(listscq.get(p).get("content10"));//盈亏含税金额=盈亏数量*含税单价
@@ -427,13 +426,14 @@ public class ActivityInventory extends AppCompatActivity {
 
     //点击单条操作
     public void dataShow(View view) {
-        if (tv_warehouse.getText().toString().equals("请选择仓库")) {
+        System.out.println(">" + tv_warehouse.getText().toString() + "<");
+        if (!tv_warehouse.getText().toString().equals("")) {
             takePhotoPopWin = new TakePhotoPopWin3(this, onClickListener, 0);
             //showAtLocation(View parent, int gravity, int x, int y)
             //需要给此activity的布局设置android:id="@+id/main_view"
             takePhotoPopWin.showAtLocation(findViewById(R.id.main_view), Gravity.BOTTOM, 0, 0);//125
             TakePhotoPopWin3.instance.state = 10;
-        }else{
+        } else {
             Toast.makeText(ActivityInventory.this, "请填写仓库", Toast.LENGTH_SHORT).show();
         }
     }
@@ -908,39 +908,39 @@ public class ActivityInventory extends AppCompatActivity {
 
     //获取盘点单-表头的jsonHeader
     public String getNewJsonHeader(InventoryHeader newHeader) {
-            //登录人员信息接口
-            String temp_JsonHeader = "";
-            try {
-                ZmInventoryHeader head = new ZmInventoryHeader();
-                head.setCmaker(newHeader.getCMAKER());
-                head.setChandler(newHeader.getCHANDLER());
-                head.setCreateDt(newHeader.getCREATEDT());
-                head.setDveridaate(newHeader.getDVERIDAATE());
-                head.setHpwGuid(newHeader.getHPWGUID());//仓库主键
-                head.setHpcvGuid(newHeader.getHPCVGUID());//盘点单主键
-                head.setCcvcode(newHeader.getCCVCODE());//盘点单号
-                head.setNavTabId("hpCheckvouch"); //下载的保存
-                head.setCallbackType("closeCurrent");
-                head.setCallBackMethod("hpCheckvouchSearch");
-                head.setDcvdate(newHeader.getDCVDATE());
-                head.setCordcode(newHeader.getCORDCODE());
-                head.setCirdcode(newHeader.getCIRDCODE());
-                head.setOrgname(newHeader.getORGNAME());
-                head.setCpersonname(newHeader.getCPERSONNAME());
-                head.setCdemo(newHeader.getCDEMO());
-                head.setIassets("");
-                head.setHpcvGuidChs("");
-                head.setChandler(newHeader.getCHANDLER());
-                head.setCwhname(newHeader.getCWHNAME());
-                head.setCwhcode(newHeader.getCWHCODE());//仓库编码
-                head.setCpersoncode(newHeader.getCPERSONCODE());//人员主键
-                head.setCdepcode(newHeader.getCDEPCODE());//部门主键
-                Gson gson = new Gson();
-                temp_JsonHeader = gson.toJson(head);
-            } catch (Exception ex) {
-                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-                ex.printStackTrace();
-            }
+        //登录人员信息接口
+        String temp_JsonHeader = "";
+        try {
+            ZmInventoryHeader head = new ZmInventoryHeader();
+            head.setCmaker(newHeader.getCMAKER());
+            head.setChandler(newHeader.getCHANDLER());
+            head.setCreateDt(newHeader.getCREATEDT());
+            head.setDveridaate(newHeader.getDVERIDAATE());
+            head.setHpwGuid(newHeader.getHPWGUID());//仓库主键
+            head.setHpcvGuid(newHeader.getHPCVGUID());//盘点单主键
+            head.setCcvcode(newHeader.getCCVCODE());//盘点单号
+            head.setNavTabId("hpCheckvouch"); //下载的保存
+            head.setCallbackType("closeCurrent");
+            head.setCallBackMethod("hpCheckvouchSearch");
+            head.setDcvdate(newHeader.getDCVDATE());
+            head.setCordcode(newHeader.getCORDCODE());
+            head.setCirdcode(newHeader.getCIRDCODE());
+            head.setOrgname(newHeader.getORGNAME());
+            head.setCpersonname(newHeader.getCPERSONNAME());
+            head.setCdemo(newHeader.getCDEMO());
+            head.setIassets("");
+            head.setHpcvGuidChs("");
+            head.setChandler(newHeader.getCHANDLER());
+            head.setCwhname(newHeader.getCWHNAME());
+            head.setCwhcode(newHeader.getCWHCODE());//仓库编码
+            head.setCpersoncode(newHeader.getCPERSONCODE());//人员主键
+            head.setCdepcode(newHeader.getCDEPCODE());//部门主键
+            Gson gson = new Gson();
+            temp_JsonHeader = gson.toJson(head);
+        } catch (Exception ex) {
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
+        }
         return temp_JsonHeader;
     }
 
@@ -969,27 +969,23 @@ public class ActivityInventory extends AppCompatActivity {
     }
 
 
-
-    public void summaryFourValue()
-    {
-        double dtext9=0.0;
-        double dtext12=0.0;
-        double dtext13=0.0;
-        double dtext18=0.0;
+    public void summaryFourValue() {
+        double dtext9 = 0.0;
+        double dtext12 = 0.0;
+        double dtext13 = 0.0;
+        double dtext18 = 0.0;
         DecimalFormat df = new DecimalFormat("0.000000");//小数点后保留6位小数
-        for(int i=0;i<listscq.size();i++)
-        {
-            if(listscq.get(i).get("delFlag").equals("0")
-                    &&(!listscq.get(i).get("content8").equals("")
-                    ||!listscq.get(i).get("content9").equals("")
-                    ||!listscq.get(i).get("content12").equals("")
-                    ||!listscq.get(i).get("content13").equals("")
-            ||!listscq.get(i).get("content18").equals("")))
-            {
-                dtext9 =dtext9+ Double.parseDouble(listscq.get(i).get("content9"));
-                dtext12 = dtext12 +Double.parseDouble(listscq.get(i).get("content12"));
-                dtext13 = dtext13 +Double.parseDouble(listscq.get(i).get("content13"));
-                dtext18 = dtext18 +Double.parseDouble(listscq.get(i).get("content18"));
+        for (int i = 0; i < listscq.size(); i++) {
+            if (listscq.get(i).get("delFlag").equals("0")
+                    && (!listscq.get(i).get("content8").equals("")
+                    || !listscq.get(i).get("content9").equals("")
+                    || !listscq.get(i).get("content12").equals("")
+                    || !listscq.get(i).get("content13").equals("")
+                    || !listscq.get(i).get("content18").equals(""))) {
+                dtext9 = dtext9 + Double.parseDouble(listscq.get(i).get("content9"));
+                dtext12 = dtext12 + Double.parseDouble(listscq.get(i).get("content12"));
+                dtext13 = dtext13 + Double.parseDouble(listscq.get(i).get("content13"));
+                dtext18 = dtext18 + Double.parseDouble(listscq.get(i).get("content18"));
             }
         }
         tv_text9.setText(df.format(dtext9) + "");
@@ -998,7 +994,6 @@ public class ActivityInventory extends AppCompatActivity {
         tv_text18.setText(df.format(dtext18) + "");
 
     }
-
 
 
 }

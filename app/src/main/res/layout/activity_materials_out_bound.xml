@@ -49,33 +49,12 @@
             android:layout_below="@+id/relativeLayout"
             android:layout_marginBottom="0.1dp">
 
-            <ListView
-                android:id="@+id/lv_create"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/line3"
-                android:textColor="#FF0D0D0D" />
-
             <LinearLayout
-                android:id="@+id/line3"
+                android:id="@+id/linearLayout18"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:background="#cadced"
-                android:gravity="center_vertical"
+                android:layout_height="30dp"
+                android:background="#e8e8e8"
                 android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/btn_show"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_btn2"
-                    android:onClick="datashow"
-                    android:text="单条操作"
-                    android:textColor="#ffff" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -104,11 +83,42 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.1"
                     android:gravity="center" />
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_create"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/line3"
+                android:textColor="#FF0D0D0D"
+                android:layout_below="@+id/linearLayout18" />
+
+            <LinearLayout
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="#cadced"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_show"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_btn2"
+                    android:onClick="datashow"
+                    android:text="单条操作"
+                    android:textColor="#ffff" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:layout_marginLeft="1dp"
                     android:background="@drawable/shape_btn2"
                     android:onClick="alter"
                     android:text="单条修改"
@@ -189,8 +199,8 @@
                 android:layout_height="40dp"
                 android:layout_marginRight="0.2dp"
                 android:layout_weight="1"
-                android:onClick="deleteCKD"
                 android:background="@drawable/shape_btn2"
+                android:onClick="deleteCKD"
                 android:text="删除出库单"
                 android:textColor="#ffff" />
 

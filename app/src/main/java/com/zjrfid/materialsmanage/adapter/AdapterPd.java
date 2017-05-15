@@ -80,6 +80,7 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
             viewHold.et_inventory = (EditText) convertView.findViewById(R.id.et_inventory);
             //切换数字键盘
             viewHold.et_inventory.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+            viewHold.et_inventory.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             viewHold.text9 = (TextView) convertView.findViewById(R.id.text9);
             viewHold.text10 = (TextView) convertView.findViewById(R.id.text10);
             viewHold.text11 = (TextView) convertView.findViewById(R.id.text11);
@@ -175,10 +176,14 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
                         double text18 = 0;//盈亏含税金额-盈亏无税金额//盈亏税额
 
 
-                        text9 = Double.parseDouble(s.toString()) - Double.parseDouble(list.get(position).get("content7"));
-                        text12 = text9 * Double.parseDouble(ActivityInventory.inventory.listscq.get(position).get("content10"));
-                        text13 = text9 * Double.parseDouble(ActivityInventory.inventory.listscq.get(position).get("content11"));
-                        text18 = text12 - text13;//盈亏含税金额-盈亏无税金额
+                        try {
+                            text9 = Double.parseDouble(s.toString()) - Double.parseDouble(list.get(position).get("content7"));
+                            text12 = text9 * Double.parseDouble(ActivityInventory.inventory.listscq.get(position).get("content10"));
+                            text13 = text9 * Double.parseDouble(ActivityInventory.inventory.listscq.get(position).get("content11"));
+                            text18 = text12 - text13;//盈亏含税金额-盈亏无税金额
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         finalViewHold.text9.setText(text9 + "");//盈亏数量
                         finalViewHold.text12.setText(df.format(text12) + "");//盈亏含税金额
