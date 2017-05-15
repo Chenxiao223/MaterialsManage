@@ -238,6 +238,7 @@ public class ActivityBatch extends Activity {
                             //只有新增的时候才赋空值
                             ActivityMaterialsOutBound.materialsOutBound.list_HprGuidCh.add("");
                         }
+                        //计算
                         int cksl = mlist.get(i).getRkshuliang();//出库数量
                         double hsdj = Double.valueOf(mBatch.getJsonData().getList().get(i).getFTAXPRICE());//含税单价
                         double sl = Double.valueOf(mBatch.getJsonData().getList().get(i).getFTAXRATE());//税率

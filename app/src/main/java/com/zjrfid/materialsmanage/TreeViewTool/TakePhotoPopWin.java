@@ -81,15 +81,63 @@ public class TakePhotoPopWin extends PopupWindow {
         tax = (TextView) view.findViewById(R.id.tax);
         tax_rate = (TextView) view.findViewById(R.id.tax_rate);
         tv_number = (TextView) view.findViewById(R.id.tv_number);
-        //点击切换数字键盘
         et_amount = (EditText) view.findViewById(R.id.et_amount);
-        //点击切换数字键盘
-        et_amount.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         et_hanshui = (EditText) view.findViewById(R.id.et_hanshui);
-        //点击切换数字键盘
-        et_hanshui.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        et_hanshui.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (et_hanshui.getText().toString().indexOf(".") >= 0) {
+                    if (et_hanshui.getText().toString().indexOf(".", et_hanshui.getText().toString().indexOf(".") + 1) > 0) {
+                        try {
+                            Toast.makeText(mContext, "已经输入\".\"不能重复输入", Toast.LENGTH_SHORT).show();
+                            et_hanshui.setText(et_hanshui.getText().toString().substring(0, et_hanshui.getText().toString().length() - 1));
+                            et_hanshui.setSelection(et_hanshui.getText().toString().length());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         et_shuilv = (EditText) view.findViewById(R.id.et_shuilv);
+        et_shuilv.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (et_shuilv.getText().toString().indexOf(".") >= 0) {
+                    if (et_shuilv.getText().toString().indexOf(".", et_shuilv.getText().toString().indexOf(".") + 1) > 0) {
+                        try {
+                            Toast.makeText(mContext, "已经输入\".\"不能重复输入", Toast.LENGTH_SHORT).show();
+                            et_shuilv.setText(et_shuilv.getText().toString().substring(0, et_shuilv.getText().toString().length() - 1));
+                            et_shuilv.setSelection(et_shuilv.getText().toString().length());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         //点击请选择货位
         tv_huowei.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +150,7 @@ public class TakePhotoPopWin extends PopupWindow {
         });
 
         //点击切换数字键盘
-        et_shuilv.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+//        et_shuilv.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         //标志位判断:设置一个标志位，如果为1，则说明是点修改进入该页面，显示添加和取消按钮
         if (flag == 1) {
             lineone.setVisibility(View.GONE);

@@ -598,7 +598,7 @@ public class ActivityInventory extends AppCompatActivity {
     //获取当前的日期及时间
     public String getTime() {
         Date date = new Date();
-        java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.text.DateFormat format = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
         String time = format.format(date);
         return time;
     }

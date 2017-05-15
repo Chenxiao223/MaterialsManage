@@ -125,8 +125,8 @@ public class ActivityMaterialsOutBound extends Activity {
             clickEnable(false);//出库单控件无法点击
         } else {
             tv_date_time.setText(getTime());
-            tv_acquisition_staff.setText("610214|黄晓承");
-            tv_section.setText("计划财务部");
+            tv_acquisition_staff.setText(ActivityLogin.login.getJobnumber()+"|"+ActivityLogin.login.getFullname());
+            tv_section.setText(ActivityLogin.login.getOrgname());
             spin_data_type1.setSelection(1);//原始单据类型1
             spin_data_type2.setSelection(1);//原始单据类型2
             bln_is = false;
@@ -221,7 +221,6 @@ public class ActivityMaterialsOutBound extends Activity {
         iAdapter.setOnItemEdittext(new IAdapter3.OnItemEdittext() {
             @Override
             public void setText(String s, int p) {
-                Log.i("info", "beizhu: " + s);
                 listscq.get(p).put("content22", s);
             }
         });
@@ -389,7 +388,6 @@ public class ActivityMaterialsOutBound extends Activity {
     }
 
     public void price(int i, int location) {
-        Log.i("info", "总价：" + listscq.get(location).get("content15") + ", 数量：" + listscq.get(location).get("content21"));
         //0表示加，1表示减
         if (i == 0) {
             dbl_number = dbl_number + Double.parseDouble(listscq.get(location).get("content15"));
@@ -951,7 +949,7 @@ public class ActivityMaterialsOutBound extends Activity {
                     }).show();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(ActivityMaterialsOutBound.this, "出错", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityMaterialsOutBound.this, "出错："+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

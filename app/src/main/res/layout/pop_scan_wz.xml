@@ -406,6 +406,7 @@
                 android:layout_centerHorizontal="true"
                 android:numeric="integer"
                 android:digits="1234567890."
+                android:inputType="number"
                 android:gravity="center_horizontal" />
         </LinearLayout>
 
@@ -456,6 +457,7 @@
                 android:layout_centerHorizontal="true"
                 android:numeric="integer"
                 android:digits="1234567890"
+                android:inputType="number"
                 android:gravity="center_horizontal" />
 
             <ImageButton
@@ -491,6 +493,7 @@
                 android:layout_centerHorizontal="true"
                 android:numeric="integer"
                 android:digits="1234567890."
+                android:inputType="number"
                 android:gravity="center_horizontal" />
         </LinearLayout>
     </LinearLayout>
