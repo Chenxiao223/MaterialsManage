@@ -336,5 +336,4 @@ public class ActivityGoodsAllocation extends AppCompatActivity {
         TakePhotoPopWin.instance.hwbm = code; //货位编码
         finish();
     }
-
 }

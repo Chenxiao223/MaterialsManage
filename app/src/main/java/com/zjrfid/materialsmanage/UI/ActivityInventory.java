@@ -62,7 +62,7 @@ public class ActivityInventory extends AppCompatActivity {
 
     public static ActivityInventory inventory;
     private RelativeLayout relative_pandiandan;
-    private ListView lv_create;
+    public ListView lv_create;
     private boolean bln_is = true;
     private LinearLayout linear_pandiandan;
     private ImageView img_direction;
@@ -81,7 +81,7 @@ public class ActivityInventory extends AppCompatActivity {
     public List<String> list_Cposcode_isdel = new ArrayList<>();
     public List<String> list_hpcvguidch_isdel = new ArrayList<>();
     private int i = 0;
-    private LinearLayout line1, line2, line3;
+    private LinearLayout line1, line2;
     public static List<String> list_info = new ArrayList<>();
     public int flag = 0;
     public Button btn_save;
@@ -168,7 +168,6 @@ public class ActivityInventory extends AppCompatActivity {
         img_direction = (ImageView) findViewById(R.id.img_direction);
         line1 = (LinearLayout) findViewById(R.id.line1);
         line2 = (LinearLayout) findViewById(R.id.line2);
-        line3 = (LinearLayout) findViewById(R.id.line3);
         btn_save = (Button) findViewById(R.id.btn_save);
         relative_pandiandan = (RelativeLayout) findViewById(R.id.relative_pandiandan);//盘点单
 
@@ -364,7 +363,7 @@ public class ActivityInventory extends AppCompatActivity {
 
     //确定盘点单 表头信息，并隐藏盘点单表头，获取jsonheader
     public void confirm(View view) {
-        if (tv_warehouse.getText().toString().equals("请选择仓库")) {
+        if (tv_warehouse.getText().toString().equals("")) {
             Toast.makeText(ActivityInventory.this, "请先选择仓库", Toast.LENGTH_SHORT).show();
         } else {
             //隐藏布局
@@ -426,11 +425,8 @@ public class ActivityInventory extends AppCompatActivity {
 
     //点击单条操作
     public void dataShow(View view) {
-        System.out.println(">" + tv_warehouse.getText().toString() + "<");
         if (!tv_warehouse.getText().toString().equals("")) {
             takePhotoPopWin = new TakePhotoPopWin3(this, onClickListener, 0);
-            //showAtLocation(View parent, int gravity, int x, int y)
-            //需要给此activity的布局设置android:id="@+id/main_view"
             takePhotoPopWin.showAtLocation(findViewById(R.id.main_view), Gravity.BOTTOM, 0, 0);//125
             TakePhotoPopWin3.instance.state = 10;
         } else {
@@ -459,7 +455,6 @@ public class ActivityInventory extends AppCompatActivity {
             adapterPd.EditTextIsEditable(true);
             adapterPd.HideCheckBox(false);
             dataChanged();//刷新适配器
-            line3.setVisibility(View.VISIBLE);//显示总数那个布局
             //因为有数据，所以让保存按钮可以点击
             ActivityInventory.inventory.btn_save.setClickable(true);
         } else {
@@ -746,7 +741,7 @@ public class ActivityInventory extends AppCompatActivity {
                     }
                     line1.setVisibility(View.GONE);
                     line2.setVisibility(View.VISIBLE);
-                    line3.setVisibility(View.GONE);
+
                     adapterPd.notifyDataSetChanged();
                     //计算
                     summaryFourValue();
@@ -995,5 +990,58 @@ public class ActivityInventory extends AppCompatActivity {
 
     }
 
+
+    //点击删除盘点单
+    public void deletePDD(View view) {
+
+        //点击弹出对话框
+        new AlertDialog.Builder(this).setTitle("温馨提示").setMessage("是否确定删除盘点单？")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (isChandler()) {//如果审核人为空，那么说明未审核，可以删除
+                            //调用删除入库单详细信息单条接口
+                            HttpNetworkRequest.delete("goods/rs/hpCheckvouch?str=" + inventoryHeader.getHPCVGUID(), new BaseHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(rawResponse);
+                                        if (jsonObject.getString("message").equals("删除成功")) {
+                                            Toast.makeText(ActivityInventory.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                            ActivityInventoryList.inventoryList.onRefresh();
+                                            ActivityInventoryList.inventoryList.showLayout();
+                                        }
+                                    } catch (Exception e) {
+                                        String msg = e.getMessage();
+                                        Toast.makeText(ActivityInventory.this, msg, Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable e, String rawData, Object errorResponse) {
+                                    Toast.makeText(ActivityInventory.this, "服务器请求失败，删除不成功", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(ActivityInventory.this, "此条已通过审核，不能删除", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(ActivityInventory.this, "放弃删除盘点单", Toast.LENGTH_SHORT).show();
+                    }
+                }).show();
+
+    }
+
+    //点击置顶
+    public void stick(View view){
+        lv_create.setSelection(0);
+    }
 
 }

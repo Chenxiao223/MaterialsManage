@@ -182,6 +182,7 @@
                         android:id="@+id/et_pddh"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                         android:layout_weight="10" />
 
                 </LinearLayout>

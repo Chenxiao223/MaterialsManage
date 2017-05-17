@@ -198,6 +198,7 @@ public class ActivityBatch extends Activity {
     //确定
     public void sure(View view) throws Exception {
         try {
+            ActivityMaterialsOutBound.iAdapter.setNewListIndex();
             IAdapter3.count = 0;//归零
             //将所有选中的条目清空
             for (int i = 0; i < ActivityMaterialsOutBound.materialsOutBound.listscq.size(); i++) {
@@ -268,8 +269,11 @@ public class ActivityBatch extends Activity {
                         //计算数量
                         ActivityMaterialsOutBound.materialsOutBound.amount = ActivityMaterialsOutBound.materialsOutBound.amount + mlist.get(i).getRkshuliang();
                         ActivityMaterialsOutBound.materialsOutBound.tv_amount.setText(ActivityMaterialsOutBound.materialsOutBound.amount + "");
+                        ActivityMaterialsOutBound.iAdapter.setNewItemBackground(ActivityMaterialsOutBound.materialsOutBound.listscq.size() - 1, true);
                     }
                 }
+                //定位到最新添加这条添加
+                ActivityMaterialsOutBound.materialsOutBound.lv_create.setSelection(ActivityMaterialsOutBound.materialsOutBound.listscq.size()-1);
                 finish();
                 p = 0;
             } else {

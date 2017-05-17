@@ -190,6 +190,7 @@
                         android:id="@+id/et_rukudocument"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="3" />

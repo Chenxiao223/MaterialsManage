@@ -1,7 +1,9 @@
 package com.zjrfid.materialsmanage.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import com.zjrfid.materialsmanage.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class IAdapter3 extends BaseAdapter {
     private Context context;
@@ -27,6 +30,9 @@ public class IAdapter3 extends BaseAdapter {
     OnItemEdittext onItemEdittext;
     public static int location;
     public static int count=0;
+    private boolean EditTextIsEditable_Flag = true; //edittext可编辑
+    private List<Integer> list_index =new ArrayList<>();
+    private boolean newAddFlag =false;
 
     public void setOnItemEdittext(OnItemEdittext onItemEdittext){
         this.onItemEdittext=onItemEdittext;
@@ -133,25 +139,36 @@ public class IAdapter3 extends BaseAdapter {
                 }
             }
         });
+        if (EditTextIsEditable_Flag == true) {
+            viewHold.text22.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        viewHold.text22.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!TextUtils.isEmpty(s)) {
-                    onItemEdittext.setText(s.toString(), position);
                 }
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (!TextUtils.isEmpty(s)) {
+                        onItemEdittext.setText(s.toString(), position);
+                    }
+                }
 
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
+        if (EditTextIsEditable_Flag == false) {
+            viewHold.text22.setInputType(InputType.TYPE_NULL);
+        }
+        if(newAddFlag ==true)
+        {
+            if(list_index.contains(position))
+            {
+                convertView.setBackgroundColor(Color.parseColor("#fdd631"));
             }
-        });
+        }
         return convertView;
     }
 
@@ -169,5 +186,20 @@ public class IAdapter3 extends BaseAdapter {
 
     public interface OnItemEdittext{
         public void setText(String s,int p);
+    }
+
+    public void EditTextIsEditable(boolean flag) {
+        this.EditTextIsEditable_Flag = flag;
+    }
+
+    public void setNewItemBackground(int index,boolean newaddflag)
+    {
+        newAddFlag =newaddflag;
+        list_index.add(index);
+    }
+    public void setNewListIndex()
+    {
+        newAddFlag =false;
+        list_index.clear();
     }
 }

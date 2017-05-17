@@ -54,10 +54,9 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
     public String hpwGuid = "";
     public String cwhcode2 = "";
 
-
     public static ActivityMaterialsInBound materialsInBound;
     private RelativeLayout relative_rukudan;
-    private ListView lv_create;
+    public ListView lv_create;
     private boolean bln_is = true;
     private LinearLayout linear_rukudan;
     private ImageView img_direction;

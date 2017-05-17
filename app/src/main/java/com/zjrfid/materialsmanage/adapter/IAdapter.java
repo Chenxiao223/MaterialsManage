@@ -1,6 +1,7 @@
 package com.zjrfid.materialsmanage.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import com.zjrfid.materialsmanage.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class IAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private ArrayList<HashMap<String, String>> list;
     private int i = 0;
+    private List<Integer> list_index =new ArrayList<>();
+    private boolean newAddFlag =false;
 
     public IAdapter(Context context, ArrayList<HashMap<String, String>> list) {
         this.context = context;
@@ -106,6 +110,13 @@ public class IAdapter extends BaseAdapter {
         viewHold.text20.setText(list.get(position).get("content20"));
         viewHold.text21.setText(list.get(position).get("content21"));
         viewHold.cb.setChecked(list.get(position).get("flag").equals("true"));
+        if(newAddFlag ==true)
+        {
+            if(list_index.contains(position))
+            {
+                convertView.setBackgroundColor(Color.parseColor("#fdd631"));
+            }
+        }
         return convertView;
     }
 
@@ -119,5 +130,16 @@ public class IAdapter extends BaseAdapter {
     //隐藏复选框的方法
     public void hind(int i) {
         this.i = i;
+    }
+
+    public void setNewItemBackground(int index,boolean newaddflag)
+    {
+        newAddFlag =newaddflag;
+        list_index.add(index);
+    }
+    public void setNewListIndex()
+    {
+        newAddFlag =false;
+        list_index.clear();
     }
 }

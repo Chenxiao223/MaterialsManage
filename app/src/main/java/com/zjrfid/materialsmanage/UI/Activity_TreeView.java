@@ -108,7 +108,7 @@ public class Activity_TreeView extends Activity {
 
         init();
 
-        if (flag == 0 || flag == 1 || flag == 2 || flag == 3 || flag == 4 || flag == 5 || flag == 6 || flag == 7) {
+        if (flag == 0 || flag == 1 || flag == 2 || flag == 3 || flag == 4 || flag == 5 || flag == 6 || flag == 7 || flag == 8) {
             ListView treeview = (ListView) findViewById(R.id.treeview);
             treeViewAdapter = new TreeViewAdapter(elements, list_element, inflater, this);
             TreeViewItemClickListener2 treeViewItemClickListener = new TreeViewItemClickListener2(treeViewAdapter);
@@ -137,7 +137,7 @@ public class Activity_TreeView extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ActivityMaterialsInBound.materialsInBound.tv_supplier.setText(models.get(position).getText1().toString());
                 ActivityMaterialsInBound.materialsInBound.cvencode = models.get(position).getText0().toString();
-                ActivityMaterialsInBound.materialsInBound.hpsnguid=models.get(position).getText2().toString();
+                ActivityMaterialsInBound.materialsInBound.hpsnguid = models.get(position).getText2().toString();
                 finish();
             }
         });
@@ -147,7 +147,7 @@ public class Activity_TreeView extends Activity {
     private void init() {
         if (flag == 13) {//表示从入库点
 
-        // 击供货单位进来的
+            // 击供货单位进来的
             elements = new ArrayList<Element>();
             list_element = new ArrayList<Element>();
 
@@ -234,11 +234,10 @@ public class Activity_TreeView extends Activity {
         int index = context.indexOf(" ");
         String warehouse_code = context.substring(0, index);
         String warehouse_name = context.substring(index + 1);
-        String warehouse_HpwGuid ="";
-        for (WarehouseName.JsonData.Info info:whname.getJsonData().getList()) {
-            if(info.getCwhcode().equals(warehouse_code))
-            {
-                warehouse_HpwGuid =info.getHpwGuid();
+        String warehouse_HpwGuid = "";
+        for (WarehouseName.JsonData.Info info : whname.getJsonData().getList()) {
+            if (info.getCwhcode().equals(warehouse_code)) {
+                warehouse_HpwGuid = info.getHpwGuid();
             }
         }
         if (flag == 0) {
@@ -248,7 +247,7 @@ public class Activity_TreeView extends Activity {
             ActivityMaterialsInBound.materialsInBound.warehouse = warehouse_name;
 //            ActivityMaterialsInBound.materialsInBound.hpwGuid = str_hpwGuid;
             ActivityMaterialsInBound.materialsInBound.cwhcode2 = warehouse_code;
-        }else if (flag == 2) {
+        } else if (flag == 2) {
             ActivityInventory.inventory.warehouse = warehouse_name;
             ActivityInventory.inventory.tv_warehouse.setText(warehouse_name);
 //            ActivityInventory.inventory.hpwGuid = str_hpwGuid;
@@ -266,12 +265,12 @@ public class Activity_TreeView extends Activity {
         } else if (flag == 4) {
             ActivityInventoryLossesOut.inventoryLossesOut.tv_warehouse.setText(warehouse_name);
             ActivityInventoryLossesOut.inventoryLossesOut.cwhcode = warehouse_code;
-            ActivityInventoryLossesOut.inventoryLossesOut.cwhname =warehouse_name;
+            ActivityInventoryLossesOut.inventoryLossesOut.cwhname = warehouse_name;
 //            ActivityInventoryLossesOut.inventoryLossesOut.hpwGuid = str_hpwGuid;
         } else if (flag == 5) {
             ActivityInventoryProFitInt.inventoryProFitInt.tv_warehouse.setText(warehouse_name);
             ActivityInventoryProFitInt.inventoryProFitInt.cwhcode = warehouse_code;
-            ActivityInventoryProFitInt.inventoryProFitInt.cwhname =warehouse_name;
+            ActivityInventoryProFitInt.inventoryProFitInt.cwhname = warehouse_name;
 //            ActivityInventoryProFitInt.inventoryProFitInt.hpwGuid = str_hpwGuid;
         } else if (flag == 6) {
             ActivityMaterialOutboundOrder.materialOutboundOrder.tv_warehouse.setText(warehouse_name);
@@ -280,6 +279,11 @@ public class Activity_TreeView extends Activity {
             ActivityMaterialsOutBound.materialsOutBound.warehouse = warehouse_name;
 //            ActivityMaterialsOutBound.materialsOutBound.hpwGuid = str_hpwGuid;
             ActivityMaterialsOutBound.materialsOutBound.cwhcode2 = warehouse_code;
+        }else if (flag == 8) {
+            ActivityInventoryQuery.inventoryQuery.tv_warehouse.setText(warehouse_name);
+            ActivityInventoryQuery.inventoryQuery.warehouse = warehouse_name;
+//            ActivityMaterialsOutBound.materialsOutBound.hpwGuid = str_hpwGuid;
+            ActivityInventoryQuery.inventoryQuery.cwhcode = warehouse_code;
         }
         finish();
     }
@@ -324,8 +328,8 @@ public class Activity_TreeView extends Activity {
     }
 
     //点击回退
-    public void btn_back(View view){
-        finish();
+    public void btn_back(View view) {
+        ll_orientation.setVisibility(View.GONE);
     }
 
 }

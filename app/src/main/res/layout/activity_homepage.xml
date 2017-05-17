@@ -199,24 +199,24 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_Inventory_query"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical"
-                android:visibility="invisible">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:src="@drawable/wzck" />
+                    android:src="@drawable/inventory" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="物资出库单" />
+                    android:text="库存查询" />
             </LinearLayout>
 
             <LinearLayout

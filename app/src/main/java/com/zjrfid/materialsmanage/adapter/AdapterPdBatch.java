@@ -64,28 +64,25 @@ public class AdapterPdBatch extends BaseAdapter {
             viewHold.text5 = (TextView) convertView.findViewById(R.id.text5);
             viewHold.cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
             viewHold.cb.setVisibility(View.VISIBLE);
-            if (i == 1) {//如果传进来的参数为1，就隐藏复选框
-                viewHold.cb.setVisibility(View.GONE);
-            } else if (i == 2) {//如果i为2，就全选
-                if (!ActivityBatchPd.batch.list_position.contains(position)){
-                    viewHold.cb.setChecked(true);
-                }
-            } else if (i == 3) {//如果i为3，就全不选
-                viewHold.cb.setChecked(false);
-            }
+
             convertView.setTag(viewHold);
         } else {
             viewHold = (ViewHold) convertView.getTag();
         }
-
+        if (i == 1) {//如果传进来的参数为1，就隐藏复选框
+            viewHold.cb.setVisibility(View.GONE);
+        } else if (i == 2) {//如果i为2，就全选
+            if (!ActivityBatchPd.batch.list_position.contains(position)){
+                viewHold.cb.setChecked(true);
+            }
+        } else if (i == 3) {//如果i为3，就全不选
+            viewHold.cb.setChecked(false);
+        }
         viewHold.text1.setText(list.get(position).get("content1"));
         viewHold.text2.setText(list.get(position).get("content2"));
         viewHold.text3.setText(list.get(position).get("content3"));
         viewHold.text4.setText(list.get(position).get("content4"));
         viewHold.text5.setText(list.get(position).get("content5"));
-        if (list.get(position).get("content6").equals("true")) {
-//            ActivityBatchPd.batch.listView.setEnabled(false);
-        }
         viewHold.cb.setChecked(list.get(position).get("flag").equals("true"));
         return convertView;
     }

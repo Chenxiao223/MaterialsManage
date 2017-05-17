@@ -36,8 +36,8 @@ import java.util.List;
 
 public class ActivityHomePage extends Activity {
     public static ActivityHomePage homePage;
-    private LinearLayout linear_binding, linear_put_out_storage, linear_put_in_storage, linear_check, linear_label_detection;
-    private ImageView head,iv_connection;
+    private LinearLayout linear_binding, linear_put_out_storage, linear_put_in_storage, linear_check, linear_label_detection, linear_Inventory_query;
+    private ImageView head, iv_connection;
     private IntentFilter intentFilter;
     private NetworkChangeReceiver networkChangeReceiver;
     protected static final int MSG_DISCONNECT = 3;
@@ -46,20 +46,20 @@ public class ActivityHomePage extends Activity {
     public static WarehouseAuthority whay;
     private List<WarehouseAuthority.WareReadhouseBean> wareReadhouseBeanList;
     public static String wareReadhouseBeanString;
-    MediaUtil mediaUtil=new MediaUtil(this);
-    public List<String> list_code=new ArrayList<>();
+    MediaUtil mediaUtil = new MediaUtil(this);
+    public List<String> list_code = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         //
-        homePage=this;
+        homePage = this;
         SysApplication.getInstance().addActivity(this);
         connectRadio();//连接RFID模块
-        intentFilter=new IntentFilter();
+        intentFilter = new IntentFilter();
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-        networkChangeReceiver=new NetworkChangeReceiver();
+        networkChangeReceiver = new NetworkChangeReceiver();
         registerReceiver(networkChangeReceiver, intentFilter);//注册监听网络变化的广播
         Warehouseauthority();//获取仓库权限
 
@@ -68,8 +68,9 @@ public class ActivityHomePage extends Activity {
         linear_put_in_storage = (LinearLayout) findViewById(R.id.linear_put_in_storage);
         linear_check = (LinearLayout) findViewById(R.id.linear_check);
         linear_label_detection = (LinearLayout) findViewById(R.id.linear_label_detection);
+        linear_Inventory_query = (LinearLayout) findViewById(R.id.linear_Inventory_query);
         head = (ImageView) findViewById(R.id.head);
-        iv_connection= (ImageView) findViewById(R.id.iv_connection);
+        iv_connection = (ImageView) findViewById(R.id.iv_connection);
         //点击盘点管理
         linear_check.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,12 +114,19 @@ public class ActivityHomePage extends Activity {
                 startActivity(new Intent(ActivityHomePage.this, ActivityTagTest.class));
             }
         });
+        //库存查询
+        linear_Inventory_query.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ActivityHomePage.this, ActivityInventoryQuery.class));
+            }
+        });
     }
 
     //点击设置
-    public void setting(View view){
+    public void setting(View view) {
         //跳转到设置页面
-        startActivity(new Intent(this,ActivitySetting.class));
+        startActivity(new Intent(this, ActivitySetting.class));
     }
 
     //点击back键
@@ -157,15 +165,16 @@ public class ActivityHomePage extends Activity {
                     }
                 }).show();
     }
-    class NetworkChangeReceiver extends BroadcastReceiver{
+
+    class NetworkChangeReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
-            if (networkInfo!=null && networkInfo.isAvailable()){
+            ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isAvailable()) {
 //                Toast.makeText(context, "网络可用", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 mediaUtil.music(R.raw.p);//语音提示
                 Toast.makeText(context, "网络不可用", Toast.LENGTH_SHORT).show();
             }
@@ -179,9 +188,8 @@ public class ActivityHomePage extends Activity {
     }
 
     //连接RFID模块，返回结果
-    public void connectRadio()
-    {
-        new Thread(){
+    public void connectRadio() {
+        new Thread() {
 
             public void run() {
 
@@ -195,13 +203,17 @@ public class ActivityHomePage extends Activity {
                 closemsg.obj = RfidOperation.connectRadio();
                 closemsg.what = MSG_CONNECT;
                 hMsg.sendMessage(closemsg);
-            };
+            }
+
+            ;
 
         }.start();
 
     }
+
     private Handler hMsg = new StartHander(this);
-    private  class StartHander extends Handler {
+
+    private class StartHander extends Handler {
         WeakReference<Activity> mActivityRef;
 
         StartHander(Activity activity) {
@@ -219,7 +231,7 @@ public class ActivityHomePage extends Activity {
 
                 case MSG_DISCONNECT:
                     int returnValue = (Integer) msg.obj;
-                    switch(returnValue){
+                    switch (returnValue) {
                         case 0:
 //                            tv_rfid_isconneted.setText("rfid已连接");
                             Toast.makeText(ActivityHomePage.this, "rfid已连接", Toast.LENGTH_SHORT).show();
@@ -239,10 +251,9 @@ public class ActivityHomePage extends Activity {
                     break;
 
 
-
                 case MSG_CONNECT:
                     int returnValue1 = (Integer) msg.obj;
-                    switch(returnValue1){
+                    switch (returnValue1) {
                         case 0:
 //                            tv_rfid_isconneted.setText("rfid已连接");
 //                            Toast.makeText(ActivityHomePage.this, "rfid已连接", Toast.LENGTH_SHORT).show();
@@ -279,25 +290,29 @@ public class ActivityHomePage extends Activity {
 
             }
         }
-    };
+    }
+
+    ;
+
     //连接RFID模块，返回结果
-    public void disconnectRadio()
-    {
-        new Thread(){
+    public void disconnectRadio() {
+        new Thread() {
 
             public void run() {
 
                 Message closemsg = new Message();
-                closemsg.obj =RfidOperation.DisconnectRadio();
+                closemsg.obj = RfidOperation.DisconnectRadio();
                 closemsg.what = MSG_DISCONNECT;
                 hMsg.sendMessage(closemsg);
-            };
+            }
+
+            ;
 
         }.start();
 
     }
 
-    private  void Warehouseauthority(){
+    private void Warehouseauthority() {
 //        //仓库权限接口
         HttpNetworkRequest.post("goods/rs/hpPersonAndOrg", new BaseHttpResponseHandler() {
             @Override

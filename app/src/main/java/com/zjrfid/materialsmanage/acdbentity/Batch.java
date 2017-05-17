@@ -186,6 +186,15 @@ public class Batch {
             private String MOVEIPERTAXRATE;
             private String HPSNGUID;
             private String MOVEFTAXRATE;
+            private String CWHNAME;
+
+            public String getCWHNAME() {
+                return CWHNAME;
+            }
+
+            public void setCWHNAME(String CWHNAME) {
+                this.CWHNAME = CWHNAME;
+            }
 
             public String getCPOSNAME() {
                 return CPOSNAME;

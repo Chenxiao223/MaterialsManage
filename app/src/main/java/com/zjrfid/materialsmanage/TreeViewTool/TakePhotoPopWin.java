@@ -6,10 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.zjrfid.materialsmanage.R;
-import com.zjrfid.materialsmanage.TreeViewWzrk.MainActivity;
 import com.zjrfid.materialsmanage.UI.ActivityGoodsAllocation;
 import com.zjrfid.materialsmanage.UI.ActivityMaterialsInBound;
 import com.zjrfid.materialsmanage.acdbentity.MaterialSpecificFilesInfo;
@@ -33,13 +30,7 @@ import com.zjrfid.materialsmanage.rfid.RfidOperation;
 import org.apache.http.Header;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Administrator on 2016/12/19 0019.
@@ -254,6 +245,7 @@ public class TakePhotoPopWin extends PopupWindow {
         view.findViewById(R.id.tj).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ActivityMaterialsInBound.iAdapter.setNewListIndex();
                 //判断数据是否填写完整
                 if (et_amount.getText().toString().equals("") ||
                         et_hanshui.getText().toString().equals("") || et_shuilv.getText().toString().equals("") ||
@@ -354,6 +346,8 @@ public class TakePhotoPopWin extends PopupWindow {
                     tax_rate.setText("税率：");
                     tv_number.setText("数量：");
                     ActivityMaterialsInBound.materialsInBound.i = 0;//记录清零，包括删除和修改的记录
+                    ActivityMaterialsInBound.materialsInBound.lv_create.setSelection(ActivityMaterialsInBound.materialsInBound.listscq.size()-1);
+                    ActivityMaterialsInBound.iAdapter.setNewItemBackground(ActivityMaterialsInBound.materialsInBound.listscq.size() - 1, true);
                 }
                 //如果是修改，点击添加就让它隐藏
                 if (ActivityMaterialsInBound.materialsInBound.m_jt == 1) {

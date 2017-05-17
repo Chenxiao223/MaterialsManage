@@ -1,6 +1,7 @@
 package com.zjrfid.materialsmanage.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -36,6 +37,8 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
 
     private boolean ChekcBoxIsHide_Flag = true;//checkbox显示隐藏
     private boolean EditTextIsEditable_Flag = true; //edittext可编辑
+    private List<Integer> list_index =new ArrayList<>();
+    private boolean newAddFlag =false;
     OnItemEditText onItemEditText;
 
 
@@ -150,8 +153,6 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
             viewHold.cb.setVisibility(View.VISIBLE);
         }
         if (EditTextIsEditable_Flag == true) {
-            Toast.makeText(context, "可以输入", Toast.LENGTH_SHORT).show();
-//            viewHold.et_inventory.setInputType(InputType.TYPE_CLASS_TEXT);
             viewHold.et_remar.setInputType(InputType.TYPE_CLASS_TEXT);
             viewHold.et_inventory.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -223,13 +224,16 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
 
         }
         if (EditTextIsEditable_Flag == false) {
-            Toast.makeText(context, "无法输入", Toast.LENGTH_SHORT).show();
             viewHold.et_inventory.setInputType(InputType.TYPE_NULL);
             viewHold.et_remar.setInputType(InputType.TYPE_NULL);
-        }else{
-            viewHold.et_inventory.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
         }
-
+        if(newAddFlag ==true)
+        {
+            if(list_index.contains(position))
+            {
+                convertView.setBackgroundColor(Color.parseColor("#fdd631"));
+            }
+        }
         return convertView;
     }
 
@@ -263,9 +267,21 @@ public class AdapterPd extends BaseAdapter implements View.OnClickListener {
         this.EditTextIsEditable_Flag = flag;
     }
 
+    public void setNewItemBackground(int index,boolean newaddflag)
+    {
+        newAddFlag =newaddflag;
+        list_index.add(index);
+    }
+    public void setNewListIndex()
+    {
+        newAddFlag =false;
+        list_index.clear();
+    }
+
     public interface OnItemEditText {
         public void setText(String s, int p);
     }
+
 
 
 }

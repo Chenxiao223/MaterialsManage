@@ -65,16 +65,13 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
     public ArrayList<HashMap<String, String>> listscq = new ArrayList<HashMap<String, String>>();
     public static AdapterWzrk adapterWzrk;
     boolean bln_judge = true;
-    private int i = 0;
     private boolean bln_check = true;
     private EditText et_goods_allocation, et_materialname, et_suppliername, et_models, et_document;
     public GodownEntryList gel;//入库单实体类
-    private String cparentid, cinvname, cinvstd, ccode, cvenname, dkeepdate1, dkeepdate2, cwhname, crdcode, exam;
+    private String cparentid, cinvname, cinvstd, ccode, cvenname, dkeepdate1, dkeepdate2, cwhname, crdcode, exam, cinvcode, oldcode, cposcode, cbatch, cvencode;
     private ArrayAdapter<String> adapter;
     public List<String> list_people = new ArrayList<>();
     InBoundType inBoundType;
-    private List<String> list_hprguid = new ArrayList<>();//存放主键的集合
-    Header[] tmpheaders;
     private Handler mHandler;
     private String pageN;
     private int page = 2;
@@ -84,9 +81,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
     private List<String> list_cinvcode = new ArrayList<>();//存放物资编码
     private List<String> list_cinvname = new ArrayList<>();//存放物资编码
     private List<String> list_hpiguid = new ArrayList<>();//存放物资编码
-    private List<String> list_chandler = new ArrayList<>();//存放审核人的集合
     private List<String> list_chandler2 = new ArrayList<>();//审核人,此集合专门用来传值的
-    public String amount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +199,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
                     Intent intent = new Intent(ActivityGoodsReceipt.this, ActivityMaterialsInBound.class);
                     intent.putExtra("get", 1);
                     intent.putExtra("position", position);
-                    intent.putExtra("amount", amount);
+                    intent.putExtra("amount", "");
                     intent.putExtra("cinvname", list_cinvname.get(position - 1));//物资名称
                     intent.putExtra("hpiguid", list_hpiguid.get(position - 1));//hpiguid
                     intent.putExtra("hprGuid", list.get(position - 1));//把主键传过去
@@ -221,15 +216,9 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
                     // 调整选定条目
                     if (holder.cb.isChecked() == true) {
                         listscq.get(position - 1).put("flag", "true");
-                        list_hprguid.add(list_gel.get(position / 11).getJsonData().getList().get((position - 1) % 10).getHPRGUID());//把主键加进集合
-                        list_chandler.add(list_gel.get(position / 11).getJsonData().getList().get((position - 1) % 10).getCHANDLER());//把审核人加进集合，删除时需要判断是否有审核人
-                        i += 1;
                         change(true, position);
                     } else {
                         listscq.get(position - 1).put("flag", "false");
-                        list_hprguid.remove(list_gel.get(position / 11).getJsonData().getList().get((position - 1) % 10).getHPRGUID());//如果取消选中则删除该元素
-                        list_chandler.remove(list_gel.get(position / 11).getJsonData().getList().get((position - 1) % 10).getCHANDLER());//如果取消选中则删除该元素
-                        i -= 1;
                         change(false, position);
                     }
 
@@ -252,6 +241,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
         list_wzmc.add("物资名称");
         list_wzmc.add("物资编码");
         list_wzmc.add("旧编码");
+        list_wzmc.add("批次");
 
         list_gys.add("供应商名称");
         list_gys.add("供应商编码");
@@ -296,21 +286,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
 
     //点击查询
     public void query(View view) {
-        //再一次查询是要把上一次查询的结果清空
-        listscq.clear();
-        dataChanged();
-        //显示布局
-        Linear_screenUI.setVisibility(View.GONE);
-        btn_redact.setVisibility(View.VISIBLE);
-        btn_cancel.setVisibility(View.VISIBLE);
-        img_direction.setImageResource(R.drawable.down);
-        btn_delete.setVisibility(View.GONE);//删除按钮隐藏
-        btn_added.setVisibility(View.VISIBLE);//新增按钮显示
-        btn_inquire.setVisibility(View.GONE);//查看按钮隐藏
-        btn_redact.setText("编辑");
-        bln_is = true;
-        //查询入库单列表接口
-        NetworkRequest("1");
+        onRefresh();
     }
 
     //给集合添加数据
@@ -349,6 +325,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             hm_goodsreceipt.put("content30", gel.getJsonData().getList().get(i).getCPARENTID());//货位
             hm_goodsreceipt.put("content31", 3 + "");
             hm_goodsreceipt.put("flag", "false");
+            hm_goodsreceipt.put("hprguid", gel.getJsonData().getList().get(i).getHPRGUID());
             listscq.add(hm_goodsreceipt);
             dataChanged();
             //隐藏复选框
@@ -364,45 +341,57 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
     //点击删除
     public void delete(View view) {
         try {
-            if (i == 0) {
-                Toast.makeText(this, "请选择一项删除", Toast.LENGTH_SHORT).show();
-            } else {
-                for (int i = 0; i < list_hprguid.size(); i++) {
-                    if (list_chandler.get(i) == null) {//如果审核人为空，那么说明未审核，可以删除
-                        //调用删除入库单详细信息单条接口
-                        HttpNetworkRequest.delete("goods/rs/hpPutstorage?str=" + list_hprguid.get(i), new BaseHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
-                                try {
-                                    JSONObject jsonObject = new JSONObject(rawResponse);
-                                    if (jsonObject.getString("message").equals("删除成功")) {
-                                        Toast.makeText(ActivityGoodsReceipt.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                //显示布局
-                                showLayout();
-                            }
 
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, Throwable e, String rawData, Object errorResponse) {
-                                Log.i("iiii", "出错鸟");
-                                e.printStackTrace();
-                            }
-                        });
-                    } else {
-                        Toast.makeText(ActivityGoodsReceipt.this, "该单据已被审核，不能删除", Toast.LENGTH_SHORT).show();
+            int count = 0;
+            List<String> list_chandler_selected = new ArrayList<>();
+            List<String> list_hprguid_selected = new ArrayList<>();
+
+            for (int i = 0; i < listscq.size(); i++) {
+                if (listscq.get(i).get("flag").equals("true")) {
+                    count++;
+                    if (!list_hprguid_selected.contains(listscq.get(i).get("hprguid"))) {
+                        list_chandler_selected.add(listscq.get(i).get("content14"));
+                        list_hprguid_selected.add(listscq.get(i).get("hprguid"));
                     }
                 }
-                //刷新数据，for循环执行完再执行
-                onRefresh();
-                // 通知列表数据修改，刷新适配器
-                dataChanged();
-                //清空集合
-                list_hprguid.clear();
-                i = 0;//记录清零
             }
+            if (count == 0) {
+                Toast.makeText(this, "请选择一项删除", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            for (int i = 0; i < list_hprguid_selected.size(); i++) {
+                if (list_chandler_selected.get(i) == null || list_chandler_selected.get(i).equals("")) {//如果审核人为空，那么说明未审核，可以删除
+                    //调用删除入库单详细信息单条接口
+                    HttpNetworkRequest.delete("goods/rs/hpPutstorage?str=" + list_hprguid_selected.get(i), new BaseHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(rawResponse);
+                                if (jsonObject.getString("message").equals("删除成功")) {
+                                    Toast.makeText(ActivityGoodsReceipt.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //显示布局
+                            showLayout();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable e, String rawData, Object errorResponse) {
+                            Toast.makeText(ActivityGoodsReceipt.this, "该单据删除请求失败，不能删除", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
+                    Toast.makeText(ActivityGoodsReceipt.this, "该单据已被审核，不能删除", Toast.LENGTH_SHORT).show();
+                }
+            }
+            //刷新数据，for循环执行完再执行
+            onRefresh();
+            // 通知列表数据修改，刷新适配器
+            dataChanged();
             //将所有选中的条目删除
             for (int i = 0; i < listscq.size(); i++) {
                 listscq.get(i).put("flag", "false");
@@ -474,7 +463,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             adapterWzrk.checkAll(2);//参数为2表示全选
             for (int k = 0; k < listscq.size(); k++) {
                 listscq.get(k).put("flag", "true");
-                i += 1;//
+
             }
             bln_check = false;
         } else {
@@ -482,7 +471,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             adapterWzrk.checkAll(3);//参数为3表示全不选
             for (int k = 0; k < listscq.size(); k++) {
                 listscq.get(k).put("flag", "false");
-                i -= 1;//
+
             }
             bln_check = true;
         }
@@ -516,17 +505,100 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
 
     //获取参数的方法
     public void getParams() {
-        //货位名称
-        if (et_goods_allocation.getText().toString().equals("")) {
-            cparentid = "";
-        } else {
-            cparentid = et_goods_allocation.getText().toString();
+        switch (spin_huowei.getSelectedItem().toString()) {
+            case "货位名称":
+                if (et_goods_allocation.getText().toString().equals("")) {
+                    cparentid = "";
+                    cposcode="";
+                } else {
+                    cparentid = et_goods_allocation.getText().toString().trim();
+                    cposcode="";
+                }
+                break;
+            case "货位编码":
+                if (et_goods_allocation.getText().toString().equals("")) {
+                    cposcode = "";
+                    cparentid="";
+                } else {
+                    cposcode = et_goods_allocation.getText().toString().trim();
+                    cparentid="";
+                }
+                break;
         }
-        //物资名称
-        if (et_materialname.getText().toString().equals("")) {
-            cinvname = "";
-        } else {
-            cinvname = et_materialname.getText().toString();
+        switch (spin_wzmc.getSelectedItem().toString()) {
+            case "物资名称":
+                if (et_materialname.getText().toString().equals("")) {
+                    cinvname = "";
+                    cinvcode = "";
+                    oldcode = "";
+                    cbatch = "";
+                } else {
+                    cinvname = et_materialname.getText().toString().trim();
+                    cinvcode = "";
+                    oldcode = "";
+                    cbatch = "";
+                }
+                break;
+            case "物资编码":
+                if (et_materialname.getText().toString().equals("")) {
+                    cinvname = "";
+                    cinvcode = "";
+                    oldcode = "";
+                    cbatch = "";
+                } else {
+                    cinvcode = et_materialname.getText().toString().trim();
+                    cinvname = "";
+                    oldcode = "";
+                    cbatch = "";
+                }
+                break;
+            case "旧编码":
+                if (et_materialname.getText().toString().equals("")) {
+                    cinvname = "";
+                    cinvcode = "";
+                    oldcode = "";
+                    cbatch = "";
+                } else {
+                    oldcode = et_materialname.getText().toString().trim();
+                    cinvname = "";
+                    cinvcode = "";
+                    cbatch = "";
+                }
+                break;
+            case "批次":
+                if (et_materialname.getText().toString().equals("")) {
+                    cinvname = "";
+                    cinvcode = "";
+                    oldcode = "";
+                    cbatch = "";
+                } else {
+                    cbatch = et_materialname.getText().toString().trim();
+                    cinvname = "";
+                    cinvcode = "";
+                    oldcode = "";
+                }
+                break;
+        }
+        switch (spin_gys.getSelectedItem().toString()) {
+            case "供应商名称":
+                //供应商名称
+                if (et_suppliername.getText().toString().equals("")) {
+                    cvenname = "";
+                    cposcode = "";
+                } else {
+                    cvenname = et_suppliername.getText().toString().trim();
+                    cposcode = "";
+                }
+                break;
+            case "供应商编码":
+                if (et_suppliername.getText().toString().equals("")) {
+                    cposcode = "";
+                    cvenname = "";
+                } else {
+                    cposcode = et_suppliername.getText().toString().trim();
+                    cvenname = "";
+                }
+                break;
         }
         //规格型号
         if (et_models.getText().toString().equals("")) {
@@ -539,12 +611,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             ccode = "";
         } else {
             ccode = et_document.getText().toString();
-        }
-        //供应商名称
-        if (et_suppliername.getText().toString().equals("")) {
-            cvenname = "";
-        } else {
-            cvenname = et_suppliername.getText().toString();
         }
         //起始日期
         if (tv_time.getText().toString().equals("点击选择日期")) {
@@ -575,7 +641,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             exam = "";
         } else if (spin_state.getSelectedItem().toString().equals("已审核")) {
             exam = "1";
-        }else if (spin_state.getSelectedItem().toString().equals("未审核")) {
+        } else if (spin_state.getSelectedItem().toString().equals("未审核")) {
             exam = "0";
         }
     }
@@ -616,22 +682,22 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             @Override
             public void run() {
                 try {
+
+
+                    gel=null;
+                    list.clear();
                     pageN = "1";
+                    page = 2;
                     bln_is = true;
                     hm_goodsreceipt.clear();
-                    listscq.clear();
                     bln_judge = true;
-                    i = 0;
                     bln_check = true;
-                    list_hprguid.clear();
+                    listscq.clear();
                     list_gel.clear();
-                    list.clear();
-                    page = 2;
                     list_hprguidch.clear();
                     list_cinvcode.clear();
                     list_cinvname.clear();
                     list_hpiguid.clear();
-                    list_chandler.clear();
                     list_chandler2.clear();
                     //显示布局
                     showLayout();
@@ -695,6 +761,11 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             params.put("cinvname", cinvname);//物资名称
             params.put("cinvstd", cinvstd);//规格型号
             params.put("ccode", ccode);//单据号
+            params.put("cinvcode", cinvcode);//物资编码
+            params.put("oldcord", oldcode);//旧编码
+            params.put("cbatch", cbatch);//批次
+            params.put("cposcode", cposcode);//货位编码
+            params.put("cvencode", cvencode);//供应商编码
             params.put("cvenname", cvenname);//供应商名称
             params.put("dkeepdate1", dkeepdate1);//起始日期
             params.put("dkeepdate2", dkeepdate2);//结束日期
@@ -704,7 +775,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             params.put("iassets", "");//
             params.put("crdcode", crdcode);//入库类别
             params.put("exam", exam);//审核状态
-            Log.i("info","审核状态："+exam);
             //查询入库单列表接口
             HttpNetworkRequest.get("goods/rs/hpPutstorage", params, new BaseHttpResponseHandler() {
                 @Override
@@ -722,10 +792,8 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
                     list_gel.add(gel);//将实体类加入集合
                     //如果请求网络成功就加载数据
                     addData(gel.getJsonData().getList().size());
-                    tmpheaders = headers;
                     pageN = String.valueOf(page++);
                     Toast.makeText(ActivityGoodsReceipt.this, "当前为第 " + pageNum + " 页", Toast.LENGTH_SHORT).show();
-                    amount = gel.getTotalInfo().getTOTALFQUANTITY();
                 }
 
                 @Override
@@ -777,5 +845,10 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
         java.text.DateFormat format = new SimpleDateFormat("HH:mm:ss");//大写的HH是24小时制，小写的hh则是12小时制
         String time = format.format(date);
         return time;
+    }
+
+    //点击置顶
+    public void stick(View view) {
+        list_wzrk.setSelection(0);
     }
 }

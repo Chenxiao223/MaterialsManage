@@ -266,7 +266,7 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
     //获取当前的日期及时间
     public String getTime() {
         Date date = new Date();
-        java.text.DateFormat format = new SimpleDateFormat("HH:mm:ss");//大写的HH是24小时制，小写的hh则是12小时制
+        java.text.DateFormat format = new SimpleDateFormat("HH:mm:ss ");//大写的HH是24小时制，小写的hh则是12小时制
         String time = format.format(date);
         return time;
     }

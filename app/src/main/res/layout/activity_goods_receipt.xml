@@ -16,8 +16,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
             android:background="#0000"
-            android:padding="10dp"
             android:onClick="back"
+            android:padding="10dp"
             android:scaleType="fitXY"
             android:src="@drawable/back2" />
 
@@ -126,11 +126,28 @@
         android:layout_below="@+id/relative_screen"
         android:orientation="vertical">
 
-        <com.zjrfid.materialsmanage.xListView.XListView
-            android:id="@+id/list_wzrk"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent">
+
+            <com.zjrfid.materialsmanage.xListView.XListView
+                android:id="@+id/list_wzrk"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="34dp"
+                android:layout_marginRight="10dp"
+                android:background="#00000000"
+                android:onClick="stick"
+                android:scaleType="fitXY"
+                android:src="@drawable/top" />
+        </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -145,9 +162,9 @@
 
         <ScrollView
             android:id="@+id/sv"
-            android:background="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#ffffff">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -158,8 +175,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
                     android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1">
 
                     <Spinner
@@ -180,8 +197,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
                     <Spinner
                         android:id="@+id/spin_wzmc"
@@ -202,8 +219,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
                     <Spinner
                         android:id="@+id/spin_gys"
@@ -224,16 +241,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="规格型号"
                         android:textColor="#4e4d4d"
-                        android:gravity="center"
                         android:textSize="18sp" />
 
                     <EditText
@@ -247,17 +264,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
                     <TextView
                         android:id="@+id/textView15"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="单据日期"
-                        android:gravity="center"
-                        android:textColor="#4e4d4d"
                         android:layout_weight="2"
+                        android:gravity="center"
+                        android:text="单据日期"
+                        android:textColor="#4e4d4d"
                         android:textSize="18sp" />
 
                     <TextView
@@ -282,8 +299,8 @@
                         android:id="@+id/tv_time2"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="2"
+                        android:gravity="center"
                         android:text="点击选择日期"
                         android:textSize="18sp" />
 
@@ -291,22 +308,22 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="清空"
-                        android:onClick="btn_clear" />
+                        android:onClick="btn_clear"
+                        android:text="清空" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:text="单据号"
                         android:gravity="center"
+                        android:text="单据号"
                         android:textColor="#4e4d4d"
                         android:textSize="18sp" />
 
@@ -346,34 +363,34 @@
                     android:id="@+id/ll_xiala"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_weight="2"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="2">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="2"
                         android:gravity="center"
                         android:text="仓库名称"
-                        android:layout_weight="2"
                         android:textColor="#4e4d4d"
                         android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_warehouse"
                         android:layout_width="0dp"
-                        android:layout_weight="5"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="50dp"
-                        android:textSize="18sp"
+                        android:layout_weight="5"
                         android:gravity="center"
-                        android:text="请选择仓库" />
+                        android:text="请选择仓库"
+                        android:textSize="18sp" />
 
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="清空"
                         android:layout_weight="1"
-                        android:onClick="tv_clear" />
+                        android:onClick="tv_clear"
+                        android:text="清空" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -386,8 +403,8 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="审核状态"
                         android:textColor="#4e4d4d"
                         android:textSize="18sp" />
@@ -404,25 +421,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginTop="40dp"
                     android:layout_marginBottom="20dp"
+                    android:layout_marginTop="40dp"
                     android:layout_weight="1">
 
                     <Button
-                        android:layout_weight="1"
                         android:id="@+id/btn_clear"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:onClick="clear"
                         android:text="清空" />
 
                     <Button
-                        android:layout_weight="3"
                         android:id="@+id/btn_chaxun"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:onClick="query"
                         android:layout_marginLeft="50dp"
+                        android:layout_weight="3"
+                        android:onClick="query"
                         android:text="查询" />
                 </LinearLayout>
             </LinearLayout>

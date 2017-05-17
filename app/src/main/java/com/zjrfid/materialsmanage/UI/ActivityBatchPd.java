@@ -123,6 +123,7 @@ public class ActivityBatchPd extends Activity {
                     //添加数据到listview
                     addData(mBatch);
                     xx();
+                    adapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -146,6 +147,7 @@ public class ActivityBatchPd extends Activity {
         if (listscq.size() == 0) {
             finish();
         } else {
+            ActivityInventory.adapterPd.setNewListIndex();//清除适配器上一次选中项
             for (int i = 0; i < listscq.size(); i++) {
                 if (listscq.get(i).get("flag").equals("true")) {
                     HashMap<String, String> new_temp = new HashMap<String, String>();
@@ -170,14 +172,18 @@ public class ActivityBatchPd extends Activity {
                     new_temp.put("content19", "");//备注
                     new_temp.put("flag", "false");
                     new_temp.put("delFlag", "0");
+
                     ActivityInventory.inventory.listscq.add(new_temp);
                     ActivityInventory.inventory.list_hpcvguidch.add("");
                     ActivityInventory.inventory.list_hpiguid.add(mBatch.getJsonData().getList().get(i).getHPIGUID().toString());
                     ActivityInventory.inventory.list_Cposcode.add(mBatch.getJsonData().getList().get(i).getCPOSCODE());
+                    //添加适配器上的新添加项
+                    ActivityInventory.adapterPd.setNewItemBackground(ActivityInventory.inventory.listscq.size()-1,true);
                     ActivityInventory.inventory.adapterPd.HideCheckBox(false);
                 }
             }
             ActivityInventory.adapterPd.notifyDataSetChanged();
+            ActivityInventory.inventory.lv_create.setSelection(ActivityInventory.inventory.listscq.size()-1);
         }
         //因为有数据，所以让保存按钮可以点击
         ActivityInventory.inventory.btn_save.setClickable(true);
@@ -196,7 +202,7 @@ public class ActivityBatchPd extends Activity {
             new_map.put("content6", "false");//标志位
             new_map.put("flag", "false");
             listscq.add(new_map);
-            adapter.notifyDataSetChanged();
+
         }
     }
 

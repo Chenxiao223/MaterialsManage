@@ -59,7 +59,7 @@ public class ActivityMaterialsOutBound extends Activity {
 
     public static ActivityMaterialsOutBound materialsOutBound;
     private RelativeLayout relative_rukudan;
-    private ListView lv_create;
+    public ListView lv_create;
     private boolean bln_is = true;
     private LinearLayout line_rukudan;
     private ImageView img_direction;
@@ -123,6 +123,7 @@ public class ActivityMaterialsOutBound extends Activity {
             tv_amount.setText(it.getStringExtra("amount"));
             line_rukudan.setVisibility(View.GONE);//隐藏出库单
             clickEnable(false);//出库单控件无法点击
+            iAdapter.EditTextIsEditable(false);//不可点击
         } else {
             tv_date_time.setText(getTime());
             tv_acquisition_staff.setText(ActivityLogin.login.getJobnumber()+"|"+ActivityLogin.login.getFullname());
@@ -447,6 +448,7 @@ public class ActivityMaterialsOutBound extends Activity {
         if (isChandler()) {
             line1.setVisibility(View.VISIBLE);
             line2.setVisibility(View.GONE);
+            iAdapter.EditTextIsEditable(true);//可以点击
             //显示扫描物资
             iAdapter.hind(0);//设置标志位，如果为1，怎隐藏复选框
             dataChanged();//刷新适配器
