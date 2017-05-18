@@ -197,6 +197,7 @@ public class ActivityAlterBatch extends Activity {
                         //计算数量
                         ActivityMaterialsOutBound.materialsOutBound.amount = ActivityMaterialsOutBound.materialsOutBound.amount + mlist.get(i).getRkshuliang();
                         ActivityMaterialsOutBound.materialsOutBound.tv_amount.setText(ActivityMaterialsOutBound.materialsOutBound.amount + "");
+                        //改变背景色
                         ActivityMaterialsOutBound.iAdapter.setNewItemBackground(ActivityMaterialsOutBound.materialsOutBound.listscq.size() - 1, true);
                     }
                 }
@@ -242,6 +243,7 @@ public class ActivityAlterBatch extends Activity {
                 //如果物资编码和批号都相同则不能被选中
                 if (mlist.get(i).getPici().equals(batch) && mlist.get(i).getBianma().equals(cinvcode)) {
                     mlist.get(i).setCbisEnable(true);
+                    System.out.println("位置："+i);
                 }
             }
         }

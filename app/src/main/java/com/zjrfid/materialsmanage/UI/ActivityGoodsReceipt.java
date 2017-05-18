@@ -241,7 +241,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
         list_wzmc.add("物资名称");
         list_wzmc.add("物资编码");
         list_wzmc.add("旧编码");
-        list_wzmc.add("批次");
 
         list_gys.add("供应商名称");
         list_gys.add("供应商编码");
@@ -278,6 +277,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
         adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_state.setAdapter(adapter_state);
     }
+
 
     //点击回退
     public void back(View view) {
@@ -816,6 +816,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
         btn_delete.setVisibility(View.GONE);//删除按钮隐藏
         btn_added.setVisibility(View.VISIBLE);//新增按钮显示
         btn_inquire.setVisibility(View.GONE);//查看按钮隐藏
+        btn_inquire.setText("全选");
         btn_redact.setText("编辑");
     }
 

@@ -180,15 +180,28 @@
                         android:id="@+id/spin_huowei"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:textColor="#4e4d4d" />
+                        android:layout_weight="2"
+                        android:gravity="left|center"
+                        android:textColor="#FF0A0909"
+                        android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/et_goods_allocation"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
-                        android:layout_weight="3" />
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/shape_btn22" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -202,15 +215,27 @@
                         android:id="@+id/spin_wzmc"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:textColor="#4e4d4d" />
+                        android:layout_weight="2"
+                        android:gravity="left|center"
+                        android:textColor="#FF0A0909"
+                        android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/et_materialname"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
-                        android:layout_weight="3" />
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/shape_btn22" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center" />
                 </LinearLayout>
 
 
@@ -224,19 +249,28 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
                         android:text="车辆自编号"
-                        android:textColor="#4e4d4d"
+                        android:textColor="#FF0A0909"
                         android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/et_suppliername"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
-                        android:layout_weight="3"
-                        android:textColor="#4e4d4d" />
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/shape_btn22" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -249,18 +283,28 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="规格型号:"
-                        android:textColor="#4e4d4d"
+                        android:layout_weight="2"
+                        android:gravity="left|center"
+                        android:text="规格型号"
+                        android:textColor="#FF0A0909"
                         android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/et_models"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
-                        android:layout_weight="3" />
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/shape_btn22" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center" />
 
                 </LinearLayout>
 
@@ -275,17 +319,18 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
-                        android:gravity="center"
-                        android:text="单据日期:"
-                        android:textColor="#4e4d4d"
+                        android:gravity="left|center"
+                        android:text="单据日期"
+                        android:textColor="#FF0A0909"
                         android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_time"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="40dp"
                         android:layout_weight="2"
+                        android:background="@drawable/shape_btn22"
                         android:gravity="center"
                         android:text="点击选择日期"
                         android:textSize="18sp" />
@@ -303,6 +348,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
+                        android:background="@drawable/shape_btn22"
                         android:gravity="center"
                         android:text="点击选择日期"
                         android:textSize="18sp" />
@@ -310,9 +356,13 @@
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/shape_btn23"
                         android:onClick="btn_clear"
-                        android:text="清空" />
+                        android:text="清空"
+                        android:textColor="#0a99ec" />
                 </LinearLayout>
 
 
@@ -326,18 +376,30 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="单据号:"
-                        android:textColor="#4e4d4d"
+                        android:layout_weight="2"
+                        android:gravity="left|center"
+                        android:text="单据号"
+                        android:textColor="#FF0A0909"
                         android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/et_document"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
-                        android:layout_weight="3" />
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/shape_btn22"
+                        android:gravity="left|center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -352,27 +414,32 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="2"
-                        android:gravity="center"
-                        android:text="仓库名称:"
-                        android:textColor="#4e4d4d"
+                        android:gravity="left|center"
+                        android:text="仓库名称"
+                        android:textColor="#FF0A0909"
                         android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/tv_warehouse"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
+                        android:layout_marginLeft="40dp"
                         android:layout_weight="5"
-                        android:gravity="center_vertical"
+                        android:background="@drawable/shape_btn22"
+                        android:gravity="left|center"
                         android:text="请选择仓库"
                         android:textSize="18sp" />
 
                     <Button
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_weight="1"
+                        android:background="@drawable/shape_btn23"
                         android:onClick="tv_clear"
-                        android:text="清空" />
+                        android:text="清空"
+                        android:textColor="#0a99ec" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -387,20 +454,30 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="审核状态:"
-                        android:textColor="#4e4d4d"
+                        android:layout_weight="2"
+                        android:gravity="left|center"
+                        android:text="审核状态"
+                        android:textColor="#FF0A0909"
                         android:textSize="18sp" />
 
                     <Spinner
                         android:id="@+id/spin_state"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="50dp"
-                        android:layout_weight="3"
-                        android:background="#bababa"
-                        android:gravity="center_horizontal" />
+                        android:layout_marginLeft="40dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/shape_btn22"
+                        android:gravity="left|center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -414,17 +491,25 @@
                         android:id="@+id/btn_clear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
                         android:layout_weight="1"
+                        android:background="@drawable/shape_btn23"
                         android:onClick="clear"
-                        android:text="清空" />
+                        android:text="清空"
+                        android:textColor="#0a99ec" />
 
                     <Button
                         android:id="@+id/btn_chaxun"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="40dp"
                         android:layout_weight="1"
+                        android:background="@drawable/shape_btn8"
                         android:onClick="query"
-                        android:text="查询" />
+                        android:text="查询"
+                        android:textColor="#ffffff" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

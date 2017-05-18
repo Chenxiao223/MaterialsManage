@@ -33,11 +33,12 @@ import java.util.List;
  */
 public class ActivityInventoryQuery extends Activity {
     public static ActivityInventoryQuery inventoryQuery;
-    public TextView tv_warehouse;
+    public TextView tv_warehouse, tv_amount;
     public String warehouse, cwhcode;
     public List<House3> mlist = new ArrayList<>();
     private ListView listView;
     private HouseAdapter2 adapter;
+    private int amount = 0;//总数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class ActivityInventoryQuery extends Activity {
     }
 
     public void initView() {
+        tv_amount = (TextView) findViewById(R.id.tv_amount);
         tv_warehouse = (TextView) findViewById(R.id.tv_warehouse);
         tv_warehouse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +68,7 @@ public class ActivityInventoryQuery extends Activity {
     //点击查询
     public void query(View view) {
         try {
+            amount = 0;//清零
             if (getRfid().equals("")) {
                 Toast.makeText(ActivityInventoryQuery.this, "没有结果，请重新扫描", Toast.LENGTH_SHORT).show();
             } else {
@@ -81,16 +84,16 @@ public class ActivityInventoryQuery extends Activity {
                         if (msfi.getJsonData().getList().size() != 0) {
                             String wzbm = msfi.getJsonData().getList().get(0).getCINVCODE();//物资编码
                             String wzmc = msfi.getJsonData().getList().get(0).getCINVNAME();//物料名称
-                            String wzzj=msfi.getJsonData().getList().get(0).getHPIGUID();//物资主键
+                            String wzzj = msfi.getJsonData().getList().get(0).getHPIGUID();//物资主键
                             //批次接口
                             RequestParams params = new RequestParams();
                             params.put("cinvcode", wzbm);
                             params.put("cwhname", warehouse);
                             params.put("cinvname", wzmc);
-                            params.put("hpiGuid",wzzj);
+                            params.put("hpiGuid", wzzj);
                             params.put("fquantity", "1");
                             params.put("cwhcode", cwhcode);
-                            System.out.println(warehouse+","+cwhcode);
+                            System.out.println(warehouse + "," + cwhcode);
                             //批次信息接口
                             HttpNetworkRequest.get("goods/rs/hpoutstorageBatch", params, new BaseHttpResponseHandler() {
                                 @Override
@@ -104,12 +107,14 @@ public class ActivityInventoryQuery extends Activity {
                                                     (int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFTAXPRICE()), 0,
                                                     mBatch.getJsonData().getList().get(j).getCINVCODE(), mBatch.getJsonData().getList().get(j).getCINVNAME(),
                                                     mBatch.getJsonData().getList().get(j).getCPOSCODE(), mBatch.getJsonData().getList().get(j).getCBATCH(),
-                                                    "false",mBatch.getJsonData().getList().get(j).getCWHNAME());
+                                                    "false", mBatch.getJsonData().getList().get(j).getCWHNAME());
                                             mlist.add(house);
+                                            amount = amount + (int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFQUANTITYS());
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                    tv_amount.setText("库存总数：" + amount);
                                     adapter.notifyDataSetChanged();
                                 }
 
@@ -142,5 +147,12 @@ public class ActivityInventoryQuery extends Activity {
     public String getRfid() {
         Result result = RfidOperation.readUnGivenTid((short) 3, (short) 3);
         return result.getReadInfo().toString();
+    }
+
+    //点击清空
+    public void clear(View view){
+        tv_warehouse.setText("请选择仓库");
+        warehouse=null;
+        cwhcode=null;
     }
 }

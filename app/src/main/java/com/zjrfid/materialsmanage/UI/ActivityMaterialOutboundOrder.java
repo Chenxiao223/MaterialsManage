@@ -230,21 +230,21 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
         list_state.add("已审核");
         list_state.add("未审核");
 
-        adapter_huowei = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list_huowei);
+        adapter_huowei = new ArrayAdapter<String>(this, R.layout.new_style_spinner, list_huowei);
         //为适配器设置下拉列表下拉时的菜单样式。
-        adapter_huowei.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_huowei.setDropDownViewResource(R.layout.new_style_spinner);
         //将适配器添加到下拉列表上
         spin_huowei.setAdapter(adapter_huowei);
 
-        adapter_wzmc = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list_wzmc);
+        adapter_wzmc = new ArrayAdapter<String>(this, R.layout.new_style_spinner, list_wzmc);
         //为适配器设置下拉列表下拉时的菜单样式。
-        adapter_wzmc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_wzmc.setDropDownViewResource(R.layout.new_style_spinner);
         //将适配器添加到下拉列表上
         spin_wzmc.setAdapter(adapter_wzmc);
 
-        adapter_state = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list_state);
+        adapter_state = new ArrayAdapter<String>(this, R.layout.new_style_spinner, list_state);
         //为适配器设置下拉列表下拉时的菜单样式。
-        adapter_state.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_state.setDropDownViewResource(R.layout.new_style_spinner);
         spin_state.setAdapter(adapter_state);
     }
 
@@ -703,6 +703,7 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
         btn_delete.setVisibility(View.GONE);//删除按钮隐藏
         btn_added.setVisibility(View.VISIBLE);//新增按钮显示
         btn_check_all.setVisibility(View.GONE);//查看按钮隐藏
+        btn_check_all.setText("全选");
         bln_is = true;
     }
 

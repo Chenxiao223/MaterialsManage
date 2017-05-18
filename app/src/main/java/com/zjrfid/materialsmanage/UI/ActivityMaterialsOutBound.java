@@ -467,12 +467,6 @@ public class ActivityMaterialsOutBound extends Activity {
         iAdapter.notifyDataSetChanged();
     }
 
-    //点击新增
-    public void add(View view) {
-        finish();
-        startActivity(new Intent(this, ActivityMaterialsOutBound.class));
-    }
-
     //点击保存
     public void save(View view) {
         getCkJson();//获取表头Json
@@ -519,7 +513,9 @@ public class ActivityMaterialsOutBound extends Activity {
                 }
             }
         }
+        IAdapter3.count=0;
         dataChanged();
+        save(view);
     }
 
     //点击审核

@@ -57,18 +57,13 @@ public class TreeViewItemClickListener implements OnItemClickListener {
                 ActivityBinding.ll_orientation.setVisibility(View.VISIBLE);
                 ActivityBinding.back.setVisibility(View.VISIBLE);
                 //请求网络
-                String str = ActivityBinding.binding.mcc.getJsonData().getList().get(position - 1).getCinvccode();
+                String str=element.getContentText().substring(0,element.getContentText().indexOf(" "));
                 NetworkRequests(str);
             } else {
                 Activity_TreeView.ll_orientation.setVisibility(View.VISIBLE);
                 Activity_TreeView.back.setVisibility(View.VISIBLE);
                 //请求网络  2 4
-                String str;
-                if (position==2){
-                    str = "0101";
-                }else{
-                    str="0201";
-                }
+                String str=element.getContentText().substring(0,element.getContentText().indexOf(" "));
                 NetworkRequests2(str);
             }
             return;

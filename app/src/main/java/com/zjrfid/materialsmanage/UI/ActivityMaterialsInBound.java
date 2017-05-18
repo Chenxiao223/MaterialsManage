@@ -460,12 +460,6 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
         }
     }
 
-    //点击新增
-    public void add(View view) {
-        finish();
-        startActivity(new Intent(this, ActivityMaterialsInBound.class));
-    }
-
     //点击删行
     public void delete(View view) {
         if (i == 0) {

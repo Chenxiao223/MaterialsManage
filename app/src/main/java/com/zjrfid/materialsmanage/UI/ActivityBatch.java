@@ -52,6 +52,7 @@ public class ActivityBatch extends Activity {
     int w, g;
     int n;
     private ListView listView;
+    private List<Integer> list_num = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,7 @@ public class ActivityBatch extends Activity {
                     }
                     total.setText("总数：" + p);
                     adapter.notifyDataSetChanged();
+                    xx();
                 }
 
                 @Override
@@ -145,7 +147,7 @@ public class ActivityBatch extends Activity {
     //自动
     public void voluntarily(View view) {
         //点击自动后把所有勾选项去掉，把出库数量设为0
-        for (int k=0;k<mlist.size();k++){
+        for (int k = 0; k < mlist.size(); k++) {
             try {
                 mlist.get(k).setRkshuliang(0);
             } catch (Exception e) {
@@ -209,7 +211,7 @@ public class ActivityBatch extends Activity {
             //如果没被勾选且数量都为0则提示
             if (judge()) {
                 for (int i = 0; i < mlist.size(); i++) {//有多少条批号就循环多少次，然后在判断哪些是勾选了的
-                    if (mlist.get(i).getIs().equals("true") && mlist.get(i).getRkshuliang() != 0) {//如果勾选了就加入集合且数量不为零
+                    if (mlist.get(i).getIs().equals("true") && mlist.get(i).getRkshuliang() != 0 && !list_num.contains(i)) {//如果勾选了就加入集合且数量不为零并且与已有出库里的批号不重复
                         ActivityMaterialsOutBound.materialsOutBound.map2 = new HashMap<String, String>();
                         if (state == 1) {//如果state=1说明没有经过TakePhotoPopWin2进来(修改)，所以TakePhotoPopWin2.instance.wzbm.getText().toString()没有值,比如修改
                             ActivityMaterialsOutBound.materialsOutBound.map2.put("content1", ActivityMaterialsOutBound.materialsOutBound.listscq.get(position).get("content1"));//物资编码
@@ -270,10 +272,13 @@ public class ActivityBatch extends Activity {
                         ActivityMaterialsOutBound.materialsOutBound.amount = ActivityMaterialsOutBound.materialsOutBound.amount + mlist.get(i).getRkshuliang();
                         ActivityMaterialsOutBound.materialsOutBound.tv_amount.setText(ActivityMaterialsOutBound.materialsOutBound.amount + "");
                         ActivityMaterialsOutBound.iAdapter.setNewItemBackground(ActivityMaterialsOutBound.materialsOutBound.listscq.size() - 1, true);
+                    }else if (mlist.get(i).getIs().equals("true") && mlist.get(i).getRkshuliang() != 0 && list_num.contains(i)){//如果选中并且包含
+                        Toast.makeText(ActivityBatch.this, "同一物资请选择不同批号", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                 }
                 //定位到最新添加这条添加
-                ActivityMaterialsOutBound.materialsOutBound.lv_create.setSelection(ActivityMaterialsOutBound.materialsOutBound.listscq.size()-1);
+                ActivityMaterialsOutBound.materialsOutBound.lv_create.setSelection(ActivityMaterialsOutBound.materialsOutBound.listscq.size() - 1);
                 finish();
                 p = 0;
             } else {
@@ -299,14 +304,30 @@ public class ActivityBatch extends Activity {
 
     }
 
-    public boolean judge(){
-        boolean is=false;
-        for (int i = 0; i < mlist.size(); i++){
+    public boolean judge() {
+        boolean is = false;
+        for (int i = 0; i < mlist.size(); i++) {
             if (mlist.get(i).getIs().equals("true") && mlist.get(i).getRkshuliang() != 0) {
-                is=true;
+                is = true;
             }
         }
         return is;
+    }
+
+    //
+    public void xx() {
+        for (int j = 0; j < ActivityMaterialsOutBound.materialsOutBound.listscq.size(); j++) {
+            String cinvcode = ActivityMaterialsOutBound.materialsOutBound.listscq.get(j).get("content1");//物资编码
+            String batch = ActivityMaterialsOutBound.materialsOutBound.listscq.get(j).get("content18");//批号
+            System.out.println(cinvcode+"," + batch);
+            for (int i = 0; i < mlist.size(); i++) {
+                //如果物资编码和批号都相同则不能被选中
+                if (mlist.get(i).getPici().equals(batch) && mlist.get(i).getBianma().equals(cinvcode)) {
+                    list_num.add(i);
+                    System.out.println("位置：" + i);
+                }
+            }
+        }
     }
 
 }
