@@ -26,6 +26,7 @@ public class ZmInventoryHeader {
     private String chandler;
     private String createDt;
     private String dveridaate;
+    private String cparentid;
 
     @Override
     public String toString() {
@@ -52,6 +53,7 @@ public class ZmInventoryHeader {
                 ", chandler='" + chandler + '\'' +
                 ", createDt='" + createDt + '\'' +
                 ", dveridaate='" + dveridaate + '\'' +
+                ", cparentid='" + cparentid + '\'' +
                 '}';
     }
 
@@ -229,5 +231,13 @@ public class ZmInventoryHeader {
 
     public void setDveridaate(String dveridaate) {
         this.dveridaate = dveridaate;
+    }
+
+    public String getCparentid() {
+        return cparentid;
+    }
+
+    public void setCparentid(String cparentid) {
+        this.cparentid = cparentid;
     }
 }

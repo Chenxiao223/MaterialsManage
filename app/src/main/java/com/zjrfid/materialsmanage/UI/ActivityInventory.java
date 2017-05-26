@@ -488,6 +488,8 @@ public class ActivityInventory extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("form", json_header);
         params.put("datas", jsonArray.toString());
+        System.out.println("表头：" + json_header);
+        System.out.println("表体："+jsonArray.toString());
         //盘点单保存接口
         HttpNetworkRequest.post("goods/rs/hpCheckvouch", params, new BaseHttpResponseHandler() {
             @Override
@@ -924,6 +926,7 @@ public class ActivityInventory extends AppCompatActivity {
             head.setCwhcode(newHeader.getCWHCODE());//仓库编码
             head.setCpersoncode(newHeader.getCPERSONCODE());//人员主键
             head.setCdepcode(newHeader.getCDEPCODE());//部门主键
+            head.setCparentid("");
             Gson gson = new Gson();
             temp_JsonHeader = gson.toJson(head);
         } catch (Exception ex) {

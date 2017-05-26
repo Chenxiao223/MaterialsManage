@@ -1,6 +1,8 @@
 package com.zjrfid.materialsmanage.UI;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -12,13 +14,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.zjrfid.materialsmanage.R;
-import com.zjrfid.materialsmanage.TreeViewTool.Element;
 import com.zjrfid.materialsmanage.rfid.Result;
 import com.zjrfid.materialsmanage.rfid.RfidOperation;
 import com.zjrfid.materialsmanage.tool.SysApplication;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 
 public class ActivitySetting extends AppCompatActivity {
 
@@ -29,17 +29,18 @@ public class ActivitySetting extends AppCompatActivity {
     private Button btn_scan;
     private SeekBar sb_power;
     private TextView SameInfo;
-
-    private int power=15;
-
+    private int power;
     private String foreTid;
     private String nowTid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_setting);
 
         SysApplication.getInstance().addActivity(this);
+        final SharedPreferences sharedPreferences=getSharedPreferences("data", Context.MODE_PRIVATE);
+        power=sharedPreferences.getInt("data",15);
         TagTid = (TextView) findViewById(R.id.TagTid);
         ForeTid = (TextView) findViewById(R.id.ForeTid);
         SameInfo = (TextView) findViewById(R.id.SameInfo);
@@ -47,7 +48,7 @@ public class ActivitySetting extends AppCompatActivity {
         btn_scan = (Button) findViewById(R.id.btn_scan);
         sb_power = (SeekBar) findViewById(R.id.sb_power);
         tv_power.setText(String.valueOf(power));
-        sb_power.setProgress(15);
+        sb_power.setProgress(power);//
         sb_power.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -65,6 +66,9 @@ public class ActivitySetting extends AppCompatActivity {
                 tv_power.setText(String.valueOf(seekBar.getProgress()));
                 power = seekBar.getProgress();
                 btn_scan.setEnabled(true);
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putInt("data",power);
+                editor.commit();
             }
         });
 
@@ -155,5 +159,10 @@ public class ActivitySetting extends AppCompatActivity {
         RfidOperation.DisconnectRadio();
         RfidOperation.connectRadio();
         finish();
+    }
+
+    public void getData(){
+        SharedPreferences sharedPreferences=getSharedPreferences("data", Context.MODE_PRIVATE);
+
     }
 }
