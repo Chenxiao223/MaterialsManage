@@ -43,6 +43,10 @@ public class HttpNetworkRequest {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public static void put(String url,RequestParams params,AsyncHttpResponseHandler responseHandler){
+        client.put(getAbsoluteUrl(url),params,responseHandler);
+    }
+
     public static String getAbsoluteUrl(String relativeUrl) {
         String uuu = BASE_URL + relativeUrl;
         return BASE_URL + relativeUrl;

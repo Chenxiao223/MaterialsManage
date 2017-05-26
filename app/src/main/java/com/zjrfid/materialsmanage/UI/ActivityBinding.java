@@ -36,8 +36,11 @@ import com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewAdapter;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewItemClickListener;
 import com.zjrfid.materialsmanage.TreeViewTool.UtilTools;
+import com.zjrfid.materialsmanage.acdbentity.Archives;
+import com.zjrfid.materialsmanage.acdbentity.IntRequsetBackRecord;
 import com.zjrfid.materialsmanage.acdbentity.MaterialClassifiCation;
 import com.zjrfid.materialsmanage.acdbentity.MaterialSpecificFilesInfo;
+import com.zjrfid.materialsmanage.acdbentity.RequsetBackRecord;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
 import com.zjrfid.materialsmanage.rfid.Result;
@@ -54,7 +57,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ActivityBinding extends Activity implements View.OnClickListener {
+
+    public IntRequsetBackRecord new_Right_IRBR = new IntRequsetBackRecord(0, 0, 0, 0);
+    public String new_treeview_hpicGuid = "";// 被点击的分类主键
+
+
     public static ActivityBinding binding;
+    public TextView currentNum, totalNum;
     private TextView textview1, textview2, textview3, textview4, textview5, textview6, textview7, textview8, textview9, textview10;
     public ImageView iv_verdict;
     public Button btn_binding;
@@ -114,10 +123,12 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
     }
 
     public void initView() {
+        currentNum = (TextView) findViewById(R.id.currentNum);
+        totalNum = (TextView) findViewById(R.id.totalNum);
+
         layout_bd = (LinearLayout) findViewById(R.id.layout_bd);
         layout_bd.setOnClickListener(this);
         clear_wzcode_Btn = (Button) findViewById(R.id.clear_wzcode_Btn);
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         init();
         ll_orientation = (LinearLayout) findViewById(R.id.ll_orientation);
@@ -148,7 +159,7 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
         titleHorsv = (SyncHorizontalScrollView) findViewById(R.id.title_horsv);
         contentHorsv = (SyncHorizontalScrollView) findViewById(R.id.content_horsv);
         et_seek = (EditText) findViewById(R.id.et_seek);
-//        et_seek.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        // et_seek.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         // 设置两个水平控件的联动
         titleHorsv.setScrollView(contentHorsv);
         contentHorsv.setScrollView(titleHorsv);
@@ -266,18 +277,14 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
 
     //点击绑定
     public void binding(View view) {
-
+        String rfid = getRfid();
         //让图片显示
         if (is == true) {//绑定
             //扫描RFID
-            if (getRfid().equals("")) {
+            if (rfid.equals("")) {
                 Toast.makeText(ActivityBinding.this, "没有结果，请重新扫描", Toast.LENGTH_SHORT).show();
             } else {
-
-//                models.get(m_sign).setI(0);//设置为绑定
-//                models.get(m_sign).setText8(getRfid());//设置RFID
-                getrfid(getRfid());
-
+                getrfid(rfid);
             }
         } else {//解绑
             //隐藏图片
@@ -285,8 +292,6 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
             iv_verdict.setVisibility(View.INVISIBLE);
             btn_binding.setText("标签绑定");
             is = true;
-//            models.get(m_sign).setI(1);//设置为未绑定
-//            models.get(m_sign).setText8("");//设置RFID
             Toast.makeText(ActivityBinding.this, "解绑成功", Toast.LENGTH_SHORT).show();
             //点击解绑之后，把框里的数据清空
             textview1.setText("");
@@ -311,7 +316,8 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
     public void smRfid(View view) {
         try {
             RequestParams params = new RequestParams();
-            if (getRfid().equals("")) {
+            String rfid = getRfid();
+            if (rfid.equals("")) {
                 textview1.setText("");
                 textview2.setText("");
                 textview3.setText("");
@@ -325,7 +331,7 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
                 is = true;
                 btn_binding.setText("标签绑定");
             } else {
-                params.put("rfid", getRfid());
+                params.put("rfid", rfid);
                 //物资档案接口
                 HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&cinvcode=&oldcord=", params, new BaseHttpResponseHandler() {
                     @Override
@@ -584,6 +590,18 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
                         judge = false;//相当于归零,以便第二次使用
                     } else {
                         Toast.makeText(ActivityBinding.this, "没有搜索到", Toast.LENGTH_SHORT).show();
+                        textview1.setText("");
+                        textview2.setText("");
+                        textview3.setText("");
+                        textview4.setText("");
+                        textview5.setText("");
+                        textview6.setText("");
+                        textview7.setText("");
+                        textview8.setText("");
+                        textview9.setText("");
+                        textview10.setText("");
+                        is = true;
+                        btn_binding.setText("标签绑定");
                     }
                 }
 
@@ -602,10 +620,16 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
     //扫描获取rfid
     public String getRfid() {
         Result result = RfidOperation.readUnGivenTid((short) 3, (short) 3);
-        return result.getReadInfo().toString();
+        String str = "";
+        if (result.isSuccess() == true) {
+            str = result.getReadInfo().toString();
+        } else {
+            str = "";
+        }
+        return str;
     }
 
-    public void getrfid(String rfid) {
+    public void getrfid(final String rfid) {
         try {
             RequestParams params = new RequestParams();
             params.put("rfid", rfid);
@@ -624,9 +648,9 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
                         iv_verdict.startAnimation(animation);//动画效果
                         btn_binding.setText("标签解绑");
                         is = false;
-                        textview10.setText("RFID：" + getRfid());
+                        textview10.setText("RFID：" + rfid);
                         //如果没绑定就上传数据给服务器
-                        uploadInfo(getRfid());
+                        uploadInfo(rfid);
                     }
                 }
 
@@ -657,4 +681,102 @@ public class ActivityBinding extends Activity implements View.OnClickListener {
     public void show(String str) {
         Toast.makeText(ActivityBinding.this, str, Toast.LENGTH_SHORT).show();
     }
+
+    public void back_first(View view) {
+        //让scrollView置顶
+        findViewById(R.id.scrollView).scrollTo(0, 0);
+    }
+
+    public void load_more(View view) {
+        if (new_treeview_hpicGuid != null && !new_treeview_hpicGuid.equals("") && !computePageIsLast(new_Right_IRBR)) {
+            HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=" + (new_Right_IRBR.getCurrentpage() + 1) + "&hpicGuid=" + new_treeview_hpicGuid + "&cinvcname=&cinvname=&cinvstd=", new BaseHttpResponseHandler() {
+                @Override
+                public void onSuccess(int i, Header[] headers, String s, Object o) {
+                    Gson gson = new Gson();
+                    Archives archives = gson.fromJson(s, Archives.class);
+                    if (archives.getMessage().equals("操作成功")) {//如果请求成功则执行
+                        int size = archives.getJsonData().getList().size();
+                        /**
+                         * 这里需要把两个集合都清空一下，因为每次点击会重新请求网络获取数据，不清空的话下一次请求时还会保存上一次请求的数据
+                         */
+//                        ActivityBinding.binding.leftlList.clear();
+//                        ActivityBinding.binding.models.clear();
+                        for (int j = 0; j < size; j++) {
+                            ActivityBinding.binding.leftlList.add(archives.getJsonData().getList().get(j).getCINVCODE());
+                            ActivityBinding.binding.models.add(new RightModel(archives.getJsonData().getList().get(j).getCINVNAME(),
+                                    archives.getJsonData().getList().get(j).getCINVSTD(),
+                                    archives.getJsonData().getList().get(j).getOLDUNITNAME(), archives.getJsonData().getList().get(j).getCINVCNAME(),
+                                    archives.getJsonData().getList().get(j).getBUSINFO(), archives.getJsonData().getList().get(j).getCWHNAME(),
+                                    archives.getJsonData().getList().get(j).getCPARENTID(), archives.getJsonData().getList().get(j).getOLDCORD(),
+                                    archives.getJsonData().getList().get(j).getRFID(), estimate(archives, j)));
+                        }
+                        new_Right_IRBR = new IntRequsetBackRecord(archives.getJsonData().getCurrentPage(), archives.getJsonData().getNumPerPage(), archives.getJsonData().getPageNumShown(), archives.getJsonData().getTotalCount());
+                        currentNum.setText("当前" + (new_Right_IRBR.getNumPerPage() * (new_Right_IRBR.getCurrentpage() - 1) + new_Right_IRBR.getPageNumShown()) + "条");
+                        totalNum.setText("总共" + new_Right_IRBR.getTotalCount() + "条");
+                        adapter.notifyDataSetChanged();
+                        myRightAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(ActivityBinding.binding, "网络请求失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(int i, Header[] headers, Throwable throwable, String s, Object o) {
+
+                }
+
+            });
+        } else {
+
+            Toast.makeText(ActivityBinding.binding, "当前为最后一页", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    //计算是否为最后一页 true为最后一页，false为非最后一页
+    private boolean computePageIsLast(IntRequsetBackRecord new_irbr) {
+
+        //当前页数
+        int cpage = new_irbr.getCurrentpage();
+        //每页条数
+        int npage = new_irbr.getNumPerPage();
+        //当前条数
+        int nownum = new_irbr.getPageNumShown();
+        //总条数
+        int tcount = new_irbr.getTotalCount();
+
+        int yucount = tcount % npage;
+
+        int pagecount = 0;
+        if (yucount > 0) {
+            pagecount = tcount / npage + 1;
+        } else {
+            pagecount = tcount / npage;
+        }
+        boolean flag = false;
+        if (cpage < pagecount) {
+
+            flag = false;
+        }
+        if (cpage == pagecount) {
+            flag = true;
+        }
+        if (cpage > pagecount) {
+            flag = true;
+        }
+        return flag;
+    }
+
+
+    //判断RFID是否为null
+    public int estimate(Archives archives, int j) {
+        if (archives.getJsonData().getList().get(j).getRFID() == null) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
+
 }

@@ -195,13 +195,14 @@ public class TakePhotoPopWin extends PopupWindow {
         view.findViewById(R.id.sm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getRfid().equals("")) {
+                String rfid=getRfid();
+                if (rfid.equals("")) {
                     Toast.makeText(mContext, "没有结果，请重新扫描", Toast.LENGTH_SHORT).show();
                 } else {
                     lineone.setVisibility(View.GONE);//隐藏布局
                     linetwo.setVisibility(View.VISIBLE);//显示布局
                     RequestParams params = new RequestParams();
-                    params.put("rfid", getRfid());
+                    params.put("rfid", rfid);
                     //物资档案接口
                     HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&oldcord=&cinvcode=", params, new BaseHttpResponseHandler() {
                         @Override

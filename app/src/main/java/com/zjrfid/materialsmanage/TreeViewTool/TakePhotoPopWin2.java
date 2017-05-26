@@ -61,7 +61,7 @@ public class TakePhotoPopWin2 extends PopupWindow {
     public boolean is_judge = false;
     public List<String> list;
     public MaterialSpecificFilesInfo msfi;
-    public String hwbm,hpiguid;
+    public String hwbm, hpiguid;
 
     public TakePhotoPopWin2(final Context mContext, View.OnClickListener itemsOnClick, final int flag) {
         instance = this;
@@ -152,20 +152,21 @@ public class TakePhotoPopWin2 extends PopupWindow {
         view.findViewById(R.id.sm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getRfid().equals("")) {
+                String rfid = getRfid();
+                if (rfid.equals("")) {
                     Toast.makeText(mContext, "没有结果，请重新扫描", Toast.LENGTH_SHORT).show();
                 } else {
                     lineone.setVisibility(View.GONE);//隐藏布局
                     linetwo.setVisibility(View.VISIBLE);//显示布局
                     RequestParams params = new RequestParams();
-                    params.put("rfid", getRfid());
+                    params.put("rfid", rfid);
                     //物资档案接口
                     HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&oldcord=&cinvcode=", params, new BaseHttpResponseHandler() {
                         @Override
                         public void onSuccess(int i, Header[] headers, String s, Object o) {
                             Gson mGson = new Gson();
                             msfi = mGson.fromJson(s, MaterialSpecificFilesInfo.class);
-                            if (msfi.getJsonData().getList().size()!=0) {
+                            if (msfi.getJsonData().getList().size() != 0) {
                                 wzbm.setText(msfi.getJsonData().getList().get(0).getCINVCODE());//物资编码
                                 jbm.setText(msfi.getJsonData().getList().get(0).getOLDCORD());//旧编码
                                 flbm.setText(msfi.getJsonData().getList().get(0).getHPICGUID());//分类编码
@@ -177,9 +178,9 @@ public class TakePhotoPopWin2 extends PopupWindow {
                                 zjldw.setText(msfi.getJsonData().getList().get(0).getOLDUNITNAME());//主计量单位
                                 mrck.setText(msfi.getJsonData().getList().get(0).getCWHNAME());//默认仓库
                                 fzjldw.setText(msfi.getJsonData().getList().get(0).getCUNITNAME());//辅助计量单位
-                                hwbm=msfi.getJsonData().getList().get(0).getCPOSCODE();//货位编码
+                                hwbm = msfi.getJsonData().getList().get(0).getCPOSCODE();//货位编码
                                 hpiguid = msfi.getJsonData().getList().get(0).getHPIGUID();
-                            }else{
+                            } else {
                                 Toast.makeText(mContext, "此标签未绑定", Toast.LENGTH_SHORT).show();
                             }
                         }

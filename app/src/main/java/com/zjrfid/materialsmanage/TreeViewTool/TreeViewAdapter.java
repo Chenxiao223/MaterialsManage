@@ -32,7 +32,7 @@ public class TreeViewAdapter extends BaseAdapter {
         this.elementsData = elementsData;
         this.inflater = inflater;
         this.context=context;
-        indentionBase = 60;
+        indentionBase = 30;
     }
 
     public ArrayList<Element> getElements() {

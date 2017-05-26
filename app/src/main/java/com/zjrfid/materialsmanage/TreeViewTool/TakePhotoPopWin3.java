@@ -126,14 +126,15 @@ public class TakePhotoPopWin3 extends PopupWindow {
                     Toast.makeText(mContext, "请先在盘点单中填写仓库", Toast.LENGTH_SHORT).show();
                     dismiss();
                 } else {
-                    if (getRfid().equals("")) {
+                    String rfid = getRfid();
+                    if (rfid.equals("")) {
                         Toast.makeText(mContext, "没有结果，请重新扫描", Toast.LENGTH_SHORT).show();
                     } else {
                         try {
                             lineone.setVisibility(View.GONE);//隐藏布局
                             linetwo.setVisibility(View.VISIBLE);//显示布局
                             RequestParams params = new RequestParams();
-                            params.put("rfid", getRfid());
+                            params.put("rfid", rfid);
                             //物资档案接口
                             HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&oldcord=&cinvcode=", params, new BaseHttpResponseHandler() {
                                 @Override
@@ -184,7 +185,7 @@ public class TakePhotoPopWin3 extends PopupWindow {
                 intent.putExtra("flag", state);
                 intent.putExtra("cinvcode", wzbm.getText().toString());//物资编码
                 intent.putExtra("cinvname", wlmc.getText().toString());//物资名称
-                intent.putExtra("cwhname",  ActivityInventory.inventory.inventoryHeader.getCWHNAME());//仓库名称
+                intent.putExtra("cwhname", ActivityInventory.inventory.inventoryHeader.getCWHNAME());//仓库名称
                 intent.putExtra("cwhcode", ActivityInventory.inventory.inventoryHeader.getCWHCODE());//仓库编码
 
                 if (wzbm.getText().toString().equals("")) {

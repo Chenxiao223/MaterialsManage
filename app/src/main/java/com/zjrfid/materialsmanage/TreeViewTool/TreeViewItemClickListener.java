@@ -13,6 +13,8 @@ import com.zjrfid.materialsmanage.UI.ActivityBinding;
 import com.zjrfid.materialsmanage.UI.ActivityMaterialsInBound;
 import com.zjrfid.materialsmanage.UI.Activity_TreeView;
 import com.zjrfid.materialsmanage.acdbentity.Archives;
+import com.zjrfid.materialsmanage.acdbentity.IntRequsetBackRecord;
+import com.zjrfid.materialsmanage.acdbentity.RequsetBackRecord;
 import com.zjrfid.materialsmanage.acdbentity.SupplierInfo;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
@@ -53,18 +55,21 @@ public class TreeViewItemClickListener implements OnItemClickListener {
         ArrayList<Element> elementsData = treeViewAdapter.getElementsData();
         //点击没有子项的item直接返回
         if (!element.isHasChildren()) {
-            if (i == 0) {//这里0表示物资绑定
+            if (i == 0) {
+                //这里0表示物资绑定
                 ActivityBinding.ll_orientation.setVisibility(View.VISIBLE);
                 ActivityBinding.back.setVisibility(View.VISIBLE);
                 //请求网络
-                String str=element.getContentText().substring(0,element.getContentText().indexOf(" "));
-                NetworkRequests(str);
+                ActivityBinding.binding.new_treeview_hpicGuid = element.getContentText().substring(0, element.getContentText().indexOf(" "));
+                NetworkRequests(ActivityBinding.binding.new_treeview_hpicGuid);
+
             } else {
+                //供应商 请求
                 Activity_TreeView.ll_orientation.setVisibility(View.VISIBLE);
                 Activity_TreeView.back.setVisibility(View.VISIBLE);
-                //请求网络  2 4
-                String str=element.getContentText().substring(0,element.getContentText().indexOf(" "));
-                NetworkRequests2(str);
+                //请求网络
+                Activity_TreeView.treeView.new_treeview_hpsGuid = element.getContentText().substring(0, element.getContentText().indexOf(" "));
+                NetworkRequests2(Activity_TreeView.treeView.new_treeview_hpsGuid);
             }
             return;
         }
@@ -102,7 +107,7 @@ public class TreeViewItemClickListener implements OnItemClickListener {
             public void onSuccess(int i, Header[] headers, String s, Object o) {
                 Gson gson = new Gson();
                 Archives archives = gson.fromJson(s, Archives.class);
-                if (archives.getStatusCode().equals("200")) {//如果请求成功则执行
+                if (archives.getMessage().equals("操作成功")) {//如果请求成功则执行
                     int size = archives.getJsonData().getList().size();
                     /**
                      * 这里需要把两个集合都清空一下，因为每次点击会重新请求网络获取数据，不清空的话下一次请求时还会保存上一次请求的数据
@@ -118,6 +123,9 @@ public class TreeViewItemClickListener implements OnItemClickListener {
                                 archives.getJsonData().getList().get(j).getCPARENTID(), archives.getJsonData().getList().get(j).getOLDCORD(),
                                 archives.getJsonData().getList().get(j).getRFID(), estimate(archives, j)));
                     }
+                    ActivityBinding.binding.new_Right_IRBR = new IntRequsetBackRecord(archives.getJsonData().getCurrentPage(), archives.getJsonData().getNumPerPage(), archives.getJsonData().getPageNumShown(), archives.getJsonData().getTotalCount());
+                    ActivityBinding.binding.currentNum.setText("当前" + archives.getJsonData().getPageNumShown() + "条");
+                    ActivityBinding.binding.totalNum.setText("总共" + archives.getJsonData().getTotalCount() + "条");
                     ActivityBinding.binding.adapter.notifyDataSetChanged();
                     ActivityBinding.binding.myRightAdapter.notifyDataSetChanged();
                 } else {
@@ -144,7 +152,7 @@ public class TreeViewItemClickListener implements OnItemClickListener {
 
     public void NetworkRequests2(String parameter) {
         //供应商信息接口
-        HttpNetworkRequest.get("goods/rs/hpSuppliers?pageNum=1&hpsGuid="+parameter+"&cvencode=&cvenname=&numPerPage=10", new BaseHttpResponseHandler() {
+        HttpNetworkRequest.get("goods/rs/hpSuppliers?pageNum=1&hpsGuid=" + parameter + "&cvencode=&cvenname=&numPerPage=10", new BaseHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, String s, Object o) {
                 Gson gson = new Gson();
@@ -157,11 +165,21 @@ public class TreeViewItemClickListener implements OnItemClickListener {
                     Activity_TreeView.treeView.leftlList.clear();
                     Activity_TreeView.treeView.models.clear();
                     for (int j = 0; j < size; j++) {
-                        Activity_TreeView.treeView.leftlList.add(supplierInfo.getJsonData().getList().get(j).getHpsGuid());
-                        Activity_TreeView.treeView.models.add(new RightModel(supplierInfo.getJsonData().getList().get(j).getHpsGuid(),
-                                supplierInfo.getJsonData().getList().get(j).getCvenname(),supplierInfo.getJsonData().getList().get(j).getHpsnGuid(), "","", "","", "","", 1));
-
+                        Activity_TreeView.treeView.leftlList.add(supplierInfo.getJsonData().getList().get(j).getCvencode());
+                        Activity_TreeView.treeView.models.add(
+                                new RightModel(supplierInfo.getJsonData().getList().get(j).getHpsGuid(),
+                                        supplierInfo.getJsonData().getList().get(j).getCvenname(),
+                                        supplierInfo.getJsonData().getList().get(j).getOrgname(),
+                                        supplierInfo.getJsonData().getList().get(j).getTelephone1(),
+                                        supplierInfo.getJsonData().getList().get(j).getContact1(),
+                                        supplierInfo.getJsonData().getList().get(j).getArrWay(),
+                                        supplierInfo.getJsonData().getList().get(j).getArrWarehouse(),
+                                        supplierInfo.getJsonData().getList().get(j).getHpsnGuid(),
+                                        "",1));
                     }
+                    Activity_TreeView.treeView.new_Right_IRBR = new IntRequsetBackRecord(supplierInfo.getJsonData().getCurrentPage(), supplierInfo.getJsonData().getNumPerPage(), supplierInfo.getJsonData().getPageNumShown(), supplierInfo.getJsonData().getTotalCount());
+                    Activity_TreeView.treeView.currentNum.setText("当前" + supplierInfo.getJsonData().getPageNumShown() + "条");
+                    Activity_TreeView.treeView.totalNum.setText("总共" + supplierInfo.getJsonData().getTotalCount() + "条");
                     Activity_TreeView.treeView.adapter.notifyDataSetChanged();
                     Activity_TreeView.treeView.myRightAdapter.notifyDataSetChanged();
                 } else {

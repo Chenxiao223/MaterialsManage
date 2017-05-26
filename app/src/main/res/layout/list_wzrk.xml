@@ -240,7 +240,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="单据号1：" />
+                android:text="老单据号：" />
 
             <TextView
                 android:id="@+id/text9"
@@ -260,14 +260,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="原始单据类型1：" />
+                android:text="单据号2：" />
 
             <TextView
-                android:id="@+id/text10"
+                android:id="@+id/text11"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="" />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -280,6 +281,7 @@
         android:orientation="horizontal"
         android:paddingLeft="0.1dp"
         android:paddingRight="0.1dp"
+        android:visibility="gone"
         android:paddingTop="0.1dp">
 
         <LinearLayout
@@ -293,10 +295,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="单据号2：" />
+                android:text="原始单据类型1：" />
 
             <TextView
-                android:id="@+id/text11"
+                android:id="@+id/text10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="" />

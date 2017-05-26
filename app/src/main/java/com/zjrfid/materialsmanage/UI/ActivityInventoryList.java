@@ -208,20 +208,24 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                pageN = "1";
-                listscq.clear();
-                bln_is = true;
-                hm_inventoryList.clear();
-                bln_judge = true;
+                try {
+                    pageN = "1";
+                    listscq.clear();
+                    bln_is = true;
+                    hm_inventoryList.clear();
+                    bln_judge = true;
 
-                bln_check = true;
-                page = 2;
-                list_hpcvGuid.clear();
-                list_inventory.clear();
-                list_chandler2.clear();
-                getPddQuery("1");
-                dataChanged();
-                onLoad();
+                    bln_check = true;
+                    page = 2;
+                    list_hpcvGuid.clear();
+                    list_inventory.clear();
+                    list_chandler2.clear();
+                    getPddQuery("1");
+                    dataChanged();
+                    onLoad();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 //显示布局
                 showLayout();
             }
@@ -234,16 +238,20 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (inventory != null) {
-                    if (page < ((Integer.parseInt(inventory.getJsonData().getTotalCount()) / 10) + 3)) {
-                        getPddQuery(pageN);
-                        dataChanged();
-                    } else {
-                        Toast.makeText(ActivityInventoryList.this, "最后一页了", Toast.LENGTH_SHORT).show();
+                try {
+                    if (inventory != null) {
+                        if (page < ((Integer.parseInt(inventory.getJsonData().getTotalCount()) / 10) + 3)) {
+                            getPddQuery(pageN);
+                            dataChanged();
+                        } else {
+                            Toast.makeText(ActivityInventoryList.this, "最后一页了", Toast.LENGTH_SHORT).show();
+                        }
+                        onLoad();
+                        //显示布局
+                        showLayout();
                     }
-                    onLoad();
-                    //显示布局
-                    showLayout();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }, 2000);

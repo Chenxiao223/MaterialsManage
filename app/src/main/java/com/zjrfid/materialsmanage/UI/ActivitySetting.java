@@ -81,7 +81,6 @@ public class ActivitySetting extends AppCompatActivity {
                 Result testresult = RfidOperation.readUnGivenTid((short) 3, (short) 3);
 
 
-
                 Message msg = new Message();
                 msg.obj = testresult.getReadInfo();
                 msg.what = MSG_SHOW_Message;
@@ -149,4 +148,12 @@ public class ActivitySetting extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        RfidOperation.setAntennaPower(power);
+        RfidOperation.DisconnectRadio();
+        RfidOperation.connectRadio();
+        finish();
+    }
 }

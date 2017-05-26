@@ -69,7 +69,6 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
     private Handler mHandler;
     private String pageN;
     private int page = 2;
-    Header[] tmpheaders;
     private List<StockRemovalList> list_srl = new ArrayList<>();//存放入库实体类的集合
     private List<String> list = new ArrayList<>();//也是存放主键的集合
     private List<String> list_cinvcode = new ArrayList<>();//存放物资编码
@@ -263,7 +262,7 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
             map.put("content4", srl.getJsonData().getList().get(i).getCRDNAME());//出库类别
             map.put("content5", srl.getJsonData().getList().get(i).getCPERSONNAME());//领料人员
             map.put("content6", srl.getJsonData().getList().get(i).getORGNAME());//部门
-            map.put("content7", "");//领用单号
+            map.put("content7", srl.getJsonData().getList().get(i).getALID());//领用单号
             map.put("content8", srl.getJsonData().getList().get(i).getBUSNO());//车辆自编号
             map.put("content9", srl.getJsonData().getList().get(i).getCICODE1());//老单号
             map.put("content10", srl.getJsonData().getList().get(i).getCSOURCE());//单据来源
@@ -605,16 +604,20 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
 
             @Override
             public void run() {
-                if (page < ((srl.getJsonData().getTotalCount() / 10) + 3)) {
-                    NetworkRequest(pageN);
-                    dataChanged();
-                } else {
-                    Toast.makeText(ActivityMaterialOutboundOrder.this, "最后一页了", Toast.LENGTH_SHORT).show();
-                }
+                try {
+                    if (page < ((srl.getJsonData().getTotalCount() / 10) + 3)) {
+                        NetworkRequest(pageN);
+                        dataChanged();
+                    } else {
+                        Toast.makeText(ActivityMaterialOutboundOrder.this, "最后一页了", Toast.LENGTH_SHORT).show();
+                    }
 
-                onLoad();
-                //显示布局
-                showLayout();
+                    onLoad();
+                    //显示布局
+                    showLayout();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 2000);
     }

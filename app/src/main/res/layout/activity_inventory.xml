@@ -270,17 +270,6 @@
                 android:text="删除盘点单"
                 android:textColor="#ffff" />
 
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginRight="0.2dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_btn2"
-                android:onClick="add"
-                android:text="新建盘点单"
-                android:textColor="#ffff" />
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

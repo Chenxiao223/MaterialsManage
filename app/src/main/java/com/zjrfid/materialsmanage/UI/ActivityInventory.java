@@ -468,12 +468,6 @@ public class ActivityInventory extends AppCompatActivity {
         adapterPd.notifyDataSetChanged();
     }
 
-    //点击新增
-    public void add(View view) {
-        finish();
-        startActivity(new Intent(this, ActivityInventory.class));
-    }
-
     //点击保存
     public void save(View view) {
         if (judge()) {

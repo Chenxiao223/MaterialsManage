@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,10 +25,8 @@ import com.zjrfid.materialsmanage.R;
 import com.zjrfid.materialsmanage.TreeViewTool.Element;
 import com.zjrfid.materialsmanage.TreeViewTool.TakePhotoPopWin;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewAdapter;
-import com.zjrfid.materialsmanage.TreeViewTool.TreeViewItemClickListener2;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewItemClickListener3;
 import com.zjrfid.materialsmanage.acdbentity.CgoodsAllocation;
-import com.zjrfid.materialsmanage.acdbentity.WarehouseName;
 import com.zjrfid.materialsmanage.adapter.AdapterQueryGoodsAllocation;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
@@ -44,6 +41,7 @@ import java.util.List;
 
 /**
  * Created by zhouyu on 2017/4/29.
+ * 选择货位页面
  */
 public class ActivityGoodsAllocation extends AppCompatActivity {
 

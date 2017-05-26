@@ -341,6 +341,7 @@
             android:layout_marginRight="1dp"
             android:layout_weight="1"
             android:background="#ffff"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
@@ -701,6 +702,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout14"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:paddingLeft="0.1dp"
         android:paddingRight="0.1dp"
         android:paddingTop="0.1dp">
@@ -745,7 +747,7 @@
         android:gravity="center"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/linearLayout13"
+        android:layout_alignTop="@+id/linearLayout12"
         android:layout_marginRight="5dp"
         android:textSize="18dp"
         android:textColor="#137ce4" />

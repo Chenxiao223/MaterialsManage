@@ -14,9 +14,9 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
             android:background="#0000"
             android:onClick="back"
-            android:layout_marginLeft="6dp"
             android:scaleType="fitXY"
             android:src="@drawable/back2" />
 
@@ -27,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/relativeLayout2"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/ll_tree"
@@ -80,6 +81,7 @@
                     android:layout_weight="3"
                     android:orientation="vertical">
 
+                    <include layout="@layout/layout_left_title_supplier" />
                 </LinearLayout>
 
                 <!-- 右侧标题的父容器可实现水平滚动 -->
@@ -97,50 +99,187 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
+                        <include layout="@layout/layout_right_tab_supplier" />
                     </LinearLayout>
                 </com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView>
             </LinearLayout>
 
             <!-- 此部分是内容部分 用ScrollView实现上下滚动效果 -->
-
-            <ScrollView
-                android:id="@+id/scrollView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <ScrollView
+                    android:id="@+id/scrollView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="0dp"
+                    android:layout_weight="12">
 
-                    <!-- 左侧内容的父容器 -->
-
-                    <!-- 右侧内容的父容器 实现水平滚动 -->
-
-                    <com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView
-                        android:id="@+id/content_horsv"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:scrollbars="">
+                        android:layout_height="match_parent">
 
+                        <!-- 左侧内容的父容器 -->
                         <LinearLayout
-                            android:id="@+id/right_container"
+                            android:id="@+id/left_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_weight="3"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
-                            <com.zjrfid.materialsmanage.tool.NonScrollListView
-                                android:id="@+id/right_container_listview"
+                            <ListView
+                                android:id="@+id/left_container_listview"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent" />
 
                         </LinearLayout>
-                    </com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView>
-                </LinearLayout>
-            </ScrollView>
+                        <!-- 右侧内容的父容器 实现水平滚动 -->
 
+                        <com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView
+                            android:id="@+id/content_horsv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:scrollbars="">
+
+                            <LinearLayout
+                                android:id="@+id/right_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <com.zjrfid.materialsmanage.tool.NonScrollListView
+                                    android:id="@+id/right_container_listview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+                            </LinearLayout>
+                        </com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView>
+                    </LinearLayout>
+
+                </ScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1.5"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical">
+
+
+                        <Spinner
+                            android:id="@+id/spin_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:background="#712dccb7" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_btn4"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/et_seek"
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:background="@null"
+                                android:hint="供应商搜索" />
+
+
+                            <Button
+                                android:id="@+id/clear_wzcode_Btn"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_alignBottom="@+id/imageButton"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="10dp"
+                                android:background="#FF7256"
+                                android:onClick="clear_wzcode"
+                                android:text="清空"
+                                android:visibility="gone" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:background="#e52dcc97"
+                            android:onClick="seek"
+                            android:text="搜索" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+
+                    <ImageButton
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#00000000"
+                        android:onClick="back_first"
+                        android:src="@drawable/top" />
+
+                    <TextView
+                        android:id="@+id/currentNum"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:textColor="#a6cc2d9c"/>
+
+                    <TextView
+                        android:id="@+id/totalNum"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="#a6cc2d9c"
+                        android:gravity="center_vertical" />
+
+                    <Button
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:onClick="load_more"
+                        android:background="#a6cc2d9c"
+                        android:text="更多" />
+
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>  

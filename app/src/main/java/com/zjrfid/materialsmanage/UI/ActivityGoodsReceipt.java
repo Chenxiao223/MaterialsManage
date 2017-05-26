@@ -718,9 +718,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
 
             @Override
             public void run() {
-//                NetworkRequest(pageN);
-//                adapterWzrk.notifyDataSetChanged();
-//                onLoad();
                 try {
                     if (page < ((Integer.parseInt(gel.getJsonData().getTotalCount()) / 10) + 3)) {
                         NetworkRequest(pageN);

@@ -46,12 +46,12 @@ public class ActivityLogin extends Activity {
         activityLogin = this;
         tv_username = (EditText) findViewById(R.id.edit_username);
         tv_password = (EditText) findViewById(R.id.edit_password);
-        tv_username.setInputType(EditorInfo.TYPE_CLASS_PHONE);
 //        tv_password.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         tv_username.setText(getData("user"));
         tv_password.setText(getData("pwd"));
         edit_server = (EditText) findViewById(R.id.edit_server);
-        edit_server.setText("http://172.16.2.27:8080/");
+//        edit_server.setText("http://172.16.2.27:8080/");//测试接口
+        edit_server.setText("http://172.24.190.16/");//正式接口
         //默认是无法输入的，长按之后才可输入
         edit_server.setFocusable(false);
         edit_server.setFocusableInTouchMode(false);

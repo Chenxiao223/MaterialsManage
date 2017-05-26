@@ -148,7 +148,7 @@ public class ActivityHomePage extends Activity {
                                 ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
                                 manager.killBackgroundProcesses(getPackageName());
                                 SysApplication.getInstance().exit();
-
+                                finish();
                             }
 
                             @Override

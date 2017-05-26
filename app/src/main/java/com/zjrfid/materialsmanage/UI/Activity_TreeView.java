@@ -7,28 +7,39 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.loopj.android.http.RequestParams;
 import com.zjrfid.materialsmanage.R;
 import com.zjrfid.materialsmanage.TreeViewTool.Element;
 import com.zjrfid.materialsmanage.TreeViewTool.MyLeftAdapter;
 import com.zjrfid.materialsmanage.TreeViewTool.MyRightAdapter;
+import com.zjrfid.materialsmanage.TreeViewTool.MyRightSupplierAdapter;
 import com.zjrfid.materialsmanage.TreeViewTool.RightModel;
 import com.zjrfid.materialsmanage.TreeViewTool.SyncHorizontalScrollView;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewAdapter;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewItemClickListener;
 import com.zjrfid.materialsmanage.TreeViewTool.TreeViewItemClickListener2;
 import com.zjrfid.materialsmanage.TreeViewTool.UtilTools;
-import com.zjrfid.materialsmanage.acdbentity.MaterialClassifiCation;
+import com.zjrfid.materialsmanage.acdbentity.IntRequsetBackRecord;
+import com.zjrfid.materialsmanage.acdbentity.SupplierInfo;
 import com.zjrfid.materialsmanage.acdbentity.WarehouseName;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
@@ -46,11 +57,14 @@ import java.util.List;
  */
 public class Activity_TreeView extends Activity {
 
+    public IntRequsetBackRecord new_Right_IRBR =new IntRequsetBackRecord(0,0,0,0);
+    public String new_treeview_hpsGuid="";// 被点击的供应商分类主键
 
+    public TextView currentNum,totalNum;
     private HashMap<String, Integer> hashMapMySelf = new HashMap<>();
     private HashMap<Integer, String> hashMapParentSelf = new HashMap<>();
     private ArrayList<Element> list_element = new ArrayList<>();
-
+    public ScrollView scrollView;
     public static Activity_TreeView treeView;
     /**
      * 树中的元素集合
@@ -71,7 +85,6 @@ public class Activity_TreeView extends Activity {
     private int flag;
     public static LinearLayout ll_orientation;
     public static Button back;
-
     private LinearLayout leftContainerView;
     private ListView leftListView;
     private LinearLayout rightContainerView;
@@ -80,17 +93,29 @@ public class Activity_TreeView extends Activity {
     private SyncHorizontalScrollView contentHorsv;
     public List<RightModel> models = new ArrayList<>();
     public MyLeftAdapter adapter;
-    public MyRightAdapter myRightAdapter;
+    public MyRightSupplierAdapter myRightAdapter;
     public List<String> leftlList = new ArrayList<>();
     public static HashMap<Integer, List> data = new HashMap<>();
-
     private TreeViewAdapter treeViewAdapter;
 
+    private List<String>list_spin = new ArrayList<>();
+    private Spinner spin_code;
+    private ArrayAdapter<String> arrayAdapter;
+    private int spinner_index=0;
+    private EditText et_seek;
+    public Button clear_wzcode_Btn;//清除物资搜索编码
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_treeview);
-        //
+
+
+        clear_wzcode_Btn = (Button) findViewById(R.id.clear_wzcode_Btn);
+        et_seek= (EditText) findViewById(R.id.et_seek);
+        spin_code = (Spinner) findViewById(R.id.spin_code);
+        currentNum = (TextView) findViewById(R.id.currentNum);
+        totalNum = (TextView) findViewById(R.id.totalNum);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
         treeView = this;
         SysApplication.getInstance().addActivity(this);
         Intent intent = getIntent();
@@ -106,7 +131,45 @@ public class Activity_TreeView extends Activity {
         titleHorsv = (SyncHorizontalScrollView) findViewById(R.id.title_horsv);
         contentHorsv = (SyncHorizontalScrollView) findViewById(R.id.content_horsv);
 
+        list_spin.add("供应商名称");
+        list_spin.add("供应商编码");
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list_spin);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spin_code.setAdapter(arrayAdapter);
+        spin_code.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spinner_index = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        et_seek.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                listern_searchcode_isempty();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listern_searchcode_isempty();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                listern_searchcode_isempty();
+            }
+        });
+
+
         init();
+
+
+
 
         if (flag == 0 || flag == 1 || flag == 2 || flag == 3 || flag == 4 || flag == 5 || flag == 6 || flag == 7 || flag == 8) {
             ListView treeview = (ListView) findViewById(R.id.treeview);
@@ -124,23 +187,29 @@ public class Activity_TreeView extends Activity {
         // 设置两个水平控件的联动
         titleHorsv.setScrollView(contentHorsv);
         contentHorsv.setScrollView(titleHorsv);
+        //添加左边内容数据
+        leftContainerView.setBackgroundColor(Color.GRAY);
         adapter = new MyLeftAdapter(this, leftlList);
-        adapter.notifyDataSetChanged();
+        leftListView.setAdapter(adapter);
+        UtilTools.setListViewHeightBasedOnChildren(leftListView);
+
         // 添加右边内容数据
         rightContainerView.setBackgroundColor(Color.GRAY);
-        myRightAdapter = new MyRightAdapter(this, models);
+        myRightAdapter = new MyRightSupplierAdapter(this, models);
         rightListView.setAdapter(myRightAdapter);
         UtilTools.setListViewHeightBasedOnChildren(rightListView);
         myRightAdapter.notifyDataSetChanged();
         rightListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 ActivityMaterialsInBound.materialsInBound.tv_supplier.setText(models.get(position).getText1().toString());
-                ActivityMaterialsInBound.materialsInBound.cvencode = models.get(position).getText0().toString();
-                ActivityMaterialsInBound.materialsInBound.hpsnguid = models.get(position).getText2().toString();
+                ActivityMaterialsInBound.materialsInBound.cvencode = leftlList.get(position).toString();
+                ActivityMaterialsInBound.materialsInBound.hpsnguid = models.get(position).getText7().toString();
                 finish();
             }
         });
+
     }
 
 
@@ -331,5 +400,178 @@ public class Activity_TreeView extends Activity {
     public void btn_back(View view) {
         ll_orientation.setVisibility(View.GONE);
     }
+
+    //加载更多
+    public void load_more(View view)
+    {
+        if(new_treeview_hpsGuid!=null&&!new_treeview_hpsGuid.equals("")&&!computePageIsLast(new_Right_IRBR))
+        {
+            HttpNetworkRequest.get("goods/rs/hpSuppliers?pageNum="+(new_Right_IRBR.getCurrentpage()+1)+"&hpsGuid=" + new_treeview_hpsGuid + "&cvencode=&cvenname=&numPerPage=10", new BaseHttpResponseHandler() {
+                @Override
+                public void onSuccess(int i, Header[] headers, String s, Object o) {
+                    Gson gson = new Gson();
+                    SupplierInfo supplierInfo = gson.fromJson(s, SupplierInfo.class);
+                    if (supplierInfo.getStatusCode().equals("200")) {//如果请求成功则执行
+                        int size = supplierInfo.getJsonData().getList().size();
+                        /**
+                         * 这里需要把两个集合都清空一下，因为每次点击会重新请求网络获取数据，不清空的话下一次请求时还会保存上一次请求的数据
+                         */
+                        for (int j = 0; j < size; j++) {
+                            Activity_TreeView.treeView.leftlList.add(supplierInfo.getJsonData().getList().get(j).getCvencode());
+                            Activity_TreeView.treeView.models.add(
+                                    new RightModel(supplierInfo.getJsonData().getList().get(j).getHpsGuid(),
+                                            supplierInfo.getJsonData().getList().get(j).getCvenname(),
+                                            supplierInfo.getJsonData().getList().get(j).getOrgname(),
+                                            supplierInfo.getJsonData().getList().get(j).getTelephone1(),
+                                            supplierInfo.getJsonData().getList().get(j).getContact1(),
+                                            supplierInfo.getJsonData().getList().get(j).getArrWay(),
+                                            supplierInfo.getJsonData().getList().get(j).getArrWarehouse(),
+                                            supplierInfo.getJsonData().getList().get(j).getHpsnGuid(),
+                                            "",1));
+                        }
+                        new_Right_IRBR = new IntRequsetBackRecord(supplierInfo.getJsonData().getCurrentPage(), supplierInfo.getJsonData().getNumPerPage(), supplierInfo.getJsonData().getPageNumShown(), supplierInfo.getJsonData().getTotalCount());
+                        currentNum.setText("当前" + (new_Right_IRBR.getNumPerPage() * (new_Right_IRBR.getCurrentpage() - 1) + new_Right_IRBR.getPageNumShown()) + "条");
+                        totalNum.setText("总共" + new_Right_IRBR.getTotalCount() + "条");
+                        adapter.notifyDataSetChanged();
+                        myRightAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Toast.makeText(Activity_TreeView.treeView, "网络请求失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(int i, Header[] headers, Throwable throwable, String s, Object o) {
+
+                }
+            });
+        }else{
+
+            Toast.makeText(Activity_TreeView.treeView, "当前为最后一页", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    //计算是否为最后一页 true为最后一页，false为非最后一页
+    private boolean computePageIsLast(IntRequsetBackRecord new_irbr) {
+
+        //当前页数
+        int cpage = new_irbr.getCurrentpage();
+        //每页条数
+        int npage = new_irbr.getNumPerPage();
+        //当前条数
+        int nownum = new_irbr.getPageNumShown();
+        //总条数
+        int tcount = new_irbr.getTotalCount();
+
+        int yucount = tcount % npage;
+
+        int pagecount = 0;
+        if (yucount > 0) {
+            pagecount = tcount / npage + 1;
+        } else {
+            pagecount = tcount / npage;
+        }
+        boolean flag = false;
+        if (cpage < pagecount) {
+
+            flag = false;
+        }
+        if (cpage == pagecount) {
+            flag = true;
+        }
+        if (cpage > pagecount) {
+            flag = true;
+        }
+        return flag;
+    }
+
+    public void back_first(View view)
+    {
+        scrollView.scrollTo(0, 0);
+    }
+
+
+    //点击搜索
+    public void seek(View view) {
+
+        try{
+            String supplier = et_seek.getText().toString();
+            RequestParams params = new RequestParams();
+            if (spinner_index == 0) {//等于0表示是供应商编码
+                params.put("cvencode", "");
+                params.put("cvenname", supplier);
+            } else if (spinner_index == 1) {//等于1表示是供应商名称
+                params.put("cvencode", supplier);
+                params.put("cvenname", "");
+            }
+
+            //网络请求方法
+            HttpNetworkRequest.get("goods/rs/hpSuppliers?pageNum=1&hpsGuid=&numPerPage=50",params, new BaseHttpResponseHandler() {
+                @Override
+                public void onSuccess(int i, Header[] headers, String s, Object o) {
+                    Gson gson = new Gson();
+                    SupplierInfo supplierInfo = gson.fromJson(s, SupplierInfo.class);
+                    if (supplierInfo.getStatusCode().equals("200")) {//如果请求成功则执行
+                        int size = supplierInfo.getJsonData().getList().size();
+                        leftlList.clear();
+                        models.clear();
+                        new_treeview_hpsGuid ="";
+                        /**
+                         * 这里需要把两个集合都清空一下，因为每次点击会重新请求网络获取数据，不清空的话下一次请求时还会保存上一次请求的数据
+                         */
+                        for (int j = 0; j < size; j++) {
+                            Activity_TreeView.treeView.leftlList.add(supplierInfo.getJsonData().getList().get(j).getCvencode());
+                            Activity_TreeView.treeView.models.add(
+                                    new RightModel(supplierInfo.getJsonData().getList().get(j).getHpsGuid(),
+                                            supplierInfo.getJsonData().getList().get(j).getCvenname(),
+                                            supplierInfo.getJsonData().getList().get(j).getOrgname(),
+                                            supplierInfo.getJsonData().getList().get(j).getTelephone1(),
+                                            supplierInfo.getJsonData().getList().get(j).getContact1(),
+                                            supplierInfo.getJsonData().getList().get(j).getArrWay(),
+                                            supplierInfo.getJsonData().getList().get(j).getArrWarehouse(),
+                                            supplierInfo.getJsonData().getList().get(j).getHpsnGuid(),
+                                            "",1));
+                        }
+                        new_Right_IRBR = new IntRequsetBackRecord(supplierInfo.getJsonData().getCurrentPage(), supplierInfo.getJsonData().getNumPerPage(), supplierInfo.getJsonData().getPageNumShown(), supplierInfo.getJsonData().getTotalCount());
+                        currentNum.setText("当前" + (new_Right_IRBR.getNumPerPage() * (new_Right_IRBR.getCurrentpage() - 1) + new_Right_IRBR.getPageNumShown()) + "条");
+                        totalNum.setText("总共" + new_Right_IRBR.getTotalCount() + "条");
+                        adapter.notifyDataSetChanged();
+                        myRightAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Toast.makeText(Activity_TreeView.treeView, "网络请求失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(int i, Header[] headers, Throwable throwable, String s, Object o) {
+
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(Activity_TreeView.treeView, "供应商数据请求失败"+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        //让软键盘隐藏
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+    }
+
+
+
+
+
+    public void listern_searchcode_isempty() {
+        if (et_seek.getText().toString() == null || et_seek.getText().toString().equals("")) {
+            clear_wzcode_Btn.setVisibility(View.GONE);
+        } else {
+            clear_wzcode_Btn.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //点击清空
+    public void clear_wzcode(View view) {
+        et_seek.setText("");
+    }
+
 
 }

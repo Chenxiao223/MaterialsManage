@@ -119,7 +119,7 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
         } else {
             //显示入库单布局的时候加载信息
             tv_date_time.setText(getTime());//显示当前时间
-            tv_acquisition_staff.setText(ActivityLogin.login.getJobnumber()+"|"+ActivityLogin.login.getFullname());
+            tv_acquisition_staff.setText(ActivityLogin.login.getJobnumber() + "|" + ActivityLogin.login.getFullname());
             tv_section.setText(ActivityLogin.login.getOrgname());
             spin_people.setSelection(2);//入库类别
             spin_raw_data1.setSelection(0);//原始单据类型1
@@ -335,12 +335,12 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
 
     //点击单条添加
     public void dataShow(View view) {
-        if (!tv_warehouse.getText().toString().equals("请选择仓库")) {
+        if (!tv_warehouse.getText().toString().equals("请选择仓库") && !tv_supplier.getText().toString().equals("请供货单位")) {
             m_jt = 0;//设置为0
             takePhotoPopWin = new TakePhotoPopWin(this, onClickListener, 0);
             takePhotoPopWin.showAtLocation(findViewById(R.id.main_view), Gravity.BOTTOM, 0, 0);//125
         } else {
-            Toast.makeText(ActivityMaterialsInBound.this, "请填写仓库", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityMaterialsInBound.this, "仓库和供货单位不能为空", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -578,7 +578,6 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
 
     //给入库单赋值
     public void setGodownEntryInfo(GodownEntryInfo gei) {
-
         try {
             tv_documentNO.setText(gei.getCCODE());//入库单据号
             tv_date_time.setText(gei.getDKEEPDATE());//入库日期
@@ -610,7 +609,6 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
 
     //获取物资档案信息，他是物资入库的一部分数据
     public void getMaterialSpecificFilesInfo(String str_hprGuid) {
-
         try {
             RequestParams params = new RequestParams();
             params.put("hprGuid", str_hprGuid);
@@ -917,5 +915,14 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
         et_cicode1.setEnabled(is);
         et_cicode2.setEnabled(is);
         et_remark.setEnabled(is);
+    }
+
+    //点击生单按钮
+    public void generate_List(View view) {
+        if (!tv_warehouse.getText().toString().equals("请选择仓库")) {
+            startActivity(new Intent(this, ActivityGenerateListH.class));
+        } else {
+            Toast.makeText(ActivityMaterialsInBound.this, "请选择仓库", Toast.LENGTH_SHORT).show();
+        }
     }
 }

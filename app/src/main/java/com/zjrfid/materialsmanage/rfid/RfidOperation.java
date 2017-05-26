@@ -491,59 +491,58 @@ public class RfidOperation {
 
     }
 
-		public static Result readUnGivenTid(short offset,short length)
-		{
-			Result result = new Result();
+    public static Result readUnGivenTid(short offset, short length) {
+        Result result = new Result();
 
-			try {
-			ReadParms parms = new ReadParms();
-			parms.memBank = MemoryBank.TID;
-			parms.offset = offset;
-			parms.length = length;
-			parms.accesspassword = 0;
-			List<ReadResult> tagInfos = myRadio.TagInfoRead(parms);
+        try {
+            ReadParms parms = new ReadParms();
+            parms.memBank = MemoryBank.TID;
+            parms.offset = offset;
+            parms.length = length;
+            parms.accesspassword = 0;
+            List<ReadResult> tagInfos = myRadio.TagInfoRead(parms);
 
-			if (tagInfos.size() > 0) {
-					if (tagInfos.get(tagInfos.size() - 1).result == tagMemoryOpResult.Ok) {
-						if (tagInfos.get(tagInfos.size() - 1).readData != null) {
-							for (int i = 0; i < tagInfos.get(tagInfos.size() - 1).readData.length; i++) {
+            if (tagInfos.size() > 0) {
+                if (tagInfos.get(tagInfos.size() - 1).result == tagMemoryOpResult.Ok) {
+                    if (tagInfos.get(tagInfos.size() - 1).readData != null) {
+                        for (int i = 0; i < tagInfos.get(tagInfos.size() - 1).readData.length; i++) {
 
-								result.readInfo += Integer.toHexString(((tagInfos.get(tagInfos.size() - 1).readData[i] >> 8) & 0x000000FF) | 0xFFFFFF00).substring(6) + Integer.toHexString((tagInfos.get(tagInfos.size() - 1).readData[i] & 0x000000FF) | 0xFFFFFF00).substring(6);
+                            result.readInfo += Integer.toHexString(((tagInfos.get(tagInfos.size() - 1).readData[i] >> 8) & 0x000000FF) | 0xFFFFFF00).substring(6) + Integer.toHexString((tagInfos.get(tagInfos.size() - 1).readData[i] & 0x000000FF) | 0xFFFFFF00).substring(6);
 
-							}
-							result.readInfo = exChange(result.readInfo);
-							result.success = true;
-						}
-					} else {
+                        }
+                        result.readInfo = exChange(result.readInfo);
+                        result.success = true;
+                    }
+                } else {
 
-						result.reportInfo ="标签tid区读取出错";
-						result.success = false;
-					}
-				} else {
+                    result.reportInfo = "标签tid区读取出错";
+                    result.success = false;
+                }
+            } else {
 
-					result.reportInfo ="未发现任何标签";
-					result.success = false;
-				}
-			} catch (radioBusyException e) {
+                result.reportInfo = "未发现任何标签";
+                result.success = false;
+            }
+        } catch (radioBusyException e) {
 
-				result.reportInfo ="模块正在处理其他事务(如盘点),请稍后重试";
-				result.success = false;
+            result.reportInfo = "模块正在处理其他事务(如盘点),请稍后重试";
+            result.success = false;
 
-			} catch (radioFailException e) {
+        } catch (radioFailException e) {
 
-				result.reportInfo ="操作失败";
-				result.success = false;
+            result.reportInfo = "操作失败";
+            result.success = false;
 
-			} catch (Exception e) {
+        } catch (Exception e) {
 
-				result.reportInfo ="操作失败";
-				result.success = false;
+            result.reportInfo = "操作失败";
+            result.success = false;
 
-			}
+        }
 
-			return result;
+        return result;
 
-		}
+    }
 
 //    public static Result readUnGivenTid(short offset, short length) {
 //
