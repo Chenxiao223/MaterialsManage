@@ -46,7 +46,7 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
     public Button btn_delete, btn_cancel, btn_redact, btn_added, btn_inquire;
     private ImageView img_direction;
     private EditText et_pddh;
-    public TextView tv_warehouse;
+    public TextView tv_warehouse,tv_fquantity,tv_pquantity;
     public static AdapterWzpd adapterWzpd;
     private Handler mHandler;
     private boolean bln_is = true;
@@ -82,6 +82,8 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
         Linear_screenUI = (LinearLayout) findViewById(R.id.Linear_screenUI);
         list_wzpd = (XListView) findViewById(R.id.list_wzpd);
         list_wzpd.setPullLoadEnable(true);//设置让它上拉，FALSE为不让上拉，便不加载更多数据
+        tv_pquantity= (TextView) findViewById(R.id.tv_pquantity);
+        tv_fquantity= (TextView) findViewById(R.id.tv_fquantity);
         btn_delete = (Button) findViewById(R.id.btn_delete);
         btn_cancel = (Button) findViewById(R.id.btn_redact);
         btn_redact = (Button) findViewById(R.id.btn_redact);
@@ -407,6 +409,7 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
         params.put("pageNum", pageNum);//页码
         params.put("ccvcode", et_pddh.getText().toString());//盘点单号
         params.put("cwhcode", cwhcode);//仓库编码
+        params.put("cpersonname",ActivityLogin.login.getFullname());//登录人的名字
         if (tv_warehouse.getText().toString().equals("请选择仓库")) {
             params.put("cwhname", "");
         } else {
@@ -414,14 +417,16 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
         }
         params.put("hpwGuid", hpwGuid);//仓库主键
         //盘点单查询（列表）接口
-        HttpNetworkRequest.get("goods/rs/hpCheckvouch", params, new BaseHttpResponseHandler() {
+        HttpNetworkRequest.get("goods/rs/hpCheckvouchs", params, new BaseHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
                 Gson gson = new Gson();
                 inventory = gson.fromJson(rawResponse, InventoryList.class);
                 if (inventory.getJsonData().getList().size() != 0) {
-                    sum = inventory.getJsonData().getTotalCount();//总数
                     try {
+                        sum = inventory.getJsonData().getTotalCount();//总数
+                        tv_fquantity.setText(inventory.getTotalInfo().getTOTALFQUANTITY());//账面数量
+                        tv_pquantity.setText(inventory.getTotalInfo().getTOTALPQUANTITY());//盘点数量
                         JSONObject jsonObject = new JSONObject(rawResponse);
                         if (jsonObject.getString("message").equals("操作成功")) {
                             //将类的对象存入集合

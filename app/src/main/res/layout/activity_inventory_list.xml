@@ -11,27 +11,27 @@
         android:background="@drawable/shape_color">
 
         <ImageButton
+            android:id="@+id/back"
             android:layout_width="@dimen/img_back2_size"
             android:layout_height="@dimen/img_back2_size"
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
-            android:padding="10dp"
             android:background="#0000"
             android:onClick="back"
+            android:padding="10dp"
             android:scaleType="fitXY"
-            android:src="@drawable/back2"
-            android:id ="@+id/back"/>
+            android:src="@drawable/back2" />
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/back"
             android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/back"
             android:text=" 盘点单 "
             android:textColor="#ffffff"
             android:textSize="19sp"
-            android:textStyle="bold"
-            android:id ="@+id/title"/>
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:id="@+id/relative_screen"
@@ -43,8 +43,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:text="查询"
                 android:textSize="19sp" />
 
@@ -61,7 +61,6 @@
 
 
     </RelativeLayout>
-
 
 
     <LinearLayout
@@ -131,11 +130,44 @@
         android:layout_below="@+id/relativeLayout2"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#bec0c2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="账面数量：" />
+
+            <TextView
+                android:id="@+id/tv_fquantity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="盘点数量：" />
+
+            <TextView
+                android:id="@+id/tv_pquantity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical" />
+        </LinearLayout>
+
         <com.zjrfid.materialsmanage.xListView.XListView
             android:id="@+id/list_wzpd"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
@@ -143,10 +175,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignTop="@+id/linearLayout2"
-        android:orientation="vertical"
         android:background="#77000000"
-        android:visibility="gone"
-        android:onClick="cancel_chaxun">
+        android:onClick="cancel_chaxun"
+        android:orientation="vertical"
+        android:visibility="gone">
         <!--android:background="#e8e8e8"-->
         <!--android:visibility="gone"-->
         <ScrollView
@@ -158,10 +190,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="cancel_et_pddh"
                 android:orientation="vertical"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:onClick="cancel_et_pddh">
+                android:paddingRight="5dp">
 
 
                 <LinearLayout
@@ -182,8 +214,8 @@
                         android:id="@+id/et_pddh"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-                        android:layout_weight="10" />
+                        android:layout_weight="10"
+                        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" />
 
                 </LinearLayout>
 
@@ -205,15 +237,13 @@
 
                     <TextView
                         android:id="@+id/tv_warehouse"
-                        android:layout_weight="10"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp"
+                        android:layout_weight="10"
                         android:background="#faf8f8"
                         android:gravity="center_vertical"
-                        android:text="请选择仓库" />
-
-
+                        android:text="请选择仓库"
+                        android:textSize="18sp" />
 
 
                 </LinearLayout>
@@ -221,8 +251,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1">
 
                     <Button
@@ -230,8 +260,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:onClick="queryClear"
                         android:background="@drawable/shape_color"
+                        android:onClick="queryClear"
                         android:text="清空" />
 
                     <Button
@@ -239,8 +269,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:onClick="query"
                         android:background="#fdd631"
+                        android:onClick="query"
                         android:text="查询" />
                 </LinearLayout>
             </LinearLayout>

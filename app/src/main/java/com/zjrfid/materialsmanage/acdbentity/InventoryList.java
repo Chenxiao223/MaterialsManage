@@ -13,6 +13,7 @@ public class InventoryList {
     private String forwordUrl;
     private String callbackType;
     private JsonDataBean jsonData;
+    private TotalInfoBean totalInfo;
 
     public String getStatusCode() {
         return statusCode;
@@ -61,6 +62,15 @@ public class InventoryList {
     public void setJsonData(JsonDataBean jsonData) {
         this.jsonData = jsonData;
     }
+
+    public TotalInfoBean getTotalInfo() {
+        return totalInfo;
+    }
+
+    public void setTotalInfo(TotalInfoBean totalInfo) {
+        this.totalInfo = totalInfo;
+    }
+
     public static class JsonDataBean{
         private String currentPage;
         private String numPerPage;
@@ -107,46 +117,61 @@ public class InventoryList {
         public void setList(List<ListBean> list) {
             this.list = list;
         }
+
         public static class ListBean{
             private String CDEMO;
-            private String CPERSONCODE;
+            private String CPARENTID;
             private String CCVCODE;
             private String HPCVGUID;
             private String CMAKER;
             private String DCVDATE;
             private String CPERSONNAME;
-            private String CWHCODE;
-            private String DVERIDAATE;
-            private String CDEPCODE;
             private String CREATEDT;
+            private String PQUANTITY;
             private String CWHNAME;
             private String HPWGUID;
             private String CHANDLER;
+            private String FQUANTITY;
+            private String ORGNAME;
             private String CORDCODE;
             private String CIRDCODE;
-            private String ORGNAME;
 
             @Override
             public String toString() {
                 return "ListBean{" +
                         "CDEMO='" + CDEMO + '\'' +
-                        ", CPERSONCODE='" + CPERSONCODE + '\'' +
+                        ", CPARENTID='" + CPARENTID + '\'' +
                         ", CCVCODE='" + CCVCODE + '\'' +
                         ", HPCVGUID='" + HPCVGUID + '\'' +
                         ", CMAKER='" + CMAKER + '\'' +
                         ", DCVDATE='" + DCVDATE + '\'' +
                         ", CPERSONNAME='" + CPERSONNAME + '\'' +
-                        ", CWHCODE='" + CWHCODE + '\'' +
-                        ", DVERIDAATE='" + DVERIDAATE + '\'' +
-                        ", CDEPCODE='" + CDEPCODE + '\'' +
                         ", CREATEDT='" + CREATEDT + '\'' +
+                        ", PQUANTITY='" + PQUANTITY + '\'' +
                         ", CWHNAME='" + CWHNAME + '\'' +
                         ", HPWGUID='" + HPWGUID + '\'' +
                         ", CHANDLER='" + CHANDLER + '\'' +
+                        ", FQUANTITY='" + FQUANTITY + '\'' +
+                        ", ORGNAME='" + ORGNAME + '\'' +
                         ", CORDCODE='" + CORDCODE + '\'' +
                         ", CIRDCODE='" + CIRDCODE + '\'' +
-                        ", ORGNAME='" + ORGNAME + '\'' +
                         '}';
+            }
+
+            public String getCORDCODE() {
+                return CORDCODE;
+            }
+
+            public void setCORDCODE(String CORDCODE) {
+                this.CORDCODE = CORDCODE;
+            }
+
+            public String getCIRDCODE() {
+                return CIRDCODE;
+            }
+
+            public void setCIRDCODE(String CIRDCODE) {
+                this.CIRDCODE = CIRDCODE;
             }
 
             public String getCDEMO() {
@@ -157,12 +182,12 @@ public class InventoryList {
                 this.CDEMO = CDEMO;
             }
 
-            public String getCPERSONCODE() {
-                return CPERSONCODE;
+            public String getCPARENTID() {
+                return CPARENTID;
             }
 
-            public void setCPERSONCODE(String CPERSONCODE) {
-                this.CPERSONCODE = CPERSONCODE;
+            public void setCPARENTID(String CPARENTID) {
+                this.CPARENTID = CPARENTID;
             }
 
             public String getCCVCODE() {
@@ -205,36 +230,20 @@ public class InventoryList {
                 this.CPERSONNAME = CPERSONNAME;
             }
 
-            public String getCWHCODE() {
-                return CWHCODE;
-            }
-
-            public void setCWHCODE(String CWHCODE) {
-                this.CWHCODE = CWHCODE;
-            }
-
-            public String getDVERIDAATE() {
-                return DVERIDAATE;
-            }
-
-            public void setDVERIDAATE(String DVERIDAATE) {
-                this.DVERIDAATE = DVERIDAATE;
-            }
-
-            public String getCDEPCODE() {
-                return CDEPCODE;
-            }
-
-            public void setCDEPCODE(String CDEPCODE) {
-                this.CDEPCODE = CDEPCODE;
-            }
-
             public String getCREATEDT() {
                 return CREATEDT;
             }
 
             public void setCREATEDT(String CREATEDT) {
                 this.CREATEDT = CREATEDT;
+            }
+
+            public String getPQUANTITY() {
+                return PQUANTITY;
+            }
+
+            public void setPQUANTITY(String PQUANTITY) {
+                this.PQUANTITY = PQUANTITY;
             }
 
             public String getCWHNAME() {
@@ -261,20 +270,12 @@ public class InventoryList {
                 this.CHANDLER = CHANDLER;
             }
 
-            public String getCORDCODE() {
-                return CORDCODE;
+            public String getFQUANTITY() {
+                return FQUANTITY;
             }
 
-            public void setCORDCODE(String CORDCODE) {
-                this.CORDCODE = CORDCODE;
-            }
-
-            public String getCIRDCODE() {
-                return CIRDCODE;
-            }
-
-            public void setCIRDCODE(String CIRDCODE) {
-                this.CIRDCODE = CIRDCODE;
+            public void setFQUANTITY(String FQUANTITY) {
+                this.FQUANTITY = FQUANTITY;
             }
 
             public String getORGNAME() {
@@ -284,6 +285,55 @@ public class InventoryList {
             public void setORGNAME(String ORGNAME) {
                 this.ORGNAME = ORGNAME;
             }
+        }
+    }
+
+    public static class TotalInfoBean{
+        private String TOTALFQUANTITY;
+        private String TOTALFMONDEY;
+        private String TOTALTAXAMOUNT;
+        private String TOTALPQUANTITY;
+
+        @Override
+        public String toString() {
+            return "TotalInfoBean{" +
+                    "TOTALFQUANTITY='" + TOTALFQUANTITY + '\'' +
+                    ", TOTALFMONDEY='" + TOTALFMONDEY + '\'' +
+                    ", TOTALTAXAMOUNT='" + TOTALTAXAMOUNT + '\'' +
+                    ", TOTALPQUANTITY='" + TOTALPQUANTITY + '\'' +
+                    '}';
+        }
+
+        public String getTOTALFQUANTITY() {
+            return TOTALFQUANTITY;
+        }
+
+        public void setTOTALFQUANTITY(String TOTALFQUANTITY) {
+            this.TOTALFQUANTITY = TOTALFQUANTITY;
+        }
+
+        public String getTOTALFMONDEY() {
+            return TOTALFMONDEY;
+        }
+
+        public void setTOTALFMONDEY(String TOTALFMONDEY) {
+            this.TOTALFMONDEY = TOTALFMONDEY;
+        }
+
+        public String getTOTALTAXAMOUNT() {
+            return TOTALTAXAMOUNT;
+        }
+
+        public void setTOTALTAXAMOUNT(String TOTALTAXAMOUNT) {
+            this.TOTALTAXAMOUNT = TOTALTAXAMOUNT;
+        }
+
+        public String getTOTALPQUANTITY() {
+            return TOTALPQUANTITY;
+        }
+
+        public void setTOTALPQUANTITY(String TOTALPQUANTITY) {
+            this.TOTALPQUANTITY = TOTALPQUANTITY;
         }
     }
 }
