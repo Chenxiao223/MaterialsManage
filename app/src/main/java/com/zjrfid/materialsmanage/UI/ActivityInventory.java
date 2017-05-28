@@ -339,12 +339,12 @@ public class ActivityInventory extends AppCompatActivity {
 
         //显示入库单布局的时候加载信息
         inventoryHeader.setCDEMO("");
-        inventoryHeader.setCPERSONNAME(ActivityHomePage.whay.getUsername());
         getPdNo();//获取盘点单
         inventoryHeader.setHPCVGUID("");
         inventoryHeader.setCMAKER("");
         inventoryHeader.setDCVDATE(getTime());
         inventoryHeader.setCPERSONNAME(ActivityHomePage.whay.getUsername());
+        inventoryHeader.setCPERSONCODE(ActivityLogin.login.getUserid());
         inventoryHeader.setCWHCODE("");
         inventoryHeader.setDVERIDAATE("");
         inventoryHeader.setCDEPCODE(ActivityHomePage.whay.getDeptid());
@@ -355,9 +355,7 @@ public class ActivityInventory extends AppCompatActivity {
         inventoryHeader.setCIRDCODE("盘盈入库");
         inventoryHeader.setCORDCODE("盘亏出库");
         inventoryHeader.setORGNAME(ActivityHomePage.whay.getDeptname());
-
         setInventoryHeaderWindows(inventoryHeader);
-
     }
 
 
@@ -494,7 +492,6 @@ public class ActivityInventory extends AppCompatActivity {
         HttpNetworkRequest.post("goods/rs/hpCheckvouch", params, new BaseHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, String s, Object o) {
-
                 try {
                     JSONObject jsonObject = new JSONObject(s);
                     String result_hpcvGuid = jsonObject.getString("hpcvGuid");

@@ -165,6 +165,7 @@
                 android:background="@drawable/shape_btn2"
                 android:onClick="generate_List"
                 android:text="生单"
+                android:visibility="gone"
                 android:textColor="#ffff" />
 
             <Button
