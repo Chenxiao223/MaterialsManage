@@ -28,17 +28,47 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="生单"
+            android:text="生单-选择单据号"
             android:textColor="#ffffff"
             android:textSize="25sp" />
 
     </RelativeLayout>
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/linearLayout"
         android:layout_below="@+id/rel_top">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingLeft="0.2dp"
+            android:paddingRight="0.2dp"
+            android:paddingTop="0.2dp"
+            android:layout_height="40dp">
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/tv_alid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                android:singleLine="true"
+                android:gravity="center"
+                android:hint="单据号查询"/>
+
+            <Button
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_btn2"
+                android:textColor="#ffffff"
+                android:onClick="check"
+                android:text="查 询"/>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/generate"

@@ -7,7 +7,6 @@ import java.util.List;
  */
 public class Batch {
 
-
     /**
      * statusCode : 200
      * message : 操作成功

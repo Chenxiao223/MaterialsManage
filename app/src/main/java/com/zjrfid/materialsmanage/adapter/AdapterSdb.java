@@ -62,6 +62,11 @@ public class AdapterSdb extends BaseAdapter {
             viewHold.text14 = (TextView) convertView.findViewById(R.id.text14);
             viewHold.text15 = (TextView) convertView.findViewById(R.id.text15);
             viewHold.cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
+            if (i==1){//如果i==1为全选
+                viewHold.cb.setChecked(true);
+            }else if (i==2){//全不选
+                viewHold.cb.setChecked(false);
+            }
             convertView.setTag(viewHold);
         } else {
             viewHold = (ViewHold) convertView.getTag();
@@ -90,5 +95,10 @@ public class AdapterSdb extends BaseAdapter {
     public static class ViewHold {
         public CheckBox cb;
         TextView text1, text2, text3, text4, text5, text6, text7,text8, text9, text10, text11, text12,text13, text14, text15;
+    }
+
+    //全选和全不选
+    public void checkAll(int i){
+        this.i=i;
     }
 }

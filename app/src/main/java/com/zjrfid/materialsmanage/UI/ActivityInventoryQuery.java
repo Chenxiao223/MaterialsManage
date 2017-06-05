@@ -12,10 +12,9 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.zjrfid.materialsmanage.R;
-import com.zjrfid.materialsmanage.acdbentity.Batch;
-import com.zjrfid.materialsmanage.acdbentity.House;
 import com.zjrfid.materialsmanage.acdbentity.House3;
-import com.zjrfid.materialsmanage.acdbentity.MaterialSpecificFilesInfo;
+import com.zjrfid.materialsmanage.acdbentity.CgoodsAllocationRfid;
+import com.zjrfid.materialsmanage.acdbentity.InventoryQuery;
 import com.zjrfid.materialsmanage.adapter.HouseAdapter2;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
@@ -80,40 +79,49 @@ public class ActivityInventoryQuery extends Activity {
                     RequestParams params = new RequestParams();
                     params.put("rfid", rfid);
                     //物资档案接口
-                    HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&oldcord=&cinvcode=", params, new BaseHttpResponseHandler() {
+                    HttpNetworkRequest.get("goods/rs/rfid", params, new BaseHttpResponseHandler() {
                         @Override
                         public void onSuccess(int i, Header[] headers, String s, Object o) {
                             Gson mGson = new Gson();
-                            MaterialSpecificFilesInfo msfi = mGson.fromJson(s, MaterialSpecificFilesInfo.class);
-                            if (msfi.getJsonData().getList().size() != 0) {
-                                String wzbm = msfi.getJsonData().getList().get(0).getCINVCODE();//物资编码
-                                String wzmc = msfi.getJsonData().getList().get(0).getCINVNAME();//物料名称
-                                String wzzj = msfi.getJsonData().getList().get(0).getHPIGUID();//物资主键
+                            CgoodsAllocationRfid msfi = mGson.fromJson(s, CgoodsAllocationRfid.class);
+                            if (msfi.getJsonData().size() != 0) {
+                                String wzbm = msfi.getJsonData().get(0).getCINVCODE();//物资编码
+                                String wzmc = msfi.getJsonData().get(0).getCINVNAME();//物料名称
+                                String wzzj = msfi.getJsonData().get(0).getHPICGUID();//物资分类编码
+                                String hwbm=msfi.getJsonData().get(0).getCPOSCODE();//货位编码
+                                String batch=msfi.getJsonData().get(0).getCBATCH();//批号
+                                String ggxh=msfi.getJsonData().get(0).getCINVSTD();//规格型号
+                                String jbm=msfi.getJsonData().get(0).getOLDCORD();//旧编码
+                                String wzflmc=msfi.getJsonData().get(0).getCINVCNAME();//这个需要获取
                                 //批次接口
                                 RequestParams params = new RequestParams();
-                                params.put("cinvcode", wzbm);
                                 params.put("cwhname", warehouse);
-                                params.put("cinvname", wzmc);
-                                params.put("hpiGuid", wzzj);
-                                params.put("fquantity", "1");
                                 params.put("cwhcode", cwhcode);
-                                System.out.println(warehouse + "," + cwhcode);
-                                //批次信息接口
-                                HttpNetworkRequest.get("goods/rs/hpoutstorageBatch", params, new BaseHttpResponseHandler() {
+                                params.put("orderField","cposcodes");
+                                params.put("cposcode",hwbm);
+                                params.put("cinvcode", wzbm);
+                                params.put("cinvname", wzmc);
+                                params.put("cbatch",batch);
+                                params.put("cinvstd",ggxh);
+                                params.put("oldcord",jbm);
+                                params.put("cinvcname",wzflmc);
+                                params.put("hpicGuid", wzzj);
+                                //库存信息列表接口
+                                HttpNetworkRequest.get("goods/rs/hpStackshelves", params, new BaseHttpResponseHandler() {
                                     @Override
                                     public void onSuccess(int i, Header[] headers, String s, Object o) {
                                         Gson gson = new Gson();
-                                        Batch mBatch = gson.fromJson(s, Batch.class);
+                                        InventoryQuery mBatch = gson.fromJson(s, InventoryQuery.class);
                                         try {
                                             for (int j = 0; j < mBatch.getJsonData().getList().size(); j++) {
                                                 //物资数量、物资单价、入库数量、
-                                                House3 house = new House3((int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFQUANTITYS()),
+                                                House3 house = new House3((int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFQUANTITY()),
                                                         (int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFTAXPRICE()), 0,
                                                         mBatch.getJsonData().getList().get(j).getCINVCODE(), mBatch.getJsonData().getList().get(j).getCINVNAME(),
                                                         mBatch.getJsonData().getList().get(j).getCPOSCODE(), mBatch.getJsonData().getList().get(j).getCBATCH(),
                                                         "false", mBatch.getJsonData().getList().get(j).getCWHNAME());
                                                 mlist.add(house);
-                                                amount = amount + (int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFQUANTITYS());
+                                                amount = amount + (int) Double.parseDouble(mBatch.getJsonData().getList().get(j).getFQUANTITY());
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();

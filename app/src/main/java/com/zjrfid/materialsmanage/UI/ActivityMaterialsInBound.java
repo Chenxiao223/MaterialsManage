@@ -87,8 +87,8 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
     private String json_header;//表头json
     private JSONArray jsonArray;//表体json
     private int flag = 0;//标记
-    public String cvencode;
-    public String hpsnguid;
+    public String cvencode="";
+    public String hpsnguid="";
     private int sign2 = 0;
     private String hprguid = "";
 
@@ -261,7 +261,7 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
             } else {
                 godownEntryInfo.setHprGuid("");//主键，如果主键为空就是新增，不为空就是修改
                 godownEntryInfo.setHpwGuid("");//仓库主键
-                godownEntryInfo.setCpersoncode("");
+                godownEntryInfo.setCpersoncode(ActivityLogin.login.getUserid());
                 godownEntryInfo.setCdepcode("");
             }
             godownEntryInfo.setCvencode(cvencode);//供货单位编码
@@ -495,7 +495,7 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
             dataChanged();//刷新适配器
             line3.setVisibility(View.VISIBLE);//显示总数那个布局
             //因为有数据，所以让保存按钮可以点击
-            ActivityMaterialsInBound.materialsInBound.btn_save.setClickable(true);
+            btn_save.setClickable(true);
             clickEnable(true);//入库单中控件可以点击
         } else {
             Toast.makeText(ActivityMaterialsInBound.this, "该条已审核，无法修改", Toast.LENGTH_SHORT).show();

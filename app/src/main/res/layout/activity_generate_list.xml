@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="生单-选择物资"
+            android:text="生单-完善物资"
             android:textColor="#ffffff"
             android:textSize="25sp" />
 
@@ -55,6 +55,19 @@
                 android:layout_above="@+id/line3"
                 android:layout_below="@+id/linearLayout18"
                 android:textColor="#FF0D0D0D" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="34dp"
+                android:layout_marginRight="10dp"
+                android:background="#00000000"
+                android:onClick="stick"
+                android:scaleType="fitXY"
+                android:src="@drawable/top" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -74,23 +87,12 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_select_all"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@drawable/shape_btn2"
-                android:onClick="select_All"
-                android:text="全 选"
-                android:layout_marginRight="0.1dp"
-                android:textColor="#ffff" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_btn2"
-                android:onClick="determine"
-                android:text="确 定"
+                android:onClick="save"
+                android:text="加载到入库单"
                 android:textColor="#ffff" />
         </LinearLayout>
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,7 +14,6 @@ import com.loopj.android.http.RequestParams;
 import com.zjrfid.materialsmanage.R;
 import com.zjrfid.materialsmanage.acdbentity.GenerateListB;
 import com.zjrfid.materialsmanage.adapter.AdapterSdb;
-import com.zjrfid.materialsmanage.adapter.AdapterSdh;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
 
@@ -28,22 +28,27 @@ import java.util.List;
  * 生单（体）
  */
 public class ActivityGenerateListB extends Activity {
+    public static ActivityGenerateListB generateListB;
     private ListView lv_create;
     private AdapterSdb adapterSdb;
     private HashMap<String, String> hashMap;
-    private List<HashMap<String, String>> sdb_Listscq = new ArrayList<>();
+    public List<HashMap<String, String>> sdb_Listscq = new ArrayList<>();
     private int record = 0;
     private List<String> list_sld = new ArrayList<>();//加入收料单主键
+    private Boolean judge = true;
+    private Button btn_select_all;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generate_list_h);
+        setContentView(R.layout.activity_generate_list_b);
         //
+        generateListB = this;
         initView();
     }
 
     public void initView() {
+        btn_select_all = (Button) findViewById(R.id.btn_select_all);
         lv_create = (ListView) findViewById(R.id.lv_create);
         adapterSdb = new AdapterSdb(ActivityGenerateListB.this, (ArrayList<HashMap<String, String>>) sdb_Listscq);
         lv_create.setAdapter(adapterSdb);
@@ -52,10 +57,9 @@ public class ActivityGenerateListB extends Activity {
         lv_create.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(judge(position));
-                if (record == 0 || judge(position)) {//如果是第一次选中或者供应商相同则可以执行
+                try {
                     // 取得ViewHolder对象，这样就省去了通过层层的findViewById去实例化我们需要的cb实例的步骤
-                    AdapterSdh.ViewHold holder = (AdapterSdh.ViewHold) view.getTag();
+                    AdapterSdb.ViewHold holder = (AdapterSdb.ViewHold) view.getTag();
                     // 改变CheckBox的状态
                     holder.cb.toggle();
                     // 将CheckBox的选中状况记录下来
@@ -69,8 +73,8 @@ public class ActivityGenerateListB extends Activity {
                         list_sld.remove(sdb_Listscq.get(position).get("content10"));
                         record -= 1;
                     }
-                } else {
-                    Toast.makeText(ActivityGenerateListB.this, "请选择相同供应商", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -79,9 +83,10 @@ public class ActivityGenerateListB extends Activity {
     public void addData() {
         try {
             for (int i = 0; i < ActivityGenerateListH.activityGenerateListH.list_sld.size(); i++) {
-                RequestParams params=new RequestParams();
-                params.put("str","'"+ActivityGenerateListH.activityGenerateListH.list_sld.get(i)+"'");
-                HttpNetworkRequest.put("goods/rs/hpArrivalvouchChRefer",params, new BaseHttpResponseHandler() {
+                RequestParams params = new RequestParams();
+                params.put("str", "'" + ActivityGenerateListH.activityGenerateListH.list_sld.get(i) + "'");
+                //入库单生单查询收料单子表信息接口
+                HttpNetworkRequest.put("goods/rs/hpArrivalvouchChRefer", params, new BaseHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
                         Gson gson = new Gson();
@@ -125,6 +130,12 @@ public class ActivityGenerateListB extends Activity {
     //点击确定按钮
     public void determine(View view) {
 //        startActivity(new Intent(this, ));
+        if (record == 0) {
+            Toast.makeText(ActivityGenerateListB.this, "请选中一条", Toast.LENGTH_SHORT).show();
+        } else {
+            startActivity(new Intent(this, ActivityGenerateList.class));
+            finish();
+        }
     }
 
     //点击箭头
@@ -137,20 +148,26 @@ public class ActivityGenerateListB extends Activity {
         adapterSdb.notifyDataSetChanged();
     }
 
-
-    //判断供应商是否相同
-    public boolean judge(int posision) {
-        String cvenname = "";
-        for (int i = 0; i < sdb_Listscq.size(); i++) {
-            if (sdb_Listscq.get(i).get("flag").equals("true")) {
-                cvenname = sdb_Listscq.get(i).get("content6");
+    //全选和全不选
+    public void select_All(View view) {
+        if (judge) {
+            btn_select_all.setText("全不选");
+            adapterSdb.checkAll(1);
+            for (int i = 0; i < sdb_Listscq.size(); i++) {
+                sdb_Listscq.get(i).put("flag", "true");
             }
-        }
-        for (int j = 0; j < sdb_Listscq.size(); j++) {
-            if (cvenname.equals(sdb_Listscq.get(posision).get("content6"))) {
-                return true;
+            judge = false;
+            record += 1;
+        } else {
+            btn_select_all.setText("全选");
+            adapterSdb.checkAll(2);
+            for (int i = 0; i < sdb_Listscq.size(); i++) {
+                sdb_Listscq.get(i).put("flag", "false");
             }
+            judge = true;
+            record -= 1;
         }
-        return false;
+        dataChange();
     }
+
 }

@@ -90,7 +90,8 @@ public class ActivityHomePage extends Activity {
         linear_binding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ActivityHomePage.this, ActivityBinding.class));
+//                startActivity(new Intent(ActivityHomePage.this, ActivityBinding.class));
+                startActivity(new Intent(ActivityHomePage.this, ActivityGoodsAllocationRFIDBind.class));
             }
         });
         //点击出库

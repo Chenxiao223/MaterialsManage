@@ -296,7 +296,7 @@ public class ActivityMaterialsOutBound extends Activity {
             } else {
                 outboundHeader.setCcode("");
                 outboundHeader.setIwhpos("");
-                outboundHeader.setCpersoncode("");
+                outboundHeader.setCpersoncode(ActivityLogin.login.getUserid());
                 outboundHeader.setCdepcode("");
                 outboundHeader.setCmemo("");
                 outboundHeader.setHprGuidChs("");

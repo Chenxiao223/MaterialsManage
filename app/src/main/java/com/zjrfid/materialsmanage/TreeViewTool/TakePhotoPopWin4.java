@@ -19,7 +19,10 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.zjrfid.materialsmanage.R;
+import com.zjrfid.materialsmanage.UI.ActivityGenerateList;
 import com.zjrfid.materialsmanage.UI.ActivityGoodsAllocation;
+import com.zjrfid.materialsmanage.UI.ActivityGenerateList;
+import com.zjrfid.materialsmanage.UI.ActivityGoodsAllocationRFIDBind;
 import com.zjrfid.materialsmanage.UI.ActivityMaterialsInBound;
 import com.zjrfid.materialsmanage.acdbentity.CgoodsAllocationRfid;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
@@ -35,7 +38,7 @@ import java.util.HashMap;
 /**
  * Created by Administrator on 2016/12/19 0019.
  */
-public class TakePhotoPopWin extends PopupWindow {
+public class TakePhotoPopWin4 extends PopupWindow {
     private Context mContext;
     private View view;
     private ImageButton plus, minus;
@@ -43,7 +46,7 @@ public class TakePhotoPopWin extends PopupWindow {
     public TextView tv_huowei;
     private int i = 0;
     private LinearLayout lineone, linetwo;
-    public static TakePhotoPopWin instance;
+    public static TakePhotoPopWin4 instance;
     public int j;
     private TextView wsprice, wsmoney, hsprice, hsmoney, tax, tax_rate, tv_number;
     public TextView wzbm, jbm, flbm, wlmc, mrsl, ggxh, sfzc, mrhw, zjldw, mrck, fzjldw;
@@ -51,9 +54,11 @@ public class TakePhotoPopWin extends PopupWindow {
     public CgoodsAllocationRfid msfi;
     public String hpiguid;
     public String hwbm;
+    private int position;
 
-    public TakePhotoPopWin(final Context mContext, View.OnClickListener itemsOnClick, int flag) {
+    public TakePhotoPopWin4(final Context mContext, View.OnClickListener itemsOnClick, int flag, int pisition) {
         instance = this;
+        this.position = position;
         this.mContext = mContext;
         this.view = LayoutInflater.from(mContext).inflate(R.layout.pop_scan_wz, null);
         plus = (ImageButton) view.findViewById(R.id.plus);
@@ -133,9 +138,9 @@ public class TakePhotoPopWin extends PopupWindow {
         tv_huowei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ActivityMaterialsInBound.materialsInBound, ActivityGoodsAllocation.class);
-                intent.putExtra("cwhname",ActivityMaterialsInBound.materialsInBound.tv_warehouse.getText().toString());//仓库名称
-                intent.putExtra("cwhcode",ActivityMaterialsInBound.materialsInBound.cwhcode2);//仓库编码
+                Intent intent = new Intent(ActivityGenerateList.generateList, ActivityGoodsAllocation.class);
+//                intent.putExtra("cwhname", ActivityGenerateList.generateList.tv_warehouse.getText().toString());//仓库名称
+//                intent.putExtra("cwhcode", ActivityGenerateList.generateList.cwhcode2);//仓库编码
                 mContext.startActivity(intent);
             }
         });
@@ -196,7 +201,7 @@ public class TakePhotoPopWin extends PopupWindow {
         view.findViewById(R.id.sm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String rfid=getRfid();
+                String rfid = getRfid();
                 if (rfid.equals("")) {
                     Toast.makeText(mContext, "没有结果，请重新扫描", Toast.LENGTH_SHORT).show();
                 } else {
@@ -211,25 +216,33 @@ public class TakePhotoPopWin extends PopupWindow {
                             Gson gson = new Gson();
                             msfi = gson.fromJson(rawResponse, CgoodsAllocationRfid.class);
                             if (msfi.getJsonData().size() != 0) {
-                                wzbm.setText(msfi.getJsonData().get(0).getCINVCODE());//物资编码
-                                jbm.setText(msfi.getJsonData().get(0).getOLDCORD());//旧编码
-                                flbm.setText(msfi.getJsonData().get(0).getHPICGUID());//分类编码
-                                wlmc.setText(msfi.getJsonData().get(0).getCINVNAME());//物料名称
-                                mrsl.setText(msfi.getJsonData().get(0).getFTAXRATE());//默认税率
-                                ggxh.setText(msfi.getJsonData().get(0).getCINVSTD());//规格型号
-                                sfzc.setText("");//是否资产
-                                mrhw.setText(msfi.getJsonData().get(0).getCPARENTID());//默认货位
-                                zjldw.setText(msfi.getJsonData().get(0).getOLDUNITNAME());//主计量单位
-                                mrck.setText(msfi.getJsonData().get(0).getCWHNAME());//默认仓库
-                                fzjldw.setText(msfi.getJsonData().get(0).getCUNITNAME());//辅助计量单位
-                                tv_huowei.setText(msfi.getJsonData().get(0).getCPARENTID());//将默认货位传进去
-                                hwbm = msfi.getJsonData().get(0).getCPOSCODE();//货位编码
-                                hpiguid=msfi.getJsonData().get(0).getHPIGUID();//物资主键
+                                //如果扫出来的物资编码和获取到的物资编码相同才能执行下一步操作
+//                                if (ActivityGenerateList.generateList.listscq.get(0).get("content1").equals(msfi.getJsonData().get(0).getCINVCODE())) {
+                                    wzbm.setText(msfi.getJsonData().get(0).getCINVCODE());//物资编码
+                                    jbm.setText(msfi.getJsonData().get(0).getOLDCORD());//旧编码
+                                    flbm.setText(msfi.getJsonData().get(0).getHPICGUID());//分类编码
+                                    wlmc.setText(msfi.getJsonData().get(0).getCINVNAME());//物料名称
+                                    mrsl.setText(msfi.getJsonData().get(0).getFTAXRATE());//默认税率
+                                    ggxh.setText(msfi.getJsonData().get(0).getCINVSTD());//规格型号
+                                    sfzc.setText("");//是否资产
+                                    mrhw.setText(msfi.getJsonData().get(0).getCPARENTID());//默认货位
+                                    zjldw.setText(msfi.getJsonData().get(0).getOLDUNITNAME());//主计量单位
+                                    mrck.setText(msfi.getJsonData().get(0).getCWHNAME());//默认仓库
+                                    fzjldw.setText(msfi.getJsonData().get(0).getCUNITNAME());//辅助计量单位
+                                    tv_huowei.setText(msfi.getJsonData().get(0).getCPARENTID());//将默认货位传进去
+                                    hwbm = msfi.getJsonData().get(0).getCPOSCODE();//货位编码
+                                    hpiguid = msfi.getJsonData().get(0).getHPIGUID();//物资主键
+//                                } else {
+//                                    Toast.makeText(mContext, "扫描有误，请重新扫描", Toast.LENGTH_SHORT).show();
+//                                }
 
-//                        number.setText(ed_batch.getText().toString());//批号
                                 et_shuilv.setText(0.01 * Double.parseDouble(msfi.getJsonData().get(0).getFTAXRATE()) + "");//税率,在这里写成小数的形式
                             } else {
                                 Toast.makeText(mContext, "此标签未绑定", Toast.LENGTH_SHORT).show();
+                                //跳转到绑定界面做绑定
+                                Intent intent = new Intent(mContext, ActivityGoodsAllocationRFIDBind.class);
+                                intent.putExtra("flag", 1);
+                                mContext.startActivity(intent);
                             }
                         }
 
@@ -247,76 +260,49 @@ public class TakePhotoPopWin extends PopupWindow {
         view.findViewById(R.id.tj).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityMaterialsInBound.iAdapter.setNewListIndex();
+//                ActivityGenerateList.iAdapter.setNewListIndex();
                 //判断数据是否填写完整
                 if (et_amount.getText().toString().equals("") ||
                         et_hanshui.getText().toString().equals("") || et_shuilv.getText().toString().equals("") ||
                         tv_huowei.getText().equals("点击选择货位")) {
                     Toast.makeText(mContext, "请将数据填写完整", Toast.LENGTH_SHORT).show();
+                } else if (jbm.getText().toString().equals("")) {
+                    Toast.makeText(mContext, "请扫描", Toast.LENGTH_SHORT).show();
                 } else {
-                    ActivityMaterialsInBound.materialsInBound.map2 = new HashMap<String, String>();
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content1", wzbm.getText().toString());//物资编码
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content2", jbm.getText().toString());//旧编码
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content3", flbm.getText().toString());//分类编码
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content4", wlmc.getText().toString());//物料名称
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content5", mrsl.getText().toString());//默认税率
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content6", ggxh.getText().toString());//规格型号
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content7", sfzc.getText().toString());//是否资产
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content8", mrhw.getText().toString());//默认货位
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content9", zjldw.getText().toString());//主计量单位
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content10", mrck.getText().toString());//默认仓库
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content11", fzjldw.getText().toString());//辅助计量单位
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content12", wsdj);//无税单价
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content13", wsje);//无税金额
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content14", hsdj);//含税单价
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content15", et_hanshui.getText().toString());//含税金额
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content16", et_shuilv.getText().toString());//税率
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content17", se);//税额
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content18", et_batch.getText().toString());//批号
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content19", et_amount.getText().toString());//数量
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content20", tv_huowei.getText().toString());//货位
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content21", et_remark.getText().toString());//备注
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content22", j + "");
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content23", hwbm);//货位编码
-                    ActivityMaterialsInBound.materialsInBound.map2.put("content24", hpiguid);//物资主键
-                    ActivityMaterialsInBound.materialsInBound.map2.put("delFlag", "0");
-                    ActivityMaterialsInBound.materialsInBound.map2.put("flag", "false");
-
-                    //这里需要判断，只有当修改是才能做删除操作
-                    if (ActivityMaterialsInBound.materialsInBound.m_jt == 1) {
-                        //显示总价
-                        ActivityMaterialsInBound.materialsInBound.dbl_number = ActivityMaterialsInBound.materialsInBound.dbl_number - Double.parseDouble(ActivityMaterialsInBound.materialsInBound.listscq.get(ActivityMaterialsInBound.materialsInBound.item).get("content15"));
-                        DecimalFormat df = new DecimalFormat("0.00 ");//小数点后保留两位小数
-                        ActivityMaterialsInBound.materialsInBound.tv_total_prices.setText(df.format(ActivityMaterialsInBound.materialsInBound.dbl_number) + "");
-                        //计算数量
-                        ActivityMaterialsInBound.materialsInBound.amount = ActivityMaterialsInBound.materialsInBound.amount - Integer.parseInt(ActivityMaterialsInBound.materialsInBound.listscq.get(ActivityMaterialsInBound.materialsInBound.item).get("content19"));
-                        ActivityMaterialsInBound.materialsInBound.tv_amount.setText(ActivityMaterialsInBound.materialsInBound.amount + "");
-                        //删除原有那条
-                        ActivityMaterialsInBound.materialsInBound.listscq.remove(ActivityMaterialsInBound.materialsInBound.item);
-                        //在原有位置上增加达到替换目的
-                        ActivityMaterialsInBound.materialsInBound.listscq.add(ActivityMaterialsInBound.materialsInBound.item, ActivityMaterialsInBound.materialsInBound.map2);
-                    } else {//新增
-                        ActivityMaterialsInBound.materialsInBound.list_HprGuidCh.add("");
-                        ActivityMaterialsInBound.materialsInBound.listscq.add(ActivityMaterialsInBound.materialsInBound.map2);
-                    }
-                    ActivityMaterialsInBound.dataChanged();
-                    try {
-                        //显示总价
-                        ActivityMaterialsInBound.materialsInBound.dbl_number = ActivityMaterialsInBound.materialsInBound.dbl_number + Double.parseDouble(et_hanshui.getText().toString());
-                        DecimalFormat df = new DecimalFormat("0.00 ");//小数点后保留两位小数
-                        ActivityMaterialsInBound.materialsInBound.tv_total_prices.setText(df.format(ActivityMaterialsInBound.materialsInBound.dbl_number) + "");
-                        //计算数量
-                        ActivityMaterialsInBound.materialsInBound.amount = ActivityMaterialsInBound.materialsInBound.amount + Integer.parseInt(et_amount.getText().toString());
-                        ActivityMaterialsInBound.materialsInBound.tv_amount.setText(ActivityMaterialsInBound.materialsInBound.amount + "");
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        Toast.makeText(mContext, "出错", Toast.LENGTH_SHORT).show();
-                        //删除原有那条
-                        ActivityMaterialsInBound.materialsInBound.listscq.remove(ActivityMaterialsInBound.materialsInBound.item);
-                        dismiss();
-                    }
-                    //因为有数据，所以让保存按钮可以点击
-                    ActivityMaterialsInBound.materialsInBound.btn_save.setClickable(true);
+                    ActivityGenerateList.iAdapter.changeFlag(1);
+                    ActivityGenerateList.generateList.map = new HashMap<String, String>();
+                    ActivityGenerateList.generateList.map.put("content1", wzbm.getText().toString());//物资编码
+                    ActivityGenerateList.generateList.map.put("content2", jbm.getText().toString());//旧编码
+                    ActivityGenerateList.generateList.map.put("content3", flbm.getText().toString());//分类编码
+                    ActivityGenerateList.generateList.map.put("content4", wlmc.getText().toString());//物料名称
+                    ActivityGenerateList.generateList.map.put("content5", mrsl.getText().toString());//默认税率
+                    ActivityGenerateList.generateList.map.put("content6", ggxh.getText().toString());//规格型号
+                    ActivityGenerateList.generateList.map.put("content7", sfzc.getText().toString());//是否资产
+                    ActivityGenerateList.generateList.map.put("content8", mrhw.getText().toString());//默认货位
+                    ActivityGenerateList.generateList.map.put("content9", zjldw.getText().toString());//主计量单位
+                    ActivityGenerateList.generateList.map.put("content10", mrck.getText().toString());//默认仓库
+                    ActivityGenerateList.generateList.map.put("content11", fzjldw.getText().toString());//辅助计量单位
+                    ActivityGenerateList.generateList.map.put("content12", wsdj);//无税单价
+                    ActivityGenerateList.generateList.map.put("content13", wsje);//无税金额
+                    ActivityGenerateList.generateList.map.put("content14", hsdj);//含税单价
+                    ActivityGenerateList.generateList.map.put("content15", et_hanshui.getText().toString());//含税金额
+                    ActivityGenerateList.generateList.map.put("content16", et_shuilv.getText().toString());//税率
+                    ActivityGenerateList.generateList.map.put("content17", se);//税额
+                    ActivityGenerateList.generateList.map.put("content18", et_batch.getText().toString());//批号
+                    ActivityGenerateList.generateList.map.put("content19", et_amount.getText().toString());//数量
+                    ActivityGenerateList.generateList.map.put("content20", tv_huowei.getText().toString());//货位
+                    ActivityGenerateList.generateList.map.put("content21", et_remark.getText().toString());//备注
+                    ActivityGenerateList.generateList.map.put("content22", j + "");
+                    ActivityGenerateList.generateList.map.put("content23", hwbm);//货位编码
+                    ActivityGenerateList.generateList.map.put("content24", hpiguid);//物资主键
+                    ActivityGenerateList.generateList.map.put("delFlag", "0");
+                    ActivityGenerateList.generateList.map.put("flag", "false");
+                    ActivityGenerateList.generateList.map.put("content27", "change");
+                    //删除原有那条
+                    ActivityGenerateList.generateList.listscq.remove(position);
+                    //在原有位置上增加达到替换目的
+                    ActivityGenerateList.generateList.listscq.add(ActivityGenerateList.generateList.map);
+                    ActivityGenerateList.dataChanged();
                     //隐藏布局
                     linetwo.setVisibility(View.GONE);
                     lineone.setVisibility(View.VISIBLE);
@@ -347,16 +333,8 @@ public class TakePhotoPopWin extends PopupWindow {
                     hsprice.setText("含税单价：");
                     tax_rate.setText("税率：");
                     tv_number.setText("数量：");
-                    ActivityMaterialsInBound.materialsInBound.i = 0;//记录清零，包括删除和修改的记录
-                    ActivityMaterialsInBound.materialsInBound.lv_create.setSelection(ActivityMaterialsInBound.materialsInBound.listscq.size() - 1);
-                    ActivityMaterialsInBound.iAdapter.setNewItemBackground(ActivityMaterialsInBound.materialsInBound.listscq.size() - 1, true);
-                    //清除所有勾选的勾，因为上面把记录清空了
-                    for (int i=0;i<ActivityMaterialsInBound.materialsInBound.listscq.size();i++){
-                        ActivityMaterialsInBound.materialsInBound.listscq.get(i).put("flag","false");
-                    }
-                }
-                //如果是修改，点击添加就让它隐藏
-                if (ActivityMaterialsInBound.materialsInBound.m_jt == 1) {
+                    ActivityGenerateList.generateList.lv_create.setSelection(ActivityGenerateList.generateList.listscq.size() - 1);
+//                    ActivityGenerateList.iAdapter.setNewItemBackground(ActivityGenerateList.generateList.listscq.size() - 1, true);
                     dismiss();
                 }
             }

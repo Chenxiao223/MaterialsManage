@@ -23,7 +23,7 @@ import com.zjrfid.materialsmanage.UI.ActivityBatchPd;
 import com.zjrfid.materialsmanage.UI.ActivityInventory;
 import com.zjrfid.materialsmanage.acdbentity.Batch;
 import com.zjrfid.materialsmanage.acdbentity.House;
-import com.zjrfid.materialsmanage.acdbentity.MaterialSpecificFilesInfo;
+import com.zjrfid.materialsmanage.acdbentity.CgoodsAllocationRfid;
 import com.zjrfid.materialsmanage.adapter.GalleryAdapter2;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
@@ -62,7 +62,7 @@ public class TakePhotoPopWin3 extends PopupWindow {
     public int state2 = 0;
     public boolean is_judge = false;
     public List<String> list;
-    public MaterialSpecificFilesInfo msfi;
+    public CgoodsAllocationRfid msfi;
 
 
     public TakePhotoPopWin3(final Context mContext, View.OnClickListener itemsOnClick, final int flag) {
@@ -135,29 +135,27 @@ public class TakePhotoPopWin3 extends PopupWindow {
                             linetwo.setVisibility(View.VISIBLE);//显示布局
                             RequestParams params = new RequestParams();
                             params.put("rfid", rfid);
-                            //物资档案接口
-                            HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&oldcord=&cinvcode=", params, new BaseHttpResponseHandler() {
+                            //
+                            HttpNetworkRequest.get("goods/rs/rfid", params, new BaseHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int i, Header[] headers, String s, Object o) {
                                     Gson mGson = new Gson();
-                                    msfi = mGson.fromJson(s, MaterialSpecificFilesInfo.class);
-                                    Log.i("info", "json: " + s);
-                                    if (msfi.getJsonData().getList().size() != 0) {
-                                        wzbm.setText(msfi.getJsonData().getList().get(0).getCINVCODE());//物资编码
-                                        jbm.setText(msfi.getJsonData().getList().get(0).getOLDCORD());//旧编码
-                                        flbm.setText(msfi.getJsonData().getList().get(0).getHPICGUID());//分类编码
-                                        wlmc.setText(msfi.getJsonData().getList().get(0).getCINVNAME());//物料名称
-                                        mrsl.setText(msfi.getJsonData().getList().get(0).getFTAXRATE());//默认税率
-                                        ggxh.setText(msfi.getJsonData().getList().get(0).getCINVSTD());//规格型号
-                                        sfzc.setText(msfi.getJsonData().getList().get(0).getIASSET());//是否资产
-                                        mrhw.setText(msfi.getJsonData().getList().get(0).getCPARENTID());//默认货位
-                                        zjldw.setText(msfi.getJsonData().getList().get(0).getOLDUNITNAME());//主计量单位
-                                        mrck.setText(msfi.getJsonData().getList().get(0).getCWHNAME());//默认仓库
-                                        fzjldw.setText(msfi.getJsonData().getList().get(0).getCUNITNAME());//辅助计量单位
+                                    msfi = mGson.fromJson(s, CgoodsAllocationRfid.class);
+                                    if (msfi.getJsonData().size() != 0) {
+                                        wzbm.setText(msfi.getJsonData().get(0).getCINVCODE());//物资编码
+                                        jbm.setText(msfi.getJsonData().get(0).getOLDCORD());//旧编码
+                                        flbm.setText(msfi.getJsonData().get(0).getHPICGUID());//分类编码
+                                        wlmc.setText(msfi.getJsonData().get(0).getCINVNAME());//物料名称
+                                        mrsl.setText(msfi.getJsonData().get(0).getFTAXRATE());//默认税率
+                                        ggxh.setText(msfi.getJsonData().get(0).getCINVSTD());//规格型号
+                                        sfzc.setText("");//是否资产
+                                        mrhw.setText(msfi.getJsonData().get(0).getCPARENTID());//默认货位
+                                        zjldw.setText(msfi.getJsonData().get(0).getOLDUNITNAME());//主计量单位
+                                        mrck.setText(msfi.getJsonData().get(0).getCWHNAME());//默认仓库
+                                        fzjldw.setText(msfi.getJsonData().get(0).getCUNITNAME());//辅助计量单位
 
 //                                        ActivityInventory.inventory.list_hpiguid.add(msfi.getJsonData().getList().get(0).getHPIGUID());
 //                                        ActivityInventory.inventory.list_Cposcode.add(msfi.getJsonData().getList().get(0).getCPOSCODE());
-                                        Log.i("info", ActivityInventory.inventory.list_hpiguid.size() + "<<");
                                     } else {
                                         Toast.makeText(mContext, "此标签没有绑定", Toast.LENGTH_SHORT).show();
                                     }

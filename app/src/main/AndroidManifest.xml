@@ -129,6 +129,14 @@
             android:name=".UI.ActivityGenerateListB"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".UI.ActivityGoodsAllocationRFIDBind"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".UI.ActivityGenerateList"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <meta-data
             android:name="com.google.android.gms.version"

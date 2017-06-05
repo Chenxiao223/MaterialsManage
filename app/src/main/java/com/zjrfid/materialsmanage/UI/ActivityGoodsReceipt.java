@@ -463,7 +463,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             adapterWzrk.checkAll(2);//参数为2表示全选
             for (int k = 0; k < listscq.size(); k++) {
                 listscq.get(k).put("flag", "true");
-
             }
             bln_check = false;
         } else {
@@ -471,7 +470,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             adapterWzrk.checkAll(3);//参数为3表示全不选
             for (int k = 0; k < listscq.size(); k++) {
                 listscq.get(k).put("flag", "false");
-
             }
             bln_check = true;
         }
@@ -682,8 +680,6 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             @Override
             public void run() {
                 try {
-
-
                     gel=null;
                     list.clear();
                     pageN = "1";

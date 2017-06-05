@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -22,13 +21,12 @@ import com.zjrfid.materialsmanage.UI.ActivityBatch;
 import com.zjrfid.materialsmanage.UI.ActivityMaterialsOutBound;
 import com.zjrfid.materialsmanage.acdbentity.Batch;
 import com.zjrfid.materialsmanage.acdbentity.House;
-import com.zjrfid.materialsmanage.acdbentity.MaterialSpecificFilesInfo;
+import com.zjrfid.materialsmanage.acdbentity.CgoodsAllocationRfid;
 import com.zjrfid.materialsmanage.adapter.GalleryAdapter;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
 import com.zjrfid.materialsmanage.rfid.Result;
 import com.zjrfid.materialsmanage.rfid.RfidOperation;
-import com.zjrfid.materialsmanage.tool.MyRecyclerView;
 
 import org.apache.http.Header;
 
@@ -36,7 +34,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Administrator on 2016/12/19 0019.
@@ -60,7 +57,7 @@ public class TakePhotoPopWin2 extends PopupWindow {
     public int state2 = 0;
     public boolean is_judge = false;
     public List<String> list;
-    public MaterialSpecificFilesInfo msfi;
+    public CgoodsAllocationRfid msfi;
     public String hwbm, hpiguid;
 
     public TakePhotoPopWin2(final Context mContext, View.OnClickListener itemsOnClick, final int flag) {
@@ -161,25 +158,25 @@ public class TakePhotoPopWin2 extends PopupWindow {
                     RequestParams params = new RequestParams();
                     params.put("rfid", rfid);
                     //物资档案接口
-                    HttpNetworkRequest.get("goods/rs/hpInventory?pageNum=1&hpicGuid=&cinvname=&oldcord=&cinvcode=", params, new BaseHttpResponseHandler() {
+                    HttpNetworkRequest.get("goods/rs/rfid", params, new BaseHttpResponseHandler() {
                         @Override
                         public void onSuccess(int i, Header[] headers, String s, Object o) {
                             Gson mGson = new Gson();
-                            msfi = mGson.fromJson(s, MaterialSpecificFilesInfo.class);
-                            if (msfi.getJsonData().getList().size() != 0) {
-                                wzbm.setText(msfi.getJsonData().getList().get(0).getCINVCODE());//物资编码
-                                jbm.setText(msfi.getJsonData().getList().get(0).getOLDCORD());//旧编码
-                                flbm.setText(msfi.getJsonData().getList().get(0).getHPICGUID());//分类编码
-                                wlmc.setText(msfi.getJsonData().getList().get(0).getCINVNAME());//物料名称
-                                mrsl.setText(msfi.getJsonData().getList().get(0).getFTAXRATE());//默认税率
-                                ggxh.setText(msfi.getJsonData().getList().get(0).getCINVSTD());//规格型号
-                                sfzc.setText(msfi.getJsonData().getList().get(0).getIASSET());//是否资产
-                                mrhw.setText(msfi.getJsonData().getList().get(0).getCPARENTID());//默认货位
-                                zjldw.setText(msfi.getJsonData().getList().get(0).getOLDUNITNAME());//主计量单位
-                                mrck.setText(msfi.getJsonData().getList().get(0).getCWHNAME());//默认仓库
-                                fzjldw.setText(msfi.getJsonData().getList().get(0).getCUNITNAME());//辅助计量单位
-                                hwbm = msfi.getJsonData().getList().get(0).getCPOSCODE();//货位编码
-                                hpiguid = msfi.getJsonData().getList().get(0).getHPIGUID();
+                            msfi = mGson.fromJson(s, CgoodsAllocationRfid.class);
+                            if (msfi.getJsonData().size() != 0) {
+                                wzbm.setText(msfi.getJsonData().get(0).getCINVCODE());//物资编码
+                                jbm.setText(msfi.getJsonData().get(0).getOLDCORD());//旧编码
+                                flbm.setText(msfi.getJsonData().get(0).getHPICGUID());//分类编码
+                                wlmc.setText(msfi.getJsonData().get(0).getCINVNAME());//物料名称
+                                mrsl.setText(msfi.getJsonData().get(0).getFTAXRATE());//默认税率
+                                ggxh.setText(msfi.getJsonData().get(0).getCINVSTD());//规格型号
+                                sfzc.setText("");//是否资产
+                                mrhw.setText(msfi.getJsonData().get(0).getCPARENTID());//默认货位
+                                zjldw.setText(msfi.getJsonData().get(0).getOLDUNITNAME());//主计量单位
+                                mrck.setText(msfi.getJsonData().get(0).getCWHNAME());//默认仓库
+                                fzjldw.setText(msfi.getJsonData().get(0).getCUNITNAME());//辅助计量单位
+                                hwbm = msfi.getJsonData().get(0).getCPOSCODE();//货位编码
+                                hpiguid = msfi.getJsonData().get(0).getHPIGUID();
                             } else {
                                 Toast.makeText(mContext, "此标签未绑定", Toast.LENGTH_SHORT).show();
                             }
@@ -280,7 +277,11 @@ public class TakePhotoPopWin2 extends PopupWindow {
     //扫描获取rfid
     public String getRfid() {
         Result result = RfidOperation.readUnGivenTid((short) 3, (short) 3);
-        return result.getReadInfo().toString();
+        String str = "";
+        if (result.isSuccess() == true) {
+            str = result.getReadInfo().toString();
+        }
+        return str;
     }
 
 }

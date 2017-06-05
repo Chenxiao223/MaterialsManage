@@ -264,6 +264,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="是否资产：" />
 
                 <TextView
@@ -345,6 +346,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="辅助计量单位：" />
 
                 <TextView

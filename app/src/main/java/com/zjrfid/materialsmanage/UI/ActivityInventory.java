@@ -486,8 +486,6 @@ public class ActivityInventory extends AppCompatActivity {
         RequestParams params = new RequestParams();
         params.put("form", json_header);
         params.put("datas", jsonArray.toString());
-        System.out.println("表头：" + json_header);
-        System.out.println("表体："+jsonArray.toString());
         //盘点单保存接口
         HttpNetworkRequest.post("goods/rs/hpCheckvouch", params, new BaseHttpResponseHandler() {
             @Override

@@ -22,8 +22,9 @@ public class IAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private ArrayList<HashMap<String, String>> list;
     private int i = 0;
-    private List<Integer> list_index =new ArrayList<>();
-    private boolean newAddFlag =false;
+    private List<Integer> list_index = new ArrayList<>();
+    private boolean newAddFlag = false;
+    private int adapter_flag = 0;
 
     public IAdapter(Context context, ArrayList<HashMap<String, String>> list) {
         this.context = context;
@@ -73,14 +74,14 @@ public class IAdapter extends BaseAdapter {
             viewHold.text19 = (TextView) convertView.findViewById(R.id.text19);
             viewHold.text20 = (TextView) convertView.findViewById(R.id.text20);
             viewHold.text21 = (TextView) convertView.findViewById(R.id.text21);
-            viewHold.layout_rk= (RelativeLayout) convertView.findViewById(R.id.layout_rk);
+            viewHold.layout_rk = (RelativeLayout) convertView.findViewById(R.id.layout_rk);
             viewHold.cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
             if (i == 1) {//如果传进来的参数为1，就隐藏复选框
                 viewHold.cb.setVisibility(View.GONE);
             }
-            if (list.get(position).get("delFlag").equals("1")){
+            if (list.get(position).get("delFlag").equals("1")) {
                 convertView.setVisibility(View.GONE);
-                AbsListView.LayoutParams param = new AbsListView.LayoutParams( 0,1);
+                AbsListView.LayoutParams param = new AbsListView.LayoutParams(0, 1);
                 convertView.setLayoutParams(param);
             }
             convertView.setTag(viewHold);
@@ -110,10 +111,13 @@ public class IAdapter extends BaseAdapter {
         viewHold.text20.setText(list.get(position).get("content20"));
         viewHold.text21.setText(list.get(position).get("content21"));
         viewHold.cb.setChecked(list.get(position).get("flag").equals("true"));
-        if(newAddFlag ==true)
-        {
-            if(list_index.contains(position))
-            {
+        if (adapter_flag == 1) {
+            if (list.get(position).get("content27").equals("change")) {
+                convertView.setBackgroundColor(Color.parseColor("#fdd631"));
+            }
+        }
+        if (newAddFlag == true) {
+            if (list_index.contains(position)) {
                 convertView.setBackgroundColor(Color.parseColor("#fdd631"));
             }
         }
@@ -123,7 +127,7 @@ public class IAdapter extends BaseAdapter {
 
     public static class ViewHold {
         public CheckBox cb;
-        TextView text1, text2, text3, text4, text5, text6, text7,text8, text9, text10, text11, text12, text13, text14,text15, text16, text17, text18, text19,text20, text21;
+        TextView text1, text2, text3, text4, text5, text6, text7, text8, text9, text10, text11, text12, text13, text14, text15, text16, text17, text18, text19, text20, text21;
         RelativeLayout layout_rk;
     }
 
@@ -132,14 +136,17 @@ public class IAdapter extends BaseAdapter {
         this.i = i;
     }
 
-    public void setNewItemBackground(int index,boolean newaddflag)
-    {
-        newAddFlag =newaddflag;
+    public void setNewItemBackground(int index, boolean newaddflag) {
+        newAddFlag = newaddflag;
         list_index.add(index);
     }
-    public void setNewListIndex()
-    {
-        newAddFlag =false;
+
+    public void setNewListIndex() {
+        newAddFlag = false;
         list_index.clear();
+    }
+
+    public void changeFlag(int flag) {
+        adapter_flag = flag;
     }
 }

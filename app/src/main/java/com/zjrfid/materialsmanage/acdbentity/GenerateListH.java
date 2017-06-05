@@ -128,6 +128,7 @@ public class GenerateListH {
             private String CPTNAME;
             private String DREQUIRDATE;
             private String CCLOSER;
+            private String CVENCODE;
 
             @Override
             public String toString() {
@@ -150,7 +151,16 @@ public class GenerateListH {
                         ", CPTNAME='" + CPTNAME + '\'' +
                         ", DREQUIRDATE='" + DREQUIRDATE + '\'' +
                         ", CCLOSER='" + CCLOSER + '\'' +
+                        ", CVENCODE='" + CVENCODE + '\'' +
                         '}';
+            }
+
+            public String getCVENCODE() {
+                return CVENCODE;
+            }
+
+            public void setCVENCODE(String CVENCODE) {
+                this.CVENCODE = CVENCODE;
             }
 
             public String getCDEMO() {
