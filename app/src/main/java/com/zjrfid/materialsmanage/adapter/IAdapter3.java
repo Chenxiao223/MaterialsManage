@@ -62,7 +62,7 @@ public class IAdapter3 extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHold viewHold = null;
-        if (viewHold == null) {
+        if (convertView == null) {
             viewHold = new ViewHold();
             convertView = inflater.inflate(R.layout.list_materials_out_bound, null);
             viewHold.text1 = (TextView) convertView.findViewById(R.id.text1);

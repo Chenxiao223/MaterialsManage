@@ -27,6 +27,7 @@ import com.zjrfid.materialsmanage.acdbentity.StockRemovalList;
 import com.zjrfid.materialsmanage.adapter.AdapterWzck;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
+import com.zjrfid.materialsmanage.tool.LogingDialog;
 import com.zjrfid.materialsmanage.tool.SysApplication;
 import com.zjrfid.materialsmanage.xListView.XListView;
 
@@ -89,6 +90,7 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
 
     //初始化控件
     public void initView() {
+        LogingDialog.showRoundProcessDialog(ActivityMaterialOutboundOrder.this, R.layout.loading_process_dialog_anim);//加载框
         relative_screen = (RelativeLayout) findViewById(R.id.relative_screen);
         lv_wzrk = (XListView) findViewById(R.id.lv_wzck);
         lv_wzrk.setPullLoadEnable(true);// 设置让它上拉，FALSE为不让上拉，便不加载更多数据
@@ -285,10 +287,11 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
             map.put("flag", "false");
             map.put("hprguid", srl.getJsonData().getList().get(i).getHPRGUID());
             listscq.add(map);
-            dataChanged();
             //
             adapterWzck.hind(1);//隐藏复选框
         }
+        dataChanged();
+        LogingDialog.clossDialog();//关闭加载框
     }
 
     //刷新适配器
@@ -572,6 +575,7 @@ public class ActivityMaterialOutboundOrder extends Activity implements XListView
             @Override
             public void run() {
                 try {
+                    LogingDialog.showRoundProcessDialog(ActivityMaterialOutboundOrder.this, R.layout.loading_process_dialog_anim);//加载框
                     srl =null;
                     list.clear();
                     list_cinvcode.clear();

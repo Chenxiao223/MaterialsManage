@@ -48,8 +48,6 @@ public class ActivityGoodsAllocation extends AppCompatActivity {
     public static ActivityGoodsAllocation goodsAllocation;
     private ListView GA_lv_treeview;
 
-    private LinearLayout GA_ll_tree;
-
     private EditText et_seek;
     private Button clear_query_code_Btn;
 
@@ -88,7 +86,6 @@ public class ActivityGoodsAllocation extends AppCompatActivity {
         Intent intent = getIntent();
         cwhcodeFromOuter = intent.getStringExtra("cwhcode");//仓库编码
         cwhnameFromOuter = intent.getStringExtra("cwhname");//仓库名称
-        GA_ll_tree = (LinearLayout) findViewById(R.id.GA_ll_tree);
         GA_lv_treeview = (ListView) findViewById(R.id.GA_lv_treeview);
 
         et_seek = (EditText) findViewById(R.id.et_seek);

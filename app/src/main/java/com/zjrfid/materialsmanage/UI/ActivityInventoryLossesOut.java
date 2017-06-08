@@ -283,9 +283,9 @@ public class ActivityInventoryLossesOut extends Activity implements XListView.IX
             map.put("flag", "false");
             map.put("HPRGUID", ilout.getJsonData().getList().get(i).getHPRGUID());
             outlistscq.add(map);
-            dataChanged();
             adapterLossesOut.hind(1);//隐藏复选框
         }
+        dataChanged();
     }
 
     //刷新适配器
@@ -392,19 +392,23 @@ public class ActivityInventoryLossesOut extends Activity implements XListView.IX
 
             @Override
             public void run() {
-                page = 1;
-                pageN = "1";
-                list_hprguid.clear();
-                outlistscq.clear();
-                foreilout = null;
-                ilout = null;
-                list_ilout.clear();
-                NetworkRequest("1");
-                adapterLossesOut.notifyDataSetChanged();
-                btn_delete.setVisibility(View.GONE);
-                btn_cancel.setVisibility(View.GONE);
-                btn_select.setVisibility(View.VISIBLE);
-                onLoad();
+                try {
+                    page = 1;
+                    pageN = "1";
+                    list_hprguid.clear();
+                    outlistscq.clear();
+                    foreilout = null;
+                    ilout = null;
+                    list_ilout.clear();
+                    NetworkRequest("1");
+                    adapterLossesOut.notifyDataSetChanged();
+                    btn_delete.setVisibility(View.GONE);
+                    btn_cancel.setVisibility(View.GONE);
+                    btn_select.setVisibility(View.VISIBLE);
+                    onLoad();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }, 2000);
     }

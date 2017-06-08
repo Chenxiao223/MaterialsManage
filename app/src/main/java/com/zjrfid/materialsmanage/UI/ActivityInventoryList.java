@@ -23,6 +23,7 @@ import com.zjrfid.materialsmanage.acdbentity.InventoryList;
 import com.zjrfid.materialsmanage.adapter.AdapterWzpd;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
+import com.zjrfid.materialsmanage.tool.LogingDialog;
 import com.zjrfid.materialsmanage.xListView.XListView;
 
 import org.apache.http.Header;
@@ -78,6 +79,7 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
     }
 
     public void initView() {
+        LogingDialog.showRoundProcessDialog(ActivityInventoryList.this, R.layout.loading_process_dialog_anim);//加载框
         relative_screen = (RelativeLayout) findViewById(R.id.relative_screen);
         Linear_screenUI = (LinearLayout) findViewById(R.id.Linear_screenUI);
         list_wzpd = (XListView) findViewById(R.id.list_wzpd);
@@ -211,6 +213,7 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
             @Override
             public void run() {
                 try {
+                    LogingDialog.showRoundProcessDialog(ActivityInventoryList.this, R.layout.loading_process_dialog_anim);//加载框
                     pageN = "1";
                     listscq.clear();
                     bln_is = true;
@@ -472,11 +475,11 @@ public class ActivityInventoryList extends Activity implements XListView.IXListV
             hm_inventoryList.put("flag", "false");
             hm_inventoryList.put("HPCVGUID", inventory.getJsonData().getList().get(i).getHPCVGUID());
             listscq.add(hm_inventoryList);
-            dataChanged();
             //隐藏复选框
             adapterWzpd.hind(1);
-
         }
+        dataChanged();
+        LogingDialog.clossDialog();//关闭加载框
     }
 
     public void queryClear(View view) {

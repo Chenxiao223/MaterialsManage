@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +66,6 @@ public class ActivityGoodsAllocationRFIDBind extends AppCompatActivity {
             textView7, textView8, textView9, textView10;
     public static ActivityGoodsAllocationRFIDBind goodsAllocationRfidBind;
     private ListView GA_lv_treeview;
-    private LinearLayout GA_ll_tree;
     private EditText et_seek;
     private Button clear_query_code_Btn;
     private CgoodsAllocation mCGA = new CgoodsAllocation();
@@ -118,7 +118,6 @@ public class ActivityGoodsAllocationRFIDBind extends AppCompatActivity {
         textView9 = (TextView) findViewById(R.id.textView9);
         textView10 = (TextView) findViewById(R.id.textView10);
 
-        GA_ll_tree = (LinearLayout) findViewById(R.id.GA_ll_tree);
         GA_lv_treeview = (ListView) findViewById(R.id.GA_lv_treeview);
 
         et_seek = (EditText) findViewById(R.id.et_seek);

@@ -34,7 +34,7 @@ public class ActivityGenerateListH extends Activity {
     private HashMap<String, String> hashMap;
     private List<HashMap<String, String>> sd_Listscq = new ArrayList<>();
     private int record = 0;
-    public List<String> list_sld=new ArrayList<>();//加入收料单主键
+    public List<String> list_sld = new ArrayList<>();//加入收料单主键
     private TextView tv_alid;
 
     @Override
@@ -42,12 +42,12 @@ public class ActivityGenerateListH extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generate_list_h);
         //
-        activityGenerateListH=this;
+        activityGenerateListH = this;
         initView();
     }
 
     public void initView() {
-        tv_alid= (TextView) findViewById(R.id.tv_alid);
+        tv_alid = (TextView) findViewById(R.id.tv_alid);
         lv_create = (ListView) findViewById(R.id.lv_create);
         adapterSdh = new AdapterSdh(ActivityGenerateListH.this, (ArrayList<HashMap<String, String>>) sd_Listscq);
         lv_create.setAdapter(adapterSdh);
@@ -81,15 +81,15 @@ public class ActivityGenerateListH extends Activity {
 
     public void addData() {
         try {
-            RequestParams params=new RequestParams();
-            if (ActivityMaterialsInBound.materialsInBound.tv_supplier.getText().toString().equals("请供货单位")){
+            RequestParams params = new RequestParams();
+            if (ActivityMaterialsInBound.materialsInBound.tv_supplier.getText().toString().equals("请供货单位")) {
                 params.put("cvenname", "");//供应商名称
-            }else {
+            } else {
                 params.put("cvenname", ActivityMaterialsInBound.materialsInBound.tv_supplier.getText().toString());//供应商名称
             }
-            params.put("cvencode",ActivityMaterialsInBound.materialsInBound.cvencode);//供应商编码
+            params.put("cvencode", ActivityMaterialsInBound.materialsInBound.cvencode);//供应商编码
             params.put("hpsnGuid", ActivityMaterialsInBound.materialsInBound.hpsnguid);//供应商主键
-            HttpNetworkRequest.get("goods/rs/hpArrivalvouchRefer",params, new BaseHttpResponseHandler() {
+            HttpNetworkRequest.get("goods/rs/hpArrivalvouchRefer", params, new BaseHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
                     Gson gson = new Gson();
@@ -106,9 +106,9 @@ public class ActivityGenerateListH extends Activity {
                             hashMap.put("content7", generateListH.getJsonData().getList().get(i).getSCURRENC());//币种
                             hashMap.put("content8", generateListH.getJsonData().getList().get(i).getCDEMO());//备注
                             hashMap.put("content9", generateListH.getJsonData().getList().get(i).getTRANSPORTATION());//运输方式
-                            hashMap.put("content10",generateListH.getJsonData().getList().get(i).getHPALPID());//收料单主键
-                            hashMap.put("content11",generateListH.getJsonData().getList().get(i).getCVENCODE());//供应商编码
-                            hashMap.put("content12",generateListH.getJsonData().getList().get(i).getHPSNGUID());//供应商主键
+                            hashMap.put("content10", generateListH.getJsonData().getList().get(i).getHPALPID());//收料单主键
+                            hashMap.put("content11", generateListH.getJsonData().getList().get(i).getCVENCODE());//供应商编码
+                            hashMap.put("content12", generateListH.getJsonData().getList().get(i).getHPSNGUID());//供应商主键
                             hashMap.put("flag", "false");
                             sd_Listscq.add(hashMap);
                         }
@@ -128,11 +128,11 @@ public class ActivityGenerateListH extends Activity {
 
     //点击确定按钮
     public void determine(View view) {
-        if (record==0){
+        if (record == 0) {
             Toast.makeText(ActivityGenerateListH.this, "请勾选一项", Toast.LENGTH_SHORT).show();
-        }else {
-            for (int i=0;i<sd_Listscq.size();i++){
-                if (sd_Listscq.get(i).get("flag").equals("true")){
+        } else {
+            for (int i = 0; i < sd_Listscq.size(); i++) {
+                if (sd_Listscq.get(i).get("flag").equals("true")) {
                     ActivityMaterialsInBound.materialsInBound.tv_supplier.setText(sd_Listscq.get(i).get("content6"));
                     ActivityMaterialsInBound.materialsInBound.cvencode = sd_Listscq.get(i).get("content11");
                     ActivityMaterialsInBound.materialsInBound.hpsnguid = sd_Listscq.get(i).get("content12");
@@ -164,8 +164,8 @@ public class ActivityGenerateListH extends Activity {
                     cvenname = sd_Listscq.get(i).get("content6");
                 }
             }
-            for (int j=0;j<sd_Listscq.size();j++){
-                if (cvenname.equals(sd_Listscq.get(posision).get("content6"))){
+            for (int j = 0; j < sd_Listscq.size(); j++) {
+                if (cvenname.equals(sd_Listscq.get(posision).get("content6"))) {
                     return true;
                 }
             }
@@ -176,22 +176,22 @@ public class ActivityGenerateListH extends Activity {
     }
 
     //点击置顶按钮
-    public void stick(View view){
+    public void stick(View view) {
         lv_create.setSelection(0);
     }
 
     //点击查询按钮
-    public void check(View view){
+    public void check(View view) {
         sd_Listscq.clear();//清空集合
-        RequestParams params=new RequestParams();
-        if (ActivityMaterialsInBound.materialsInBound.tv_supplier.getText().toString().equals("请供货单位")){
+        RequestParams params = new RequestParams();
+        if (ActivityMaterialsInBound.materialsInBound.tv_supplier.getText().toString().equals("请供货单位")) {
             params.put("cvenname", "");//供应商名称
-        }else {
+        } else {
             params.put("cvenname", ActivityMaterialsInBound.materialsInBound.tv_supplier.getText().toString());//供应商名称
         }
-        params.put("cvencode",ActivityMaterialsInBound.materialsInBound.cvencode);//供应商编码
-        params.put("hpsnGuid",ActivityMaterialsInBound.materialsInBound.hpsnguid);//供应商主键
-        params.put("alid",tv_alid.getText().toString());
+        params.put("cvencode", ActivityMaterialsInBound.materialsInBound.cvencode);//供应商编码
+        params.put("hpsnGuid", ActivityMaterialsInBound.materialsInBound.hpsnguid);//供应商主键
+        params.put("alid", tv_alid.getText().toString());
         HttpNetworkRequest.get("goods/rs/hpArrivalvouchRefer", params, new BaseHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
@@ -209,9 +209,9 @@ public class ActivityGenerateListH extends Activity {
                         hashMap.put("content7", generateListH.getJsonData().getList().get(i).getSCURRENC());//币种
                         hashMap.put("content8", generateListH.getJsonData().getList().get(i).getCDEMO());//备注
                         hashMap.put("content9", generateListH.getJsonData().getList().get(i).getTRANSPORTATION());//运输方式
-                        hashMap.put("content10",generateListH.getJsonData().getList().get(i).getHPALPID());//收料单主键
-                        hashMap.put("content11",generateListH.getJsonData().getList().get(i).getCVENCODE());//供应商编码
-                        hashMap.put("content12",generateListH.getJsonData().getList().get(i).getHPSNGUID());//供应商主键
+                        hashMap.put("content10", generateListH.getJsonData().getList().get(i).getHPALPID());//收料单主键
+                        hashMap.put("content11", generateListH.getJsonData().getList().get(i).getCVENCODE());//供应商编码
+                        hashMap.put("content12", generateListH.getJsonData().getList().get(i).getHPSNGUID());//供应商主键
                         hashMap.put("flag", "false");
                         sd_Listscq.add(hashMap);
                     }

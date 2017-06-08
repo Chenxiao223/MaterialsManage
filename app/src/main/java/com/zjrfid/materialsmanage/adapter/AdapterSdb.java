@@ -43,7 +43,7 @@ public class AdapterSdb extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHold viewHold = null;
-        if (viewHold == null) {
+        if (convertView == null) {
             viewHold = new ViewHold();
             convertView = inflater.inflate(R.layout.list_sdb, null);
             viewHold.text1 = (TextView) convertView.findViewById(R.id.text1);

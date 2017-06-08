@@ -38,6 +38,7 @@ import com.zjrfid.materialsmanage.acdbentity.ZmInventoryTB;
 import com.zjrfid.materialsmanage.adapter.AdapterPd;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
+import com.zjrfid.materialsmanage.tool.LogingDialog;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -119,6 +120,7 @@ public class ActivityInventory extends AppCompatActivity {
         initView();//初始化控件
         it = getIntent();
         if (it.getIntExtra("get", 0) == 1) {//这里表示是从物资盘点单点击列表进入的
+            LogingDialog.showRoundProcessDialog(ActivityInventory.this, R.layout.loading_process_dialog_anim);//加载框
             //盘点单主键,
             getHeaderAndTableBody(it.getStringExtra("hpcvGuid"));
             adapterPd.EditTextIsEditable(false);
@@ -127,7 +129,6 @@ public class ActivityInventory extends AppCompatActivity {
             tv_date_time.setEnabled(false);//首次加载，还未点击修改前，时间不可更改
             tv_warehouse.setEnabled(false);//首次加载，还未点击修改前，仓库不可更改
             bln_is = true;
-
         } else {
             //如果是点击新增，则先进入选择仓库的页面
             Intent intent = new Intent(ActivityInventory.this, Activity_TreeView.class);
@@ -734,6 +735,7 @@ public class ActivityInventory extends AppCompatActivity {
                     line2.setVisibility(View.VISIBLE);
 
                     adapterPd.notifyDataSetChanged();
+                    LogingDialog.clossDialog();//关闭加载框
                     //计算
                     summaryFourValue();
                 } else {

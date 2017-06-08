@@ -49,7 +49,7 @@ public class AdapterProFitInt extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHold viewHold = null;
-        if (viewHold == null) {
+        if (convertView == null) {
             viewHold = new ViewHold();
             convertView = inflater.inflate(R.layout.list_inventoryprofitint, null);
             viewHold.tv_Inventorystorage= (TextView) convertView.findViewById(R.id.tv_Inventorystorage);

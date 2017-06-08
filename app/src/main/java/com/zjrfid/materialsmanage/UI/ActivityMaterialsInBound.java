@@ -32,6 +32,7 @@ import com.zjrfid.materialsmanage.acdbentity.UploadTableBody;
 import com.zjrfid.materialsmanage.adapter.IAdapter;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
+import com.zjrfid.materialsmanage.tool.LogingDialog;
 import com.zjrfid.materialsmanage.tool.SysApplication;
 
 import org.apache.http.Header;
@@ -112,6 +113,7 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
         it = getIntent();
         flag = it.getIntExtra("get", 0);
         if (flag == 1) {//等于1表示是从物资入库点击列表进入此页面的
+            LogingDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);//加载框
             addData();
             linear_rukudan.setVisibility(View.GONE);
             hprguid = getIntent().getStringExtra("hprGuid");
@@ -745,6 +747,7 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
                                     map2.put("flag", "false");
                                     listscq.add(map2);
                                     iAdapter.notifyDataSetChanged();
+                                    LogingDialog.clossDialog();//关闭加载框
                                     //
                                     iAdapter.hind(1);//隐藏复选框
                                     line1.setVisibility(View.GONE);
@@ -754,7 +757,6 @@ public class ActivityMaterialsInBound extends AppCompatActivity {
                                     dbl_number += Double.parseDouble(tableBody.getJsonData().getList().get(finalI).getTAXAMOUNT());
                                     tv_total_prices.setText(dbl_number + "");
                                     //计算数量
-                                    Log.i("info", "hpiguid:" + tableBody.getJsonData().getList().get(finalI).getFQUANTITY());
                                     amount += Integer.parseInt(tableBody.getJsonData().getList().get(finalI).getFQUANTITY());
                                     tv_amount.setText(amount + "");
                                 }

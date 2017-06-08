@@ -2,6 +2,7 @@ package com.zjrfid.materialsmanage.UI;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import com.zjrfid.materialsmanage.acdbentity.WarehouseName;
 import com.zjrfid.materialsmanage.adapter.AdapterWzrk;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
+import com.zjrfid.materialsmanage.tool.LogingDialog;
 import com.zjrfid.materialsmanage.tool.SysApplication;
 import com.zjrfid.materialsmanage.xListView.XListView;
 
@@ -82,6 +84,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
     private List<String> list_cinvname = new ArrayList<>();//存放物资编码
     private List<String> list_hpiguid = new ArrayList<>();//存放物资编码
     private List<String> list_chandler2 = new ArrayList<>();//审核人,此集合专门用来传值的
+    private Dialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,7 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
 
     //初始化控件
     public void initView() {
+        LogingDialog.showRoundProcessDialog(this, R.layout.loading_process_dialog_anim);//加载框
         relative_screen = (RelativeLayout) findViewById(R.id.relative_screen);
         Linear_screenUI = (LinearLayout) findViewById(R.id.Linear_screenUI);
         list_wzrk = (XListView) findViewById(R.id.list_wzrk);
@@ -327,10 +331,11 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             hm_goodsreceipt.put("flag", "false");
             hm_goodsreceipt.put("hprguid", gel.getJsonData().getList().get(i).getHPRGUID());
             listscq.add(hm_goodsreceipt);
-            dataChanged();
             //隐藏复选框
             adapterWzrk.hind(1);
         }
+        dataChanged();
+        LogingDialog.clossDialog();//关闭加载框
     }
 
     //刷新适配器
@@ -507,19 +512,19 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             case "货位名称":
                 if (et_goods_allocation.getText().toString().equals("")) {
                     cparentid = "";
-                    cposcode="";
+                    cposcode = "";
                 } else {
                     cparentid = et_goods_allocation.getText().toString().trim();
-                    cposcode="";
+                    cposcode = "";
                 }
                 break;
             case "货位编码":
                 if (et_goods_allocation.getText().toString().equals("")) {
                     cposcode = "";
-                    cparentid="";
+                    cparentid = "";
                 } else {
                     cposcode = et_goods_allocation.getText().toString().trim();
-                    cparentid="";
+                    cparentid = "";
                 }
                 break;
         }
@@ -680,7 +685,8 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
             @Override
             public void run() {
                 try {
-                    gel=null;
+                    LogingDialog.showRoundProcessDialog(ActivityGoodsReceipt.this, R.layout.loading_process_dialog_anim);//加载框
+                    gel = null;
                     list.clear();
                     pageN = "1";
                     page = 2;
@@ -774,19 +780,21 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
                 public void onSuccess(int statusCode, Header[] headers, String rawResponse, Object response) {
                     Gson gson = new Gson();
                     gel = gson.fromJson(rawResponse, GodownEntryList.class);
-                    for (int i = 0; i < gel.getJsonData().getList().size(); i++) {
-                        list.add(gel.getJsonData().getList().get(i).getHPRGUID());
-                        list_cinvcode.add(gel.getJsonData().getList().get(i).getCINVCODE());//添加物资编码
-                        list_cinvname.add(gel.getJsonData().getList().get(i).getCINVNAME());//添加物资名称
-                        list_hpiguid.add(gel.getJsonData().getList().get(i).getHPIGUID());
-                        list_hprguidch.add(gel.getJsonData().getList().get(i).getHPRGUIDCH());
-                        list_chandler2.add(gel.getJsonData().getList().get(i).getCHANDLER());
+                    if (gel.getJsonData().getList().size() > 0) {
+                        for (int i = 0; i < gel.getJsonData().getList().size(); i++) {
+                            list.add(gel.getJsonData().getList().get(i).getHPRGUID());
+                            list_cinvcode.add(gel.getJsonData().getList().get(i).getCINVCODE());//添加物资编码
+                            list_cinvname.add(gel.getJsonData().getList().get(i).getCINVNAME());//添加物资名称
+                            list_hpiguid.add(gel.getJsonData().getList().get(i).getHPIGUID());
+                            list_hprguidch.add(gel.getJsonData().getList().get(i).getHPRGUIDCH());
+                            list_chandler2.add(gel.getJsonData().getList().get(i).getCHANDLER());
+                        }
+                        list_gel.add(gel);//将实体类加入集合
+                        //如果请求网络成功就加载数据
+                        addData(gel.getJsonData().getList().size());
+                        pageN = String.valueOf(page++);
+                        Toast.makeText(ActivityGoodsReceipt.this, "当前为第 " + pageNum + " 页", Toast.LENGTH_SHORT).show();
                     }
-                    list_gel.add(gel);//将实体类加入集合
-                    //如果请求网络成功就加载数据
-                    addData(gel.getJsonData().getList().size());
-                    pageN = String.valueOf(page++);
-                    Toast.makeText(ActivityGoodsReceipt.this, "当前为第 " + pageNum + " 页", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -845,4 +853,5 @@ public class ActivityGoodsReceipt extends Activity implements XListView.IXListVi
     public void stick(View view) {
         list_wzrk.setSelection(0);
     }
+
 }

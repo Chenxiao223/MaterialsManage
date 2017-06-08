@@ -34,6 +34,7 @@ import com.zjrfid.materialsmanage.acdbentity.UPloadOutBody;
 import com.zjrfid.materialsmanage.adapter.IAdapter3;
 import com.zjrfid.materialsmanage.http.BaseHttpResponseHandler;
 import com.zjrfid.materialsmanage.http.HttpNetworkRequest;
+import com.zjrfid.materialsmanage.tool.LogingDialog;
 import com.zjrfid.materialsmanage.tool.SysApplication;
 
 import org.apache.http.Header;
@@ -118,6 +119,7 @@ public class ActivityMaterialsOutBound extends Activity {
         it = getIntent();
         flag = it.getIntExtra("get", 0);
         if (flag == 1) {//这里表示是从物资出库单点击列表进入的
+            LogingDialog.showRoundProcessDialog(ActivityMaterialsOutBound.this, R.layout.loading_process_dialog_anim);//加载框
             addData();
             hprguid = it.getStringExtra("hprGuid");
             tv_amount.setText(it.getStringExtra("amount"));
@@ -777,6 +779,7 @@ public class ActivityMaterialsOutBound extends Activity {
                                     map2.put("flag", "false");
                                     listscq.add(map2);
                                     iAdapter.notifyDataSetChanged();
+                                    LogingDialog.clossDialog();//关闭加载框
                                     //
                                     iAdapter.hind(1);//隐藏复选框
                                     line1.setVisibility(View.GONE);
